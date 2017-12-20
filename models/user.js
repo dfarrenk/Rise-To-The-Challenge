@@ -2,19 +2,19 @@
 module.exports = function(sequelize, DataTypes) {
     var User = sequelize.define("User", {
         name: {
-            type: DataTypes.String,
+            type: DataTypes.STRING,
             allowNull: false
         },
         password: {
-            type: DataTypes.String,
+            type: DataTypes.STRING,
             allowNull: false
         },
         alias: {
-            type: DataTypes.String,
+            type: DataTypes.STRING,
             allowNull: true
         },
         email: {
-            type: DataTypes.String,
+            type: DataTypes.STRING,
             allowNull: false
         }
     });
