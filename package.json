@@ -1,0 +1,20 @@
+{
+  "name": "rise-to-the-challenge",
+  "version": "1.0.0",
+  "description": "Project Two",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfarrenk/Rise-to-the-Challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dfarrenk/Rise-to-the-Challenge/issues"
+  },
+  "homepage": "https://github.com/dfarrenk/Rise-to-the-Challenge#readme"
+}
