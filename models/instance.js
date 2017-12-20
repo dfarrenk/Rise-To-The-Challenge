@@ -1,24 +1,24 @@
 module.exports = function(sequelize, DataTypes) {
     var Instance = sequelize.define("Instance", {
         // Giving the Instance model a name of type STRING
-        challengeID: {
-            type: DataTypes.INTEGER,
-            references: 'Template',
-            referencesKey: 'id',
-            allowNull: false
-        },
-        issuerName: {
-            type: DataTypes.INTEGER,
-            references: 'User',
-            referencesKey: 'id',
-            allowNull: false
-        },
-        accepterName: {
-            type: DataTypes.INTEGER,
-            references: 'User',
-            referencesKey: 'id',
-            allowNull: false
-        },
+        // challengeID: {
+        //     type: DataTypes.INTEGER,
+        //     references: 'Template',
+        //     referencesKey: 'id',
+        //     allowNull: false
+        // },
+        // issuerName: {
+        //     type: DataTypes.INTEGER,
+        //     references: 'User',
+        //     referencesKey: 'id',
+        //     allowNull: false
+        // },
+        // accepterName: {
+        //     type: DataTypes.INTEGER,
+        //     references: 'User',
+        //     referencesKey: 'id',
+        //     allowNull: false
+        // },
         startState: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
