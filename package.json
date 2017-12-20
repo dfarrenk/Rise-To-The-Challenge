@@ -1,0 +1,32 @@
+{
+  "name": "rise-to-the-challenge",
+  "version": "1.0.0",
+  "description": "Challenge your friend to impossible",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"test\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfarrenk/Rise-to-the-Challenge.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "mysql",
+    "nodemailer",
+    "sequelize"
+  ],
+  "author": "dfarrenk, 71emj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dfarrenk/Rise-to-the-Challenge/issues"
+  },
+  "homepage": "https://github.com/dfarrenk/Rise-to-the-Challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mysql2": "^1.5.1",
+    "sequelize": "^4.28.6"
+  }
+}
