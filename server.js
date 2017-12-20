@@ -19,7 +19,8 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 app.engine('handlebars', exphbs({defaultLayout:'main'}));
 app.set('view engine', 'handlebars');
 require("./controller/challenge-controller.js")(app);
-
+require("./controller/html-controller.js")(app);
+require("./controller/user-controller.js")(app);
 
 db.sequelize.sync().then(function() {
   app.listen(PORT, function() {
