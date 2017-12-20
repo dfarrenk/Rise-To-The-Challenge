@@ -17,7 +17,7 @@
     "nodemailer",
     "sequelize"
   ],
-  "author": "dfarrenk, 71emj",
+  "author": "dfarrenk, 71emj, PatrickTHayes, GregoryJimR",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dfarrenk/Rise-to-the-Challenge/issues"
