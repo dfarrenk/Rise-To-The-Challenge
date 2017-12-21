@@ -18,3 +18,7 @@ module.exports = function(sequelize, DataTypes) {
 
     return Template;
 };
+
+// {
+//     timestamps:false
+// }
