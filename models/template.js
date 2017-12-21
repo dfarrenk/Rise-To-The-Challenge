@@ -12,11 +12,9 @@ module.exports = function(sequelize, DataTypes) {
         }
     });
 
-    //TODO associate models
-    // Template.associate = function(models) {
-    // Template.hasMany(models.ChallengeInstance, {
-    // });
-    // }
+    Template.associate = function(models) {
+        Template.belongsToMany(models.User, { through: { model: models.Instance, unique: false }, foreignKey: 'template_id' });
+    };
 
     return Template;
 };

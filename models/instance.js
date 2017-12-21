@@ -1,44 +1,56 @@
 module.exports = function(sequelize, DataTypes) {
     var Instance = sequelize.define("Instance", {
         // Giving the Instance model a name of type STRING
-        // challengeID: {
+        challenge_id: {
+            type: DataTypes.INTEGER,
+            // references: {
+            //     model: 'Template',
+            //     key: 'id'
+            // },
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
+        },
+        // issuer_id: {
         //     type: DataTypes.INTEGER,
-        //     references: 'Template',
-        //     referencesKey: 'id',
+        //     references: {
+        //         model: 'Users', //Models are plural
+        //         key: 'id'
+        //     },
         //     allowNull: false
         // },
-        // issuerName: {
-        //     type: DataTypes.INTEGER,
-        //     references: 'User',
-        //     referencesKey: 'id',
-        //     allowNull: false
-        // },
-        // accepterName: {
-        //     type: DataTypes.INTEGER,
-        //     references: 'User',
-        //     referencesKey: 'id',
-        //     allowNull: false
-        // },
-        startState: {
+        accepter_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Users', //Models are plural
+                key: 'id'
+            },
+            allowNull: true
+        },
+        start_state: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
-        gameState: {
+        game_state: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }
     });
 
-    Instance.associate = function(models) {
-        // Associating Instance with Template & User
-        // Each challenge has one instance, and has a many to many relationship with User
+    // Instance.associate = function(models) {
+    //Unncesary due to being the child of a many to many relationship between User & Template?
 
-    };
+    // Instance.belongsToMany(models.User, {
+    //     foreignKey: {
+    //         allowNull: false
+    //     }
+    // });
+    // Instance.belongsTo(models.Template, {
+    //     foreignKey: {
+    //         allowNull: false
+    //     }
+    // });
+    // };
 
     return Instance;
 };
-
-
-// challengeID FK
-// issuerName FK
-// accepterName FK

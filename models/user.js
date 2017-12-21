@@ -15,15 +15,16 @@ module.exports = function(sequelize, DataTypes) {
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            // validate: {
+            //     isEmail: true
+            // }
         }
     });
 
-    //TODO associate models
-    // User.associate = function(models) {
-    // User.hasMany(models.ChallengeInstance, {
-    // });
-    // }
+    User.associate = function(models) {
+        User.belongsToMany(models.Template, { through: { model: models.Instance, unique: false }, foreignKey: 'issuer_id' });
+    };
 
     return User;
 };
