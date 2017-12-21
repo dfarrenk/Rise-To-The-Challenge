@@ -3,10 +3,6 @@ module.exports = function(sequelize, DataTypes) {
         // Giving the Instance model a name of type STRING
         challenge_id: {
             type: DataTypes.INTEGER,
-            // references: {
-            //     model: 'Template',
-            //     key: 'id'
-            // },
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
@@ -32,6 +28,10 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: false
         },
         game_state: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
+        shelved_state: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }
