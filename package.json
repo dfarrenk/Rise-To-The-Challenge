@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/dfarrenk/Rise-to-the-Challenge#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",

@@ -7,6 +7,7 @@ module.exports = function() {
    // add passport 
    const dataBase = require("../models"),
       passport = require("../config/local.js"),
+      bcrypt = require("bcrypt"),
       loginRoute = new require("express").Router();
 
    // move to html route
@@ -18,28 +19,31 @@ module.exports = function() {
    loginRoute.post("/newaccount", function(req, res) {
       console.log(req.body);
 
-      dataBase.User.create({
-         name: req.body.username,
-         password: req.body.password,
-         alias: req.body.alias || req.body.username,
-         email: req.body.email
-      }).then(() => {
-         res.status(201).send("Registered..please verify your email address");
-      }).catch((err) => {
-         const errorType = err.errors[0].message,
-            errorcode = errorIdentifier(errorType);
+      bcrypt.hash(req.body.password, 10, function(err, hash) {
+         // Store hash in your password DB.
+         dataBase.User.create({
+            name: req.body.username,
+            password: hash,
+            alias: req.body.alias || req.body.username,
+            email: req.body.email
+         }).then(() => {
+            res.status(201).send("Registered..please verify your email address");
+         }).catch((err) => {
+            const errorType = err.errors[0].message,
+               errorcode = errorIdentifier(errorType);
 
-         switch (errorcode) {
-            case 1:
-               return res.status(409).send("Username taken");
-               break;
-            case 2:
-               return res.status(406).send("Invalid password format");
-               break;
-            case -1:
-               return res.status(400).send("Bad request");
-               break;
-         }
+            switch (errorcode) {
+               case 1:
+                  return res.status(409).send("Username taken");
+                  break;
+               case 2:
+                  return res.status(406).send("Invalid password format");
+                  break;
+               case -1:
+                  return res.status(400).send("Bad request");
+                  break;
+            }
+         });
       });
    });
 
@@ -51,6 +55,8 @@ module.exports = function() {
       console.log("success");
       res.status(200).send("success");
    });
+
+
 
    return loginRoute;
 }

@@ -2,6 +2,7 @@ const DEBUG = true;
 
 const Passport = require("passport"),
    LocalStrategy = require('passport-local').Strategy,
+   bcrypt = require("bcrypt"),
    dataBase = require("../models");
 
 Passport.use(new LocalStrategy({
@@ -15,14 +16,19 @@ Passport.use(new LocalStrategy({
          }
       }).then((data) => {
          if (!data) {
-         	console.log("no user");
+            console.log("no user");
             return done(null, false, { message: "username doesn't exist" });
          }
-         if (data.password !== password) {
+
+         bcrypt.compare(password, data.password, function(err, res) {
+            console.log(res);
+            if (res) {
+               return done(null, data);
+            }
             console.log("wrong pass");
             return done(null, false, { message: "inccorect password" });
-         }
-         return done(null, data);
+         });
+
       }).catch((err) => {
          done(err);
       });
