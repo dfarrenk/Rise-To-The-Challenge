@@ -26,9 +26,9 @@ module.exports = function(app) {
         })
     })
     
-    app.put('/challenge/instance/accept', function(req,res){ //update the instance startState to true (user accepted challenge)
+    app.put('/challenge/instance/accept', function(req,res){ //update the instance state  (user accepted challenge)
         db.instance.update({
-            startState:true
+            state:'challenge-accepted'
             },{
                 where:{id:req.body.id} //grab challenge id from req
             }).then(function(results){
@@ -36,9 +36,9 @@ module.exports = function(app) {
             })
     })
     
-    app.put('/challenge/instance/reject', function(req,res){ //update the instance startState to false (user rejected challenge)
+    app.put('/challenge/instance/reject', function(req,res){ //update the instance state  (user rejected challenge)
         db.instance.update({
-            startState:false
+            state:'challenge-rejected'
             },{
                 where:{id:req.body.id} //grab challenge id from req
             }).then(function(results){
@@ -46,9 +46,9 @@ module.exports = function(app) {
             })
     })
     
-    app.put('/challenge/instance/prove', function(req,res){//update the instance gameState to true (user added proof)
+    app.put('/challenge/instance/prove', function(req,res){//update the instance state  (user added proof)
         db.instance.update({
-            gameState:true
+            state:'provided-proof'
             },{
                 where:{id:req.body.id} //grab challenge id from req.
             }).then(function(results){
@@ -56,9 +56,39 @@ module.exports = function(app) {
             })
     })
     
-    app.put('/challenge/instance/proofreject', function(req,res){//update the instance gameState to false (user proof rejected!)
+    app.put('/challenge/instance/proofreject', function(req,res){//update the instance state  (user proof rejected!)
         db.instance.update({
-            gameState:false
+            state:'proof-rejected'
+            },{
+                where:{id:req.body.id} //grab challenge id from req.
+            }).then(function(results){
+                res.redirect('/dashboard');
+            })
+    })
+    
+    app.put('/challenge/instance/proofaccept', function(req,res){//update the instance state  (user proof accepted!)
+        db.instance.update({
+            state:'proof-accepted'
+            },{
+                where:{id:req.body.id} //grab challenge id from req.
+            }).then(function(results){
+                res.redirect('/dashboard');
+            })
+    })
+    
+    app.put('/challenge/instance/archive-success', function(req,res){//update the instance state  (user proof accepted! acknowledged)
+        db.instance.update({
+            state:'archive-success'
+            },{
+                where:{id:req.body.id} //grab challenge id from req.
+            }).then(function(results){
+                res.redirect('/dashboard');
+            })
+    })
+    
+    app.put('/challenge/instance/archive-fail', function(req,res){//update the instance state  (user proof rejected! acknowledged)
+        db.instance.update({
+            state:'archive-fail'
             },{
                 where:{id:req.body.id} //grab challenge id from req.
             }).then(function(results){
