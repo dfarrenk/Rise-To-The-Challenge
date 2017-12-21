@@ -3,22 +3,10 @@ module.exports = function(sequelize, DataTypes) {
         // Giving the Instance model a name of type STRING
         challenge_id: {
             type: DataTypes.INTEGER,
-            // references: {
-            //     model: 'Template',
-            //     key: 'id'
-            // },
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
-        // issuer_id: {
-        //     type: DataTypes.INTEGER,
-        //     references: {
-        //         model: 'Users', //Models are plural
-        //         key: 'id'
-        //     },
-        //     allowNull: false
-        // },
         accepter_id: {
             type: DataTypes.INTEGER,
             references: {
@@ -27,13 +15,18 @@ module.exports = function(sequelize, DataTypes) {
             },
             allowNull: true
         },
-        start_state: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
-        game_state: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
+        state: {
+            type: DataTypes.ENUM(
+                'challenge-issued', // When the instance is first created
+                'challenge-accepted', // Recipient has accepted the challenge, has not yet submitted proof.
+                'challenge-rejected', // Recipient has rejected the challenge
+                'provided-proof', // Recipient has submitted proof for review
+                'proof-accepted', // Issuer has approved the proof
+                'proof-rejected', // Issuer has rejected the proof
+                'archive-success',
+                'archive-fail'
+            ),
+            defaultValue: 'challenge-issued'
         }
     });
 
