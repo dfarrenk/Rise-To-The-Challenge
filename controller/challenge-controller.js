@@ -28,7 +28,7 @@ module.exports = function(app) {
     
     app.put('/challenge/instance/accept', function(req,res){ //update the instance state  (user accepted challenge)
         db.instance.update({
-            state:'challenge-accpeted'
+            state:'challenge-accepted'
             },{
                 where:{id:req.body.id} //grab challenge id from req
             }).then(function(results){
