@@ -15,13 +15,31 @@ $(function() {
 
     //Issue Challenge Handlers
     //===========================
+    $("#challengeSubmit").on("click", function() {
+
+    });
 
     //Review Response Handlers
     //===========================
+    $("#pass").on("click", function() {
+
+    });
+    $("#fail").on("click", function() {
+
+    });
 
     //View New Challenge Handlers
     //===========================
+    $("#accept").on("click", function() {
+
+    });
+    $("#reject").on("click", function() {
+
+    });
 
     //Proof Handler
     //===========================
+    $("#proofSub").on("click", function() {
+
+    });
 });
