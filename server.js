@@ -8,20 +8,24 @@ var app = express();
 var db = require("./models");
 
 app.use(express.static("public"));
-app.use(bodyParser.urlencoded({
-   extended: true
-}))
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 app.use(express.static("public"));
-// app.use(function(err, req, res, next) {
-//    console.error(err.stack);
-//    res.status(500).send("Internal server error");
-// });
+app.use(function(err, req, res, next) {
+   if (err) {
+   	console.error(err.stack);
+   	return res.status(500).send("Internal server error");	
+   }
+   next();
+});
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
-// require("./controller/challenge-controller.js")(app);
+
+require("./controller/challenge-controller.js")(app);
+require("./controller/html-controller.js")(app);
+require("./controller/user-controller.js")(app);
 
 // for testing
 app.get("/login", require("./controller/loginRoute.js")());

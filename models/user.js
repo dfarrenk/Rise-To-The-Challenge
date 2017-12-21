@@ -1,33 +1,30 @@
 // Model of the User from the challenge db.
 module.exports = function(sequelize, DataTypes) {
-   var User = sequelize.define("User", {
-      name: {
-         type: DataTypes.STRING,
-         allowNull: false,
-         unique: true
-      },
-      password: {
-         type: DataTypes.STRING,
-         allowNull: false,
-         validate: {
-            is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/ 
-         }
-      },
-      alias: {
-         type: DataTypes.STRING,
-         allowNull: true
-      },
-      email: {
-         type: DataTypes.STRING,
-         allowNull: false
-      }
-   });
+    var User = sequelize.define("User", {
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        alias: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            // validate: {
+            //     isEmail: true
+            // }
+        }
+    });
 
-   //TODO associate models
-   // User.associate = function(models) {
-   // User.hasMany(models.ChallengeInstance, {
-   // });
-   // }
+    User.associate = function(models) {
+        User.belongsToMany(models.Template, { through: { model: models.Instance, unique: false }, foreignKey: 'issuer_id' });
+    };
 
    return User;
 };
