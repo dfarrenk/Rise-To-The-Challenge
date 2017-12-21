@@ -35,5 +35,5 @@ module.exports = function(sequelize, DataTypes) {
         User.belongsToMany(models.Template, { through: { model: models.Instance, unique: false }, foreignKey: 'issuer_id' });
     };
 
-    return User;
+   return User;
 };
