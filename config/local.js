@@ -5,8 +5,8 @@ const Passport = require("passport"),
    dataBase = require("../models");
 
 Passport.use(new LocalStrategy({
-      usernameField: "user_name",
-      passwordField: "user_pass",
+      usernameField: "username",
+      passwordField: "password",
    },
    function(username, password, done) {
       dataBase.User.findOne({

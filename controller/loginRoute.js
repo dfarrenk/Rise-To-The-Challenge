@@ -43,26 +43,9 @@ module.exports = function() {
       });
    });
 
-   // loginRoute.post("/login", function(req, res) {
-   //    console.log(req.body);
-   //    dataBase.User.findOne({
-   //       where: {
-   //          name: req.body.username
-   //       }
-   //    }).then((data) => {
-   //       if (!data) {
-   //          return res.status(404).send("user name doesn't exist");
-   //       }
-   //       if (data.password !== req.body.password) {
-   //          return res.status(401).send("wrong password");
-   //       }
-   //       res.status(200).json("placeholder: send session token");
-   //    });
-   // });
-
    loginRoute.post("/login", passport.authenticate("local", {
       successRedirect: "/user/dashboard",
-      failureRedirect: "/",
+      failureRedirect: "/dfjaldkfja",
       failureFlash: false
    }), function(req, res) {
       console.log("success");

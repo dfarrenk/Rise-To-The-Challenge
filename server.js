@@ -9,7 +9,7 @@ var PORT = process.env.PORT || 8080;
 var app = express();
 var db = require("./models");
 var passport = require("./config/local.js");
-var errorHandler = require(Path.join("./errorhandler/handler.js"));
+var errorHandler = require("./errorhandler/handler.js");
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -53,6 +53,7 @@ db.sequelize.sync({ force: true }).then(function() {
    });
 
    app.listen(PORT, function() {
+   	console.log(passport);
       console.log("App listening on PORT " + PORT);
    });
 });
