@@ -1,19 +1,28 @@
 var db = require("../models");
-
+var path = require("path");
 
 module.exports = function(app) {
     
     app.get('/login', function(req,res){ //go to login page
-        res.render('login'); // need to make a "login.handlebars" file to render
+        res.sendFile(path.join(__dirname, "../public/login.html")) // need to make a "login.handlebars" file to render
+    })
+    app.get('/revProof', function(req,res){ //go to login page
+        res.sendFile(path.join(__dirname, "../public/revProof.html")) // need to make a "login.handlebars" file to render
+    })
+    app.get('/subProof', function(req,res){ //go to login page
+        res.sendFile(path.join(__dirname, "../public/subProof.html")) // need to make a "login.handlebars" file to render
+    })
+    app.get('/arChallenge', function(req,res){ //go to login page
+        res.sendFile(path.join(__dirname, "../public/challenge.html")) // need to make a "login.handlebars" file to render
     })
     
-    app.get('/home', function(req,res){ //get data from  our tables to populate home page
+    app.get('/dashboard', function(req,res){ //get data from  our tables to populate home page
         /*db.user.findAll({ 
             include: [challengeInstance]; 
         }).then(function(results){ 
             //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
             var hbsObject = {key:results.dataValues}
-            res.render('index', hbsObject)
+            res.render('dashboard', hbsObject)
             
         })*/
     })
