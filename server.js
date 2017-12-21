@@ -21,13 +21,25 @@ app.use(express.static("public"));
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
-require("./controller/challenge-controller.js")(app);
+// require("./controller/challenge-controller.js")(app);
 
-app.get("/login", require("./loginRoute.js"));
-app.post("/login", require("./loginRoute.js"));
+// for testing
+app.get("/login", require("./controller/loginRoute.js")());
+app.post("/login", require("./controller/loginRoute.js")());
+app.post("/newaccount", require("./controller/loginRoute.js")());
 
-db.sequelize.sync().then(function() {
+db.sequelize.sync({ force: true }).then(function() {
+  	// temp for testing only
+   db.User.create({
+      name: "71emj",
+      password: "!wtuce40B65",
+      alias: "71emj",
+      email: "tim.jeng@gmail.com"
+   }).catch((err) => {
+   	console.log(err);
+   });
+
    app.listen(PORT, function() {
       console.log("App listening on PORT " + PORT);
    });
-});
+});	
