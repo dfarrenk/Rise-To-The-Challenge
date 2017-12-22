@@ -51,7 +51,6 @@ require("./controller/html-controller.js")(app);
 require("./controller/user-controller.js")(app);
 
 // for testing
-app.get("/login", require("./controller/loginRoute.js")());
 app.get("/user/dashboard", require("./controller/loginRoute.js")());
 app.post("/login", require("./controller/loginRoute.js")());
 app.post("/newaccount", require("./controller/loginRoute.js")());
