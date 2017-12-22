@@ -32,12 +32,28 @@ app.use(function(err, req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+// check for login session
+app.use(function(req, res, next) {
+   console.log(req.path);
+   if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
+      console.log("I should return here");
+      return next();
+   }
+   if (!req.user) {
+      console.log(req.user);
+      return res.status(401).send("Please login");
+   }
+   next();
+});
+
 require("./controller/challenge-controller.js")(app);
 require("./controller/html-controller.js")(app);
 require("./controller/user-controller.js")(app);
 
 // for testing
 app.get("/login", require("./controller/loginRoute.js")());
+app.get("/user/dashboard", require("./controller/loginRoute.js")());
 app.post("/login", require("./controller/loginRoute.js")());
 app.post("/newaccount", require("./controller/loginRoute.js")());
 
@@ -53,7 +69,8 @@ db.sequelize.sync({ force: true }).then(function() {
    });
 
    app.listen(PORT, function() {
-   	console.log(passport);
+
+      console.log(passport);
       console.log("App listening on PORT " + PORT);
    });
 });

@@ -8,12 +8,17 @@ module.exports = function() {
    const dataBase = require("../models"),
       passport = require("../config/local.js"),
       bcrypt = require("bcrypt"),
+//       loginRoute = new require("express").Router();
+
+//    // move to html route
+//    loginRoute.get("/login", function(req, res) {
+//       DEBUG && console.log("sign in with username/pass");
+//       res.send(200).send("login"); // res.render();
+
+         mailer = require("../config/mailer.js"),
       loginRoute = new require("express").Router();
 
-   // move to html route
-   loginRoute.get("/login", function(req, res) {
-      DEBUG && console.log("sign in with username/pass");
-      res.send(200).send("login"); // res.render();
+   loginRoute.get("/emailverification", function(req, res) {
    });
 
    loginRoute.post("/newaccount", function(req, res) {
@@ -27,7 +32,10 @@ module.exports = function() {
             alias: req.body.alias || req.body.username,
             email: req.body.email
          }).then(() => {
-            res.status(201).send("Registered..please verify your email address");
+
+         	mailer(req.body.email, );
+
+           res.status(201).send("Registered..please verify your email address");
          }).catch((err) => {
             const errorType = err.errors[0].message,
                errorcode = errorIdentifier(errorType);
@@ -53,10 +61,17 @@ module.exports = function() {
       failureFlash: false
    }), function(req, res) {
       console.log("success");
-      res.status(200).send("success");
+//      res.status(200).send("success");
+//    });
    });
 
-
+   loginRoute.get("/user/dashboard", function(req, res) {
+   	res.status(200).json({
+         user: req.user.name,
+         userid: req.user.id,
+         email: req.user.email
+      });
+   });
 
    return loginRoute;
 }
