@@ -19,6 +19,7 @@ module.exports = function(sequelize, DataTypes) {
                 // validate: {
                 //     isEmail: true
                 // }
+
             },
             email_verified: {
                 type: DataTypes.BOOLEAN,
@@ -39,6 +40,7 @@ module.exports = function(sequelize, DataTypes) {
     User.associate = function(models) {
         User.belongsToMany(models.Template, { through: { model: models.Instance, unique: false }, foreignKey: 'issuer_id' });
     };
+
 
     return User;
 };

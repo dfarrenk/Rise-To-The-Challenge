@@ -32,6 +32,7 @@ app.use(function(err, req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 // check for login session
 app.use(function(req, res, next) {
    console.log(req.path);
@@ -68,6 +69,7 @@ db.sequelize.sync({ force: true }).then(function() {
    });
 
    app.listen(PORT, function() {
+
       console.log(passport);
       console.log("App listening on PORT " + PORT);
    });
