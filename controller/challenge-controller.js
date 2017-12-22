@@ -1,6 +1,5 @@
 var db = require("../models");
 
-
 module.exports = function(app) {
 
   app.post('/challenge/new', function(req, res) {// post route for a new challenge, also a parent to challenge instance

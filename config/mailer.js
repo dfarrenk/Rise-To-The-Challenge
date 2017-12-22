@@ -20,7 +20,8 @@ module.exports = function(email, username, flag) {
          from: '"Rise to Challenge 👻" <risetochallengeteam@gmail.com>', // sender address
          to: email, // list of receivers
          subject: 'Please verified your email', // Subject line
-         html: `<b>Hello world?</b>
+         html: `<p>Dear ${username},</p>
+                <p>Welcome to Rise to Challenge, please verified your email before using the app</p>
                 <br><br><img src="https://media.giphy.com/media/xT0xeCZiDf2TUJ6mGs/source.gif"/>
                 <a href="localhost:8080/emailverification/">Click me to verify</a>` // html body // fs to read file
       };
