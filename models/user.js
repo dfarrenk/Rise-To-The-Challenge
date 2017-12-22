@@ -19,7 +19,12 @@ module.exports = function(sequelize, DataTypes) {
                 // validate: {
                 //     isEmail: true
                 // }
+            },
+            email_verified: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
             }
+
         }
         // TODO Hash password
         // , {
@@ -35,5 +40,5 @@ module.exports = function(sequelize, DataTypes) {
         User.belongsToMany(models.Template, { through: { model: models.Instance, unique: false }, foreignKey: 'issuer_id' });
     };
 
-   return User;
+    return User;
 };
