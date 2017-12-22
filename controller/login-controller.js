@@ -7,7 +7,7 @@ module.exports = function() {
    const dataBase = require("../models"),
       passport = require("../config/local.js"),
       bcrypt = require("bcrypt"),
-      mailer = require("../config/mailer.js"),
+      mailer = require("../config/sendgrid_mailer.js"),
       loginRoute = new require("express").Router();
 
    loginRoute.get("/login/email_verification", function(req, res) {
@@ -28,19 +28,23 @@ module.exports = function() {
             mailer(req.body.email, req.body.username);
             res.status(201).send("Registered..please verify your email address");
          }).catch((err) => {
-            const errorType = err.errors[0].message,
-               errorcode = errorIdentifier(errorType);
-
-            switch (errorcode) {
-               case 1:
-                  return res.status(409).send("Username taken");
-                  break;
-               case 2:
-                  return res.status(406).send("Invalid password format");
-                  break;
-               case -1:
-                  return res.status(400).send("Bad request");
-                  break;
+            // handling sequelize error only
+            if (err.contructor === Array) {
+               const errorType = err.errors[0].message,
+                  errorcode = errorIdentifier(errorType);
+               switch (errorcode) {
+                  case 1:
+                     return res.status(409).send("Username taken");
+                     break;
+                  case 2:
+                     return res.status(406).send("Invalid password format");
+                     break;
+                  case -1:
+                     return res.status(400).send("Bad request");
+                     break;
+               }
+            } else {
+               console.log(err.message);
             }
          });
       });
