@@ -3,7 +3,6 @@
 const DEBUG = true;
 
 module.exports = function() {
-
    // add passport 
    const dataBase = require("../models"),
       passport = require("../config/local.js"),
@@ -26,7 +25,7 @@ module.exports = function() {
             alias: req.body.alias || req.body.username,
             email: req.body.email
          }).then(() => {
-         	mailer(req.body.email, req.body.username);
+            mailer(req.body.email, req.body.username);
             res.status(201).send("Registered..please verify your email address");
          }).catch((err) => {
             const errorType = err.errors[0].message,
@@ -53,6 +52,8 @@ module.exports = function() {
       failureFlash: false
    }), function(req, res) {
       console.log("success");
+      //      res.status(200).send("success");
+      //    });
    });
 
    return loginRoute;
