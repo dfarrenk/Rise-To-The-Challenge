@@ -33,12 +33,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // check for login session
-app.use(function(req, res, next) {
+app.get("/*/*", function(req, res, next) {
    console.log(req.path);
-   if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
+   if (req.path.match(/(?:account)||(?:email)/)) {
+   // if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
       console.log("I should return here");
       return next();
    }
+
    if (!req.user) {
       console.log(req.user);
       return res.status(401).send("Please login");
@@ -50,10 +52,9 @@ require("./controller/challenge-controller.js")(app);
 require("./controller/html-controller.js")(app);
 require("./controller/user-controller.js")(app);
 
-// for testing
-app.get("/user/dashboard", require("./controller/loginRoute.js")());
-app.post("/login", require("./controller/loginRoute.js")());
-app.post("/newaccount", require("./controller/loginRoute.js")());
+app.get("/login/*?", require("./controller/login-controller.js")());
+app.post("/login/*?", require("./controller/login-controller.js")());
+app.post("/login", require("./controller/login-controller.js")());
 
 db.sequelize.sync({ force: true }).then(function() {
    // temp for testing only

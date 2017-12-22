@@ -11,11 +11,11 @@ module.exports = function() {
       mailer = require("../config/mailer.js"),
       loginRoute = new require("express").Router();
 
-   loginRoute.get("/emailverification", function(req, res) {
+   loginRoute.get("/login/email_verification", function(req, res) {
 
    });
 
-   loginRoute.post("/newaccount", function(req, res) {
+   loginRoute.post("/login/account", function(req, res) {
       console.log(req.body);
 
       bcrypt.hash(req.body.password, 10, function(err, hash) {
@@ -53,14 +53,6 @@ module.exports = function() {
       failureFlash: false
    }), function(req, res) {
       console.log("success");
-   });
-
-   loginRoute.get("/user/dashboard", function(req, res) {
-   	res.status(200).json({
-         user: req.user.name,
-         userid: req.user.id,
-         email: req.user.email
-      });
    });
 
    return loginRoute;
