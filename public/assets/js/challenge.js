@@ -64,15 +64,13 @@ $(function() {
         var challenged = $(this).data("challenged");
         var rules = $(this).data("rules");
         var proof = $(this).data("proof");
-        var newChallenge = {
-            title: title,
-            challenged: challenged,
-            rules: rules,
-            proof: proof
-        };
-        console.log($(this).serializeArray());
-        console.log("===============");
-        console.log($(this));
+        var newChallenge = {};
+
+        $.map($(this).serializeArray(), function(n, i) {
+            newChallenge[n['name']] = n['value'];
+        });
+
+        console.log(newChallenge);
         //ajax call
          $.ajax("/challenge/new", {
           type: "POST",

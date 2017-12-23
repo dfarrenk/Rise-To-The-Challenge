@@ -1,3 +1,4 @@
+"use strict";
 const DEBUG = true;
 
 const Passport = require("passport"),
@@ -20,7 +21,7 @@ Passport.use(new LocalStrategy({
             console.log("no user");
             return done(null, false, { message: "username doesn't exist" });
          }
-
+         // decrypt password
          bcrypt.compare(password, data.password, function(err, res) {
             console.log(res);
             // two possible ways to sign in login/auto sign in when email verified 
@@ -32,24 +33,19 @@ Passport.use(new LocalStrategy({
             console.log("wrong pass");
             return done(null, false, { message: "inccorect password" });
          });
-
       }).catch((err) => {
          done(err);
       });
    }));
 
-console.log("hello");
-
 Passport.serializeUser(function(user, done) {
-   console.log("---------------------");
-   console.log(user);
-
+   DEBUG && console.log("---------------------");
+   DEBUG && console.log(user);
    done(null, user.name);
 });
 
 Passport.deserializeUser(function(username, done) {
-   console.log("////////////////////////");
-   console.log(username);
+   DEBUG && console.log("////////////////////////");
    dataBase.User.findOne({
       where: {
          name: username

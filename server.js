@@ -1,3 +1,5 @@
+const DEBUG = true;
+
 var express = require("express");
 var bodyParser = require("body-parser");
 // var methodOverride=require("method-override");
@@ -34,18 +36,13 @@ app.use(passport.session());
 
 // check for login session
 app.get("/*/*", function(req, res, next) {
-   console.log("get...%s", req.path);
-   if (req.path.match(/(?:account)||(?:email)/)) {
-   // if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
-      console.log("I should return here");
+   DEBUG && console.log("get...%s", req.path);
+   if (req.path.match(/(?:email|account).*/)) {
+      DEBUG && console.log("I should return here");
       return next();
    }
-
-   if (!req.user) {
-      console.log(req.user);
-      return res.status(401).send("Please login");
-   }
-   next();
+   // it's better to have a page to handle redirect
+   !req.user ? res.status(401).send("Please login") : next();
 });
 
 require("./controller/challenge-controller.js")(app);
@@ -57,18 +54,7 @@ app.post("/login/*?", require("./controller/login-controller.js")());
 app.post("/login", require("./controller/login-controller.js")());
 
 db.sequelize.sync({ force: true }).then(function() {
-   // temp for testing only
-   db.User.create({
-      name: "71emj",
-      password: "!wtuce40B65",
-      alias: "71emj",
-      email: "tim.jeng@gmail.com"
-   }).catch((err) => {
-      console.log(err);
-   });
-
    app.listen(PORT, function() {
-
       console.log(passport);
       console.log("App listening on PORT " + PORT);
    });
