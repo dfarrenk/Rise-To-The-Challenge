@@ -1,4 +1,5 @@
 $(function() {
+    console.log("challenge.js loaded");
 
     //Login Handlers
     //===========================
@@ -57,6 +58,7 @@ $(function() {
     //Issue Challenge Handlers
     //===========================
     $("#challengeSubmit").on("submit", function(event) {
+        console.log("Clicked");
         event.preventDefault();
         var title = $(this).data("title");
         var challenged = $(this).data("challenged");
