@@ -1,4 +1,5 @@
 $(function() {
+    console.log("challenge.js loaded");
 
     //Login Handlers
     //===========================
@@ -56,7 +57,7 @@ $(function() {
 
     //Issue Challenge Handlers
     //===========================
-    $("#challengeSubmit").on("submit", function(event) {
+    $("#challengeIssue").submit(function(event) {
         event.preventDefault();
         var title = $(this).data("title");
         var challenged = $(this).data("challenged");
@@ -68,16 +69,18 @@ $(function() {
             rules: rules,
             proof: proof
         };
+        console.log($(this).serializeArray());
+        console.log("===============");
+        console.log($(this));
         //ajax call
-        $.ajax("user/challenge/new", {
-            type: "POST",
-            data: newChallenge
-        }).then(function() {
-            console.log("new challenge submitted");
-        });
-
+        // $.ajax("user/challenge/new", {
+        //     type: "POST",
+        //     data: newChallenge
+        // }).then(function() {
+        //     console.log("new challenge submitted");
+        // });
         //should receive success/err message?
-
+        return true;
     });
 
     //Review Response Handlers
