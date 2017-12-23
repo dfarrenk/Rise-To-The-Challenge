@@ -19,8 +19,7 @@ module.exports = function() {
    loginRoute.post("/login/email_verification", passport.authenticate("local", {
       // it's unlikely there's failure, however if failure should happen I need a handler
       // could set a timer somehow to nullified expired link
-      failureRedirect: "/",
-      failureFlash: false
+      failureRedirect: "error",
    }), function(req, res) {
       console.log(req.body);
       dataBase.User.update({
@@ -55,7 +54,7 @@ module.exports = function() {
       bcrypt.hash(req.body.password, 10, function(err, hash) {
          // Store hash in your password DB.
          dataBase.User.create({
-            name: req.body.username,
+            name: req.body.username || req.body.name, // please move html to public/
             password: hash,
             alias: req.body.alias || req.body.username,
             email: req.body.email

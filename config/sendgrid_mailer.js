@@ -47,7 +47,8 @@ module.exports = function(email, username, hash, flag) {
          "%link%": `<a href=${hrefLink + "u=" + username + "&p=" + hash}>${"Click me to verify"}</a>`
       };
 
-   const mailContent = emailTemplates[flag].replace(/(?=[%])(?:.*[a-z])(?:[%])/gi, (matched) => {
+   // original regexp: /(?=[%])(?:.*[a-z])(?:[%])/gi
+   const mailContent = emailTemplates[flag].replace(/\%?\w+(?![>])?\%/gi, (matched) => {
       return customContent[matched];
    });
 

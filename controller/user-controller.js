@@ -1,4 +1,5 @@
-var db = require("../models");
+var db = require("../models"),
+    path = require("path");
 
 module.exports = function(app) {
 
@@ -36,12 +37,13 @@ module.exports = function(app) {
 
    app.get('/user/dashboard', function(req, res) { //get data from  our tables to populate home page
       // testing for response
-      res.status(200).json({
-         user: req.user.name,
-         userid: req.user.id,
-         email: req.user.email
-      });
-
+      // res.status(200).json({
+      //    user: req.user.name,
+      //    userid: req.user.id,
+      //    email: req.user.email
+      // });
+      console.log("_______________");
+      res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       // db.user.findAll({
       //    include: [challengeInstance];
       // }).then(function(results) {
@@ -51,9 +53,9 @@ module.exports = function(app) {
       // });
    });
 
-   /*app.get('/newChallenge', function(req,res){ //load the create new challenge page
-       res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
-   })// challenge form now a modal*/
+   app.get('/user/createChallenge.html', function(req,res){ //load the create new challenge page
+       // res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
+   })// challenge form now a modal
 
    app.get('/user/proveChallenge', function(req, res) { //load the prove challenge page on selected challenge instance, need to find the challenge instance
       /* db.challengeInstance.findAll({
