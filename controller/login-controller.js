@@ -7,12 +7,32 @@ module.exports = function() {
    const dataBase = require("../models"),
       passport = require("../config/local.js"),
       bcrypt = require("bcrypt"),
+      path = require("path"),
       mailer = require("../config/sendgrid_mailer.js"),
       loginRoute = new require("express").Router();
 
    loginRoute.get("/login/email_verification", function(req, res) {
-
+      console.log("Okay");
+      res.status(200).sendFile(path.join(__dirname, "../public/verification.html"));
    });
+
+   loginRoute.post("/login/email_verification", passport.authenticate("local", {
+      failureRedirect: "/",
+      failureFlash: false
+   }), function(req, res) {
+      console.log("success");
+      res.status(200).send("/user/dashboard");
+      //      res.status(200).send("success");
+      //    });
+   });
+
+   // loginRoute.get("/login/account", function(req, res) {
+   //    res.status(200).send("cool");
+   // });
+
+   // loginRoute.get("/login/test", function(req, res) {
+   //    res.status(200).send("yeah");
+   // });
 
    loginRoute.post("/login/account", function(req, res) {
       console.log(req.body);
@@ -25,7 +45,7 @@ module.exports = function() {
             alias: req.body.alias || req.body.username,
             email: req.body.email
          }).then(() => {
-            mailer(req.body.email, req.body.username);
+            mailer(req.body.email, req.body.username, hash, 0);
             res.status(201).send("Registered..please verify your email address");
          }).catch((err) => {
             // handling sequelize error only
@@ -52,13 +72,9 @@ module.exports = function() {
 
    loginRoute.post("/login", passport.authenticate("local", {
       successRedirect: "/user/dashboard",
-      failureRedirect: "/dfjaldkfja",
+      failureRedirect: "/",
       failureFlash: false
-   }), function(req, res) {
-      console.log("success");
-      //      res.status(200).send("success");
-      //    });
-   });
+   }));
 
    return loginRoute;
 }

@@ -32,10 +32,9 @@ app.use(function(err, req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 // check for login session
 app.get("/*/*", function(req, res, next) {
-   console.log(req.path);
+   console.log("get...%s", req.path);
    if (req.path.match(/(?:account)||(?:email)/)) {
    // if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
       console.log("I should return here");

@@ -10,6 +10,7 @@ Passport.use(new LocalStrategy({
       passwordField: "password",
    },
    function(username, password, done) {
+      console.log("user: %s | pass: %s", username, password);
       dataBase.User.findOne({
          where: {
             name: username
@@ -22,7 +23,10 @@ Passport.use(new LocalStrategy({
 
          bcrypt.compare(password, data.password, function(err, res) {
             console.log(res);
+            // two possible ways to sign in login/auto sign in when email verified 
             if (res) {
+               return done(null, data);
+            } else if (password === data.password) {
                return done(null, data);
             }
             console.log("wrong pass");

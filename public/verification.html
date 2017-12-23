@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <title>Rise to Challenge</title>
+   <style>
+   body {
+      width: 100%;
+      max-width: 720px;
+      margin: auto;
+      margin-top: 5rem;
+      text-align: center;
+      font-family: "Helvetica", sans-serif;
+   }
+
+   h2 {
+      font-weight: 200;
+   }
+   </style>
+</head>
+
+<body>
+   <h2>Email Verified!!</h2>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script>
+   (function($) {
+      const queryString = location.search.substring(1);
+      console.log(queryString);
+      const userData = queryString.replace(/[a-z](?:[=])/g, "").split("&"),
+         userObj = {
+            username: userData[0],
+            password: userData[1]
+         };
+      console.log(userObj);
+      setTimeout(function() {
+         $.ajax({
+            url: "/login/email_verification",
+            method: "POST",
+            data: userObj
+         }).then((res) => {
+            console.log(res);
+            location.replace(res);
+         });
+      }, 1000);
+   }(jQuery));
+   </script>
+</body>
+
+</html>
