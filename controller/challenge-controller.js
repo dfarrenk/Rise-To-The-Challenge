@@ -4,12 +4,23 @@ module.exports = function(app) {
 
   app.post('/challenge/new', function(req, res) {// post route for a new challenge, also a parent to challenge instance
         var newChallenge={ //grab request body info to create new challenge object
-            challenge_name: req.body.name,
-            challenge_rule: req.body.rule
+            name: req.body.name,
+            rule: req.body.rule,
         }
-        db.Template.create(newChallenge).then(function(results){ //post a new row in the challenge table
-            res.redirect('/dashboard');
+        var newInstance={// grab instance items
+            accepter_id:req.body.challenged,
+            challenger_proof:req.body.proof
+        }
+        db.Template.create(newChallenge).then(function(results){ //post a new row in the challenge table.
+            console.log(results)
+            //grab the newly created template_id and add it to the newInstance here
+            //
+            db.Instance.create(newInstance).then(function(results2){ // post a new row in instance table.
+                res.redirect('/dashboard');
+            })
         })
+
+        //or should I make a seperate call here.
     })
 
   app.post('/challenge/instance/new', function(req,res){ //post route for a challenge instance , child of user and challenge
