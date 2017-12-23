@@ -33,19 +33,19 @@ module.exports = function(app) {
       res.sendFile(path.join(__dirname, "../public/challenge.html")) // need to make a "login.handlebars" file to render
    })
 
-   app.get('/user/dashboard', function(req, res) { //get data from  our tables to populate home page
-      /*db.user.findAll({
-          include: [challengeInstance];
-      }).then(function(results){
-          //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
-          var hbsObject = {key:results.dataValues}
-          res.render('dashboard', hbsObject)
+   // app.get('/user/dashboard', function(req, res) { //get data from  our tables to populate home page
+   //    db.user.findAll({
+   //        include: [challengeInstance];
+   //    }).then(function(results){
+   //        //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
+   //        var hbsObject = {key:results.dataValues}
+   //        res.render('dashboard', hbsObject)
 
-      })*/
-   })
+   //    })
+   // })
 
    app.get("/user/dashboard", function(req, res) {
-    res.status(200).json({
+      res.status(200).json({
          user: req.user.name,
          userid: req.user.id,
          email: req.user.email
