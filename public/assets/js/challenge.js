@@ -34,7 +34,7 @@ $(function() {
             email: email,
             alias: alias
         };
-        $.ajax("/newaccount", {
+        $.ajax("/login/account", {
             type: "POST",
             data: newUser
         }).then(function() {
@@ -74,12 +74,12 @@ $(function() {
         console.log("===============");
         console.log($(this));
         //ajax call
-        // $.ajax("user/challenge/new", {
-        //     type: "POST",
-        //     data: newChallenge
-        // }).then(function() {
-        //     console.log("new challenge submitted");
-        // });
+         $.ajax("/challenge/new", {
+          type: "POST",
+             data: newChallenge
+         }).then(function() {
+             console.log("new challenge submitted");
+         });
         //should receive success/err message?
         return true;
     });
