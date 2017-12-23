@@ -15,6 +15,14 @@ module.exports = function(sequelize, DataTypes) {
             },
             allowNull: true
         },
+        challenger_proof: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        challenged_proof: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         state: {
             type: DataTypes.ENUM(
                 'challenge-issued', // When the instance is first created

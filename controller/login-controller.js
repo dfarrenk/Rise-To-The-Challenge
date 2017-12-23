@@ -48,7 +48,7 @@ module.exports = function() {
       failureFlash: false
    }));
 
-   loginRoute.post("/login/account", function(req, res) {
+   loginRoute.post("/login/account", function(req, res) {//new user account creation route linked to route in challenge js
       console.log(req.body);
 
       bcrypt.hash(req.body.password, 10, function(err, hash) {
