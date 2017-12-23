@@ -12,6 +12,7 @@ $(function() {
             username: username,
             password: password
         };
+        console.log(login);
         $.ajax("/login", {
             type: "POST",
             data: login
