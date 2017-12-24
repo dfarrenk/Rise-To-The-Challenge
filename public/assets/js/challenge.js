@@ -72,12 +72,13 @@ $(function() {
 
         console.log(newChallenge);
         //ajax call
-        // $.ajax("user/challenge/new", {
-        //     type: "POST",
-        //     data: newChallenge
-        // }).then(function() {
-        //     console.log("new challenge submitted");
-        // });
+        $.ajax("/challenge/new", {
+            type: "POST",
+            data: newChallenge
+        }).then(function(status) {
+            console.log(status);
+            console.log("new challenge submitted");
+        });
         //should receive success/err message?
         return true;
     });
