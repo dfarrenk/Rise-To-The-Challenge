@@ -51,6 +51,8 @@ module.exports = function() {
    loginRoute.post("/login/account", function(req, res) {//new user account creation route linked to route in challenge js
       console.log(req.body);
 
+      // if (req.challenge_id) {...}
+
       bcrypt.hash(req.body.password, 10, function(err, hash) {
          // Store hash in your password DB.
          dataBase.User.create({
@@ -59,7 +61,13 @@ module.exports = function() {
             alias: req.body.alias || req.body.username,
             email: req.body.email
          }).then(() => {
-            mailer(req.body.email, req.body.username, hash, 0);
+            // mailer(options, flag);
+            mailer({ 
+               email: req.body.email, 
+               username: req.body.username, 
+               password: hash
+            }, 0);
+
             res.status(201).send("Registered..please verify your email address");
          }).catch((err) => {
             // handling sequelize error only

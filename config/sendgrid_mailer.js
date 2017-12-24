@@ -8,21 +8,12 @@ const sg = require('sendgrid')(process.env.SENDGRID_API_KEY),
    path = require("path"),
    template_filepath = path.join(__dirname, "/email_templates");
 
-// missing image for email verification, 0 = veri, 1 = chal_issue, 2 = chal_accept, chal_complete
-const imagelinks = [
-   "https://media.giphy.com/media/xT0xeCZiDf2TUJ6mGs/source.gif",
-   "https://media.giphy.com/media/xT0xeCZiDf2TUJ6mGs/source.gif",
-   "https://media.giphy.com/media/H34dW1FHF4JmE/giphy.gif",
-   "https://media.giphy.com/media/7rj2ZgttvgomY/giphy.gif"
-];
-
 const fileImport = function(filepath) {
    const data = fs.readFileSync(filepath, "utf8");
    return data;
 };
 
-const emailTemplates = new Array();
-
+const emailTemplates = {};
 // there are two possible way to create custom email,
 // one with prewritten pages another with template + prewritten contents 
 fs.readdirSync(template_filepath).filter((file) => {
@@ -30,25 +21,58 @@ fs.readdirSync(template_filepath).filter((file) => {
 }).forEach((file) => {
    const filepath = path.join(template_filepath, file),
       html = fileImport(filepath);
-   emailTemplates.push(html);
+   emailTemplates[file] = html;
 });
 
 DEBUG && console.log(fs.readdirSync(__dirname + "/email_templates"));
 DEBUG && console.log(emailTemplates);
 
+const email_options = {
+   email: "",
+   username: null,
+   password: null,
+   challenge_id: 0,
+   challenger_name: "",
+   challenge_proof: ""
+};
+
 // flag tells mailer which template to use
-module.exports = function(email, username, hash, flag) {
+// email({ options }, flag);
+// obj key name: email, username, password, challenge_id, challenge_proof
+module.exports = function(options = email_options, flag) {
+
+   // missing image for email verification, 0 = veri, 1 = chal_issue, 2 = chal_accept, chal_complete
+   const imageLinks = [
+         "https://media.giphy.com/media/xT0xeCZiDf2TUJ6mGs/source.gif",
+         "https://media.giphy.com/media/xT0xeCZiDf2TUJ6mGs/source.gif",
+         "https://media.giphy.com/media/H34dW1FHF4JmE/giphy.gif",
+         "https://media.giphy.com/media/7rj2ZgttvgomY/giphy.gif"
+      ],
+      routes = [
+         "/login/email_verification?u=" + options.username + "&p=" + options.password,
+         "/user/arChallenge?challenger=" + options.challenger_name + "&challenge_id=" + options.challenge_id,
+      ],
+      linktext = [
+         "Click me to verify",
+         "Click to know more about the challenge"
+      ], 
+      flag_name = [
+         "email_verification.html",
+         "email_chalrecipient.html",
+      ];
 
    // need to work out a pattern
-   const hrefLink = "http://localhost:8080/login/email_verification?",
+   const hrefLink = "http://localhost:8080" + routes[flag],
       customContent = {
-         "%username%": username,
-         "%image%": imagelinks[flag],
-         "%link%": `<a href=${hrefLink + "u=" + username + "&p=" + hash}>${"Click me to verify"}</a>`
+         "%username%": options.username,
+         "%challenger": options.challenger_name,
+         "%image%": imageLinks[flag],
+         "%link%": hrefLink,
+         "%linktext%": linktext[flag]
       };
 
    // original regexp: /(?=[%])(?:.*[a-z])(?:[%])/gi
-   const mailContent = emailTemplates[flag].replace(/\%?\w+(?![>])?\%/gi, (matched) => {
+   const mailContent = emailTemplates[flag_name[flag]].replace(/\%?\w+(?![>])?\%/gi, (matched) => {
       return customContent[matched];
    });
 
@@ -60,7 +84,7 @@ module.exports = function(email, username, hash, flag) {
       body: {
          personalizations: [{
             to: [{
-               email: email
+               email: options.email
             }],
             subject: 'Rise to Challenge',
          }],

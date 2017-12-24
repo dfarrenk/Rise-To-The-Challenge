@@ -32,7 +32,8 @@ module.exports = function(app) {
    });
 
    app.get('/user/arChallenge', function(req, res) { //go to login page
-      res.sendFile(path.join(__dirname, "../public/challenge.html")) // need to make a "login.handlebars" file to render
+      // res.sendFile(path.join(__dirname, "../public/challenge.html")) // need to make a "login.handlebars" file to render
+      res.sendFile(path.join(__dirname, "../views/layouts/challenge.html"));
    });
 
    app.get('/user/dashboard', function(req, res) { //get data from  our tables to populate home page
@@ -54,6 +55,7 @@ module.exports = function(app) {
    });
 
    app.get('/user/createChallenge.html', function(req,res){ //load the create new challenge page
+        res.status(200).sendFile(path.join(__dirname, "../views/layouts/sendChallenge.html"));
        // res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
    })// challenge form now a modal
 

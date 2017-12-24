@@ -21,7 +21,7 @@
 </head>
 
 <body>
-   <h2>Email Verified!!</h2>
+   <h2></h2>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
    <script>
    (function($) {
@@ -44,13 +44,13 @@
          console.log(res);
          setTimeout(function() {
             location.replace(res);
-         }, 1500);
+         }, 2500);
       }).catch((err) => {
          $("h2").text("Sign in session expired");
 
          setTimeout(function() {
             location.replace("/");
-         }, 1500);
+         }, 2500);
       });
    }(jQuery));
    </script>
