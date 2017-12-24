@@ -1,7 +1,7 @@
-var db = require("../models");
+var db = require("../models"),
+   mailer = require("../config/sendgrid_mailer.js");
 
 module.exports = function(app) {
-
   app.post('/challenge/new', function(req, res) {// post route for a new challenge, also a parent to challenge instance
         var newChallenge={ //grab request body info to create new challenge object
             name: req.body.name,
@@ -11,11 +11,25 @@ module.exports = function(app) {
             accepter_id:req.body.challenged,
             challenger_proof:req.body.proof
         }
+        
+      const proof = req.body.proof,
+         recipient = req.body.challenged;
+         
         db.Template.create(newChallenge).then(function(results){ //post a new row in the challenge table.
             console.log(results)
+            mailer({
+                email: recipient,
+                // we can add an input field for sending email to none user
+                challenge_id: results.id,
+                // the challenger's username
+                challenger_name: req.user.name,
+                challenge_proof: proof
+             }, 1);
             //grab the newly created template_id and add it to the newInstance here
-            //
+            newInstance[template_id]=results.dataValues.template_id;
+            
             db.Instance.create(newInstance).then(function(results2){ // post a new row in instance table.
+                
                 res.redirect('/dashboard');
             })
         })
@@ -25,7 +39,8 @@ module.exports = function(app) {
 
   app.post('/challenge/instance/new', function(req,res){ //post route for a challenge instance , child of user and challenge
         var newChallengeInstance ={ // need to know all vars required (what doesn't have a default value in model)
-            //challenge_id: req.body.challenge,
+            template_id: req.body[template_id],
+            challenger_proof:req.body[challenger_proof],
             //issuerName:req.body.issuer,
             accepter_id:req.body.accepter
             //startState should be default defined boolean
@@ -144,3 +159,4 @@ module.exports = function(app) {
 
 
 };
+
