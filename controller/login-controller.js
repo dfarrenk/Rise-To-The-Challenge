@@ -1,15 +1,15 @@
 "use strict";
-
 const DEBUG = true;
 
+// dependencies 
+const dataBase = require("../models"),
+   bcrypt = require("bcrypt"),
+   path = require("path"),
+   passport = require("../config/local.js"),
+   mailer = require("../config/sendgrid_mailer.js"),
+   loginRoute = new require("express").Router();
+
 module.exports = function() {
-   // add passport 
-   const dataBase = require("../models"),
-      passport = require("../config/local.js"),
-      bcrypt = require("bcrypt"),
-      path = require("path"),
-      mailer = require("../config/sendgrid_mailer.js"),
-      loginRoute = new require("express").Router();
 
    loginRoute.get("/login/email_verification", function(req, res) {
       console.log("Okay");
@@ -17,56 +17,28 @@ module.exports = function() {
    });
 
    loginRoute.post("/login/email_verification", passport.authenticate("local", {
-      failureRedirect: "/",
-      failureFlash: false
+      // it's unlikely there's failure, however if failure should happen I need a handler
+      // could set a timer somehow to nullified expired link
+      failureRedirect: "error",
    }), function(req, res) {
-      console.log("success");
-      res.status(200).send("/user/dashboard");
-      //      res.status(200).send("success");
-      //    });
-   });
-
-   // loginRoute.get("/login/account", function(req, res) {
-   //    res.status(200).send("cool");
-   // });
-
-   // loginRoute.get("/login/test", function(req, res) {
-   //    res.status(200).send("yeah");
-   // });
-
-   loginRoute.post("/login/account", function(req, res) {
       console.log(req.body);
-
-      bcrypt.hash(req.body.password, 10, function(err, hash) {
-         // Store hash in your password DB.
-         dataBase.User.create({
-            name: req.body.username,
-            password: hash,
-            alias: req.body.alias || req.body.username,
-            email: req.body.email
-         }).then(() => {
-            mailer(req.body.email, req.body.username, hash, 0);
-            res.status(201).send("Registered..please verify your email address");
-         }).catch((err) => {
-            // handling sequelize error only
-            if (err.contructor === Array) {
-               const errorType = err.errors[0].message,
-                  errorcode = errorIdentifier(errorType);
-               switch (errorcode) {
-                  case 1:
-                     return res.status(409).send("Username taken");
-                     break;
-                  case 2:
-                     return res.status(406).send("Invalid password format");
-                     break;
-                  case -1:
-                     return res.status(400).send("Bad request");
-                     break;
-               }
-            } else {
-               console.log(err.message);
-            }
-         });
+      dataBase.User.update({
+         email_verified: true
+      }, {
+         where: {
+            name: req.body.username
+         }
+      }).then((data) => {
+         console.log("success %s", data);
+         res.status(200).send("/user/dashboard");
+      }).catch((err) => {
+         // handling sequelize error only
+         if (err.contructor === Array) {
+            const errorType = err.errors[0].message;
+            errorIdentifier(errorType);
+         } else {
+            console.log(err.message);
+         }
       });
    });
 
@@ -76,6 +48,39 @@ module.exports = function() {
       failureFlash: false
    }));
 
+   loginRoute.post("/login/account", function(req, res) {//new user account creation route linked to route in challenge js
+      console.log(req.body);
+
+      // if (req.challenge_id) {...}
+
+      bcrypt.hash(req.body.password, 10, function(err, hash) {
+         // Store hash in your password DB.
+         dataBase.User.create({
+            name: req.body.username || req.body.name, // please move html to public/
+            password: hash,
+            alias: req.body.alias || req.body.username,
+            email: req.body.email
+         }).then(() => {
+            // mailer(options, flag);
+            mailer({ 
+               email: req.body.email, 
+               username: req.body.username, 
+               password: hash
+            }, 0);
+
+            res.status(201).send("Registered..please verify your email address");
+         }).catch((err) => {
+            // handling sequelize error only
+            if (err.contructor === Array) {
+               const errorType = err.errors[0].message;
+               errorIdentifier(errorType);
+            } else {
+               console.log(err.message);
+            }
+         });
+      });
+   });
+
    return loginRoute;
 }
 
@@ -83,12 +88,12 @@ function errorIdentifier(errtype) {
    console.error(errtype);
    // identify error type using regex to match key word
    if (!!errtype.match(/\w*(?:name)/g)) {
-      return 1;
+      return res.status(409).send("Username taken");
    }
 
    if (!!errtype.match(/\w*(?:password)/g)) {
-      return 2;
+      return res.status(406).send("Invalid password format");
    }
 
-   return -1;
+   return res.status(400).send("Bad request");
 }
