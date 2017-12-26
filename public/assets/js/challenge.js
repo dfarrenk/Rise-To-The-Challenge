@@ -21,26 +21,82 @@ $(function() {
         });
 
     });
+
+    //New Profile Creation
+
     $("#createProfile").on("click", function(event) {
         //should submit new user info
         console.log("profile creation requested");
-        var name = $(this).data("name");
+
+        let validateResult = validateInput();
+        if (isNaN(validateResult)) {
+            return modalWrite(validateResult);
+        }
+
+        var userName = $(this).data("userName");
         var password = $(this).data("password");
-        var email = $(this).data("password");
-        var alias = $(this).data("alias");
+        var confPassword = $(this).data("confPassword");
+        var email = $(this).data("email");
         var newUser = {
-            name: name,
+            name: userName,
             password: password,
-            email: email,
-            alias: alias
+            email: email
         };
-        $.ajax("/login/account", {
-            type: "POST",
-            data: newUser
-        }).then(function() {
-            console.log("new account submitted");
-        });
+
+        //calls ajax call
+        sendRequest(newUser);
     });
+
+    //ajax call
+
+    function sendRequest(data) {
+
+        $.ajax("/newaccount", {
+            method: "POST",
+            data: data,
+            traditional: true
+        }).done((response) => {
+            console.log("new account submitted");
+            modalWrite(response);
+        });
+    }
+
+    function validateInput() {
+        var userName = $(this).data("userName");
+        var password = $(this).data("password");
+        var confPassword = $(this).data("confPassword");
+        var email = $(this).data("email");
+
+
+        if (!userName || !password || !confPassword || !email) {
+            return "form-empty";
+        }
+        if (name.match(/[^a-z]/gi)) {
+            return "userName-invalid";
+        }
+        if (!password === confPassword) {
+            return "password-mismatch";
+        }
+        if (!email.match(/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/)) {
+            return "email-invalid";
+        }
+    }
+
+    function modalWrite(result) {
+        $("modalErrorHeader").text("Oops, something went wrong...");
+
+        switch (result) {
+            case "name-invalid":
+                $("#userName").attr("placeholder", "Please enter a username");
+                break;
+            case "email-invalid":
+                $("#email").attr("placeholder", "Please enter a valid email address");
+                break;
+            case "password-mismatch":
+                $("#confPassword").attr("placeholder", "Password does not match");
+                break;
+        }
+    }
 
     //Dashboard Handlers
     //===========================
@@ -138,4 +194,7 @@ $(function() {
             console.log("proof submitted: " + proof);
         });
     });
+});
+$("newUser").on("click", function() {
+    $("#signUp").modal()
 });
