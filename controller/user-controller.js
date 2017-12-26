@@ -34,6 +34,11 @@ module.exports = function(app) {
    app.get('/user/arChallenge/:instanceId', function(req, res) { //go to accept/reject a newly issued challenge page.
       // res.sendFile(path.join(__dirname, "../public/challenge.html")) // 
       res.sendFile(path.join(__dirname, "../views/layouts/challenge.html"));
+     /* db.Instance.findAll({
+         where:{id:}
+      }).then(function(results){
+         
+      })*/
    });
 
    app.get('/user/dashboard', function(req, res) { //get data from  our tables to populate home page
@@ -44,16 +49,26 @@ module.exports = function(app) {
       //    email: req.user.email
       // });
       console.log("_______________");
-      console.log(req);
-      res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
-      // db.user.findAll({
-      //    where:{id:req.}
-      //    include: [challengeInstance];
-      // }).then(function(results) {
-      //    //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
-      //    var hbsObject = { key: results.dataValues }
-      //    res.render('dashboard', hbsObject)
-      // });
+      
+      console.log(req.user);
+      console.log("--------------");
+      console.log(req.user.dataValues.id);
+      //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
+      db.Instance.findAll({
+          where:{issuer_id:req.user.dataValues.id},
+       }).then(function(results) {
+          console.log("trying to render");
+          console.log(results);
+          console.log("--------- above lower case instance")
+          console.log(results[0]);
+          console.log("------- above upper case instance");
+          console.log(results[0].dataValues);
+          console.log('------');
+         //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
+         var hbsObject = { key: results[0].dataValues }
+         console.log(hbsObject);
+          res.render('dashboard', hbsObject)
+       });
    });
 
    app.get('/user/createChallenge.html', function(req,res){ //load the create new challenge page

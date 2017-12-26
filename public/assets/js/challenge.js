@@ -30,7 +30,7 @@ $(function() {
 
         let validateResult = validateInput();
         if (isNaN(validateResult)) {
-            return modalOpen(validateResult);
+            return modalWrite(validateResult);
         }
 
         var userName = $(this).data("userName");
