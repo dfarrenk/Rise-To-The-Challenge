@@ -38,20 +38,20 @@ module.exports = function(sequelize, DataTypes) {
         }
     });
 
-    // Instance.associate = function(models) {
-    //Unncesary due to being the child of a many to many relationship between User & Template?
+    Instance.associate = function(models) {
+        //Unncesary due to being the child of a many to many relationship between User & Template?
 
-    // Instance.belongsToMany(models.User, {
-    //     foreignKey: {
-    //         allowNull: false
-    //     }
-    // });
-    // Instance.belongsTo(models.Template, {
-    //     foreignKey: {
-    //         allowNull: false
-    //     }
-    // });
-    // };
+        // Instance.belongsTomodels.User, {
+        //     foreignKey: {
+        //         allowNull: false
+        //     }
+        // });
+        Instance.belongsTo(models.Template, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+    };
 
     return Instance;
 };
