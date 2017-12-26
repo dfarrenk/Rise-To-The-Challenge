@@ -36,7 +36,7 @@ app.use(passport.session());
 app.get("/*/*", function(req, res, next) {
    console.log("get...%s", req.path);
    if (req.path.match(/(?:account)||(?:email)/)) {
-   // if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
+      // if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
       console.log("I should return here");
       return next();
    }
@@ -58,7 +58,7 @@ app.post("/login", require("./controller/login-controller.js")());
 
 db.sequelize.sync().then(function() {
    // temp for testing only
-  
+
 
    app.listen(PORT, function() {
 

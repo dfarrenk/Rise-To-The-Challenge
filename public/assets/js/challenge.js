@@ -14,7 +14,7 @@ $(function() {
         };
         console.log(login);
         $.ajax("/login", {
-            type: "POST",
+            method: "POST",
             data: login
         }).then(function() {
             console.log("login request submitted");
@@ -57,7 +57,7 @@ $(function() {
             traditional: true
         }).done((response) => {
             console.log("new account submitted");
-            modalWrite(response);
+            // modalWrite(response);
         });
     }
 
@@ -129,7 +129,7 @@ $(function() {
         console.log(newChallenge);
         //ajax call
         $.ajax("/challenge/new", {
-            type: "POST",
+            method: "POST",
             data: newChallenge
         }).then(function(status) {
             console.log(status);
@@ -144,7 +144,7 @@ $(function() {
     $("#pass").on("click", function(event) {
         //should change state of instance record to "passed"
         $.ajax("challenge/instance/proofaccept", {
-            type: "PUT"
+            method: "PUT"
         }).then(function() {
             console.log("proof accepted");
         });
@@ -154,7 +154,7 @@ $(function() {
     $("#fail").on("click", function(event) {
         //should change state of instance record to "failed"
         $.ajax("challenge/instance/proofreject", {
-            type: "PUT"
+            method: "PUT"
         }).then(function() {
             console.log("proof rejected");
         });
@@ -165,7 +165,7 @@ $(function() {
     //===========================
     $("#accept").on("click", function(event) {
         $.ajax("challenge/instance/accept", {
-            type: "PUT"
+            method: "PUT"
         }).then(function() {
             console.log("challenge accepted");
         });
@@ -175,7 +175,7 @@ $(function() {
     $("#reject").on("click", function(event) {
         //should change state of instance record to "rejected"
         $.ajax("challenge/instance/reject", {
-            type: "PUT"
+            method: "PUT"
         }).then(function() {
             console.log("challenge rejected");
         });
@@ -188,7 +188,7 @@ $(function() {
         //should submit proof from challenged user
         var proof = $(this).data("proof");
         $.ajax("challenge/instance/prove", {
-            type: "PUT",
+            method: "PUT",
             data: proof
         }).then(function() {
             console.log("proof submitted: " + proof);
