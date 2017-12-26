@@ -32,8 +32,9 @@ const email_options = {
    username: null,
    password: null,
    challenge_id: 0,
+   challenger_id: 0,
    challenger_name: "",
-   challenge_proof: ""
+   instance_id: ""
 };
 
 // flag tells mailer which template to use
@@ -50,7 +51,7 @@ module.exports = function(options = email_options, flag) {
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
-         "/user/arChallenge?challenger=" + options.challenger_name + "&challenge_id=" + options.challenge_id,
+         "/login?challenger=" + options.challenger_id + "&instance_id=" + options.instance_id +/*"&challenge_id=" + options.challenge_id + */,
       ],
       linktext = [
          "Click me to verify",

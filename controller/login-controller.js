@@ -43,10 +43,29 @@ module.exports = function() {
    });
 
    loginRoute.post("/login", passport.authenticate("local", {
-      successRedirect: "/user/dashboard",
+      // successRedirect: "/user/dashboard",
       failureRedirect: "/",
       failureFlash: false
-   }));
+   }), function(req, res) {
+      if (req.path.length > 6) {
+         // get from req.path
+         const queryString = req.path.substring(1),
+         const userData = queryString.replace(/[a-z](?:[=])/g, "").split("&"),
+         userObj = {
+            challenger_id: userData[0],
+            instance_id: userData[1]
+         };
+
+         dataBase.Instance.update({
+            accepter_id: req.user.id
+         }, {
+            where: {
+               id: userData.instance_id,
+               issuer_id: userData.challenger_id
+            }
+         });
+      }
+   });
 
    loginRoute.post("/login/account", function(req, res) {//new user account creation route linked to route in challenge js
       console.log(req.body);

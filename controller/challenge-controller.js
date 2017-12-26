@@ -8,12 +8,15 @@ module.exports = function(app) {
       var newChallenge = { //grab request body info to create new challenge object
          name: req.body.challenge_name,
          rule: req.body.rules,
+         include: [challenge]
       };
 
       const proof = req.body.proof,
          recipient = req.body.challenged;
 
       console.log(newChallenge);
+
+      // create template instance pending
 
       db.Template.create(newChallenge).then(function(results) { //post a new row in the challenge table
          console.log(results);
@@ -23,6 +26,7 @@ module.exports = function(app) {
             // we can add an input field for sending email to none user
             challenge_id: results.id,
             // the challenger's username
+            challenger_id: req.user.id,
             challenger_name: req.user.name,
             challenge_proof: proof
          }, 1);
@@ -40,11 +44,12 @@ module.exports = function(app) {
          accepter_id: req.body.accepter
          //startState should be default defined boolean
          //gameState should be default value defined boolean
-      }
+      };
+
       db.Instance.create(newChallengeInstance).then(function(results) { //post a new row in the challenge_instance table
          res.redirect('/dashboard');
-      })
-   })
+      });
+   });
 
    app.put('/challenge/instance/accept', function(req, res) { //update the instance state  (user accepted challenge)
       db.Instance.update({
