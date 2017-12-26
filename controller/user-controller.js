@@ -23,16 +23,16 @@ module.exports = function(app) {
       })
    });
 
-   app.get('/user/revProof', function(req, res) { //go to login page
-      res.sendFile(path.join(__dirname, "../public/revProof.html")) // need to make a "login.handlebars" file to render
+   app.get('/user/revProof/:instanceId', function(req, res) { //go to review proof page
+      res.sendFile(path.join(__dirname, "../public/revProof.html")) 
    });
 
-   app.get('/user/subProof', function(req, res) { //go to login page
-      res.sendFile(path.join(__dirname, "../public/subProof.html")) // need to make a "login.handlebars" file to render
+   app.get('/user/subProof/:instanceId', function(req, res) { // go to user proof submission page
+      res.sendFile(path.join(__dirname, "../public/subProof.html")) // 
    });
 
-   app.get('/user/arChallenge', function(req, res) { //go to login page
-      // res.sendFile(path.join(__dirname, "../public/challenge.html")) // need to make a "login.handlebars" file to render
+   app.get('/user/arChallenge/:instanceId', function(req, res) { //go to accept/reject a newly issued challenge page.
+      // res.sendFile(path.join(__dirname, "../public/challenge.html")) // 
       res.sendFile(path.join(__dirname, "../views/layouts/challenge.html"));
    });
 
@@ -44,8 +44,10 @@ module.exports = function(app) {
       //    email: req.user.email
       // });
       console.log("_______________");
+      console.log(req);
       res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       // db.user.findAll({
+      //    where:{id:req.}
       //    include: [challengeInstance];
       // }).then(function(results) {
       //    //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
