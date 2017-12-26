@@ -7,14 +7,6 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true,
             allowNull: false
         },
-        accepter_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'Users', //Models are plural
-                key: 'id'
-            },
-            allowNull: true
-        },
         challenger_proof: {
             type: DataTypes.STRING,
             allowNull: true
@@ -39,19 +31,19 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     Instance.associate = function(models) {
-        //Unncesary due to being the child of a many to many relationship between User & Template?
+        Instance.belongsTo(models.User, {
+            foreignKey: 'issuer_id',
+            allowNull: false
+        });
 
-        // Instance.belongsTomodels.User, {
-        //     foreignKey: {
-        //         allowNull: false
-        //     }
-        // });
+        Instance.belongsTo(models.User, {
+            foreignKey: 'accepter_id',
+            allowNull: true //default value
+        });
+
         Instance.belongsTo(models.Template, {
-            foreignKey: {
-                allowNull: false
-            }
+            foreignKey: 'template_id'
         });
     };
-
     return Instance;
 };

@@ -14,7 +14,8 @@ module.exports = function(sequelize, DataTypes) {
 
     Template.associate = function(models) {
         Template.belongsTo(models.User, { foreignKey: 'creator_id' });
-        Template.belongsToMany(models.User, { through: { model: models.Instance, unique: false }, foreignKey: 'template_id' });
+        // Template.belongsToMany(models.User, { through: { model: models.Instance, unique: false }, foreignKey: 'template_id' });
+        Template.hasMany(models.Instance, { foreignKey: 'template_id' });
     };
 
     return Template;
