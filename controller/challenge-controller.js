@@ -61,7 +61,7 @@ module.exports = function(app) {
             state:'challenge-accepted'
             },{
                 where:{id:req.body.id} //grab challenge id from req
-            }).then(function(results){s
+            }).then(function(results){
                 res.redirect('/dashboard');
             })
     })

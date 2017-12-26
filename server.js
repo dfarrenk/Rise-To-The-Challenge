@@ -56,16 +56,9 @@ app.get("/login/*?", require("./controller/login-controller.js")());
 app.post("/login/*?", require("./controller/login-controller.js")());
 app.post("/login", require("./controller/login-controller.js")());
 
-db.sequelize.sync({ force: true }).then(function() {
+db.sequelize.sync().then(function() {
    // temp for testing only
-   db.User.create({
-      name: "71emj",
-      password: "!wtuce40B65",
-      alias: "71emj",
-      email: "tim.jeng@gmail.com"
-   }).catch((err) => {
-      console.log(err);
-   });
+  
 
    app.listen(PORT, function() {
 
