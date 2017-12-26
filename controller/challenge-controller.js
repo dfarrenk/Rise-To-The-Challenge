@@ -17,20 +17,22 @@ module.exports = function(app) {
          
         db.Template.create(newChallenge).then(function(results){ //post a new row in the challenge table.
             console.log(results)
-            mailer({
-                email: recipient,
-                // we can add an input field for sending email to none user
-                challenge_id: results.id,
-                // the challenger's username
-                challenger_name: req.user.name,
-                challenge_proof: proof
-             }, 1);
+            
             //grab the newly created template_id and add it to the newInstance here
             newInstance[template_id]=results.dataValues.template_id;
-            newInstance[issuer_id]=req.user.user;
+            newInstance[issuer_id]=req.user.id;
             
             db.Instance.create(newInstance).then(function(results2){ // post a new row in instance table.
-                
+                mailer({
+                    email: recipient,
+                    // we can add an input field for sending email to none user
+                    challenge_id: results.id,
+                    // the challenger's username
+                    challenger_name: req.user.name,
+                    challenge_proof: proof,
+                    challenger_id:req.user.id,
+                    instance_id:results2.id
+                 }, 1);
                 res.redirect('/dashboard');
             })
         })
