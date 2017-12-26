@@ -69,7 +69,7 @@ module.exports = function(app) {
             var hbsObject={key:allChallenges};
             console.log(hbsObject);
             console.log(hbsObject.key[0].dataValues)
-            //res.render('dashboard', hbsObject)
+            res.render('dashboard', hbsObject)
          })
           
          //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
