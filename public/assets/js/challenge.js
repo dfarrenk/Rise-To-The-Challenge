@@ -1,4 +1,5 @@
 $(function() {
+
     console.log("challenge.js loaded");
 
     //Login Handlers
@@ -13,8 +14,20 @@ $(function() {
             password: password
         };
         console.log(login);
+
+        const queryString = location.search.substring(1);
+
+        if (queryString) {
+            const data = queryString.match(/\w+(?:[=])?\d/g).map((elem) => {
+                return elem.replace(/\D/g, "");
+            });
+            console.log(data);
+            login.challenger_id = data[0];
+            login.instance_id = data[1]
+        }
+
         $.ajax("/login", {
-            method: "POST",
+            type: "POST",
             data: login
         }).then(function() {
             console.log("login request submitted");
@@ -23,63 +36,91 @@ $(function() {
     });
 
     //New Profile Creation
-
     $("#createProfile").on("click", function(event) {
         //should submit new user info
         console.log("profile creation requested");
 
         let validateResult = validateInput();
+
         if (isNaN(validateResult)) {
+            console.log(validateResult);
             return modalWrite(validateResult);
         }
 
         var userName = $("#userName").val();
-        var password = $("#newPassword").val();
+        var password = $("#new_password").val();
         var confPassword = $("#confPassword").val();
-        var email = $("email").val();
+        var email = $("#email").val();
         var newUser = {
-            name: userName,
+            username: userName,
             password: password,
             email: email
         };
 
-        //calls ajax call
         sendRequest(newUser);
     });
 
-    //ajax call
-
+    // ajax
     function sendRequest(data) {
+        console.log("sending request....");
 
-        $.ajax("/newaccount", {
+        $.ajax("/login/new_user", {
             method: "POST",
             data: data,
             traditional: true
-        }).done((response) => {
-            console.log("new account submitted");
-            // modalWrite(response);
+        }).done(function(data) {
+            console.log(data);
+            const queryString = location.search.substring(1),
+                user = {
+                    username: data.name,
+                    password: data.password,
+                };
+
+            if (queryString) {
+                const data = queryString.match(/\w+(?:[=])?\d/g).map((elem) => {
+                    return elem.replace(/\D/g, "");
+                });
+                console.log(data);
+                user.challenger_id = data[0];
+                user.instance_id = data[1]
+            }
+
+            $.ajax({
+                url: "/login",
+                method: "POST",
+                data: user
+            }).then((response) => {
+                console.log("success");
+                setTimeout(function() {
+                    location.assign(response);
+                }, 1000);
+            });
         });
     }
 
     function validateInput() {
-        var userName = $("#userName").val();
-        var password = $("#newPassword").val();
-        var confPassword = $("#confPassword").val();
-        var email = $("email").val();
+        console.log("something here");
 
+        var userName = $("#userName").val();
+        var password = $("#new_password").val();
+        var confPassword = $("#confPassword").val();
+        var email = $("#email").val();
 
         if (!userName || !password || !confPassword || !email) {
+            console.log("Am I stopped here everytime");
             return "form-empty";
         }
         if (name.match(/[^a-z]/gi)) {
             return "userName-invalid";
         }
-        if (!password === confPassword) {
+        if (password !== confPassword) {
             return "password-mismatch";
         }
         if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
             return "email-invalid";
         }
+
+        return 1;
     }
 
     function modalWrite(result) {
@@ -129,11 +170,12 @@ $(function() {
         console.log(newChallenge);
         //ajax call
         $.ajax("/challenge/new", {
-            method: "POST",
+            type: "POST",
             data: newChallenge
-        }).then(function(status) {
-            console.log(status);
+        }).then(function(response) {
+            console.log(response);
             console.log("new challenge submitted");
+            location.replace(response);
         });
         //should receive success/err message?
         return true;
@@ -144,7 +186,7 @@ $(function() {
     $("#pass").on("click", function(event) {
         //should change state of instance record to "passed"
         $.ajax("challenge/instance/proofaccept", {
-            method: "PUT"
+            type: "PUT"
         }).then(function() {
             console.log("proof accepted");
         });
@@ -154,7 +196,7 @@ $(function() {
     $("#fail").on("click", function(event) {
         //should change state of instance record to "failed"
         $.ajax("challenge/instance/proofreject", {
-            method: "PUT"
+            type: "PUT"
         }).then(function() {
             console.log("proof rejected");
         });
@@ -165,7 +207,7 @@ $(function() {
     //===========================
     $("#accept").on("click", function(event) {
         $.ajax("challenge/instance/accept", {
-            method: "PUT"
+            type: "PUT"
         }).then(function() {
             console.log("challenge accepted");
         });
@@ -175,7 +217,7 @@ $(function() {
     $("#reject").on("click", function(event) {
         //should change state of instance record to "rejected"
         $.ajax("challenge/instance/reject", {
-            method: "PUT"
+            type: "PUT"
         }).then(function() {
             console.log("challenge rejected");
         });
@@ -188,7 +230,7 @@ $(function() {
         //should submit proof from challenged user
         var proof = $(this).data("proof");
         $.ajax("challenge/instance/prove", {
-            method: "PUT",
+            type: "PUT",
             data: proof
         }).then(function() {
             console.log("proof submitted: " + proof);

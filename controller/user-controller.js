@@ -48,26 +48,43 @@ module.exports = function(app) {
       //    userid: req.user.id,
       //    email: req.user.email
       // });
-      console.log("_______________");
-      
-      console.log(req.user);
-      console.log("--------------");
-      console.log(req.user.dataValues.id);
+;
+
       //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       db.Instance.findAll({
           where:{issuer_id:req.user.dataValues.id},
+          include:[db.Template]
        }).then(function(results) {
-          console.log("trying to render");
-          console.log(results);
-          console.log("--------- above lower case instance")
-          console.log(results[0]);
-          console.log("------- above upper case instance");
-          console.log(results[0].dataValues);
-          console.log('------');
+         var challengesIssued=results;
+         challengesIssued.map(v => v.challengedIssued = true); //assign value to each of challengedIssued==true
+         for (var i =0; i<challengesIssued.length;i++){ //loop through results, assign correct truthy value and change any old ones for Hbars to grab onto.
+            console.log(challengesIssued[i]);
+            if (challengesIssued[i].dataValues.state === "challenge-issued"){ //create a truthy value for handlebars logic
+               challengesIssued[i]['challenge-issued']=true;
+            }else if(challengesIssued[i].dataValues.state === "challenge-accepted"){ // change truthy and use different variable
+               challengesIssued[i]['challenge-issued']=false;
+               challengesIssued[i]['challenge-accepted']=true;
+            }else if(challengesIssued[i].dataValues.state === 'provided-proof'){//change and add truthy
+               challengesIssued[i]['challenge-issued']=false;
+               challengesIssued[i]['challenge-accepted']=false;
+               challengesIssued[i]['provide-proof']=true
+            }
+         }
+         db.Instance.findAll({
+            where:{accepter_id:req.user.dataValues.id},
+         }).then(function(results2){
+            var challengesRecieved=results2;
+            challengesRecieved.map(y => y.challengedIssued=false)//assign value to each of challengeIssued = false.
+            var allChallenges= challengesIssued.concat(challengesRecieved);
+            var hbsObject={key:allChallenges};
+            //.log(hbsObject);
+            //console.log(hbsObject.key[0].dataValues)
+            //console.log(hbsObject.key[0].dataValues.Template.dataValues.name)
+            res.render('dashboard', hbsObject)
+         })
+          
          //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
-         var hbsObject = { key: results[0].dataValues }
-         console.log(hbsObject);
-          res.render('dashboard', hbsObject)
+         
        });
    });
 

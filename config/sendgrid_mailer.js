@@ -32,14 +32,16 @@ const email_options = {
    username: null,
    password: null,
    challenge_id: 0,
+   challenger_id: 0,
    challenger_name: "",
-   challenge_proof: ""
+   instance_id: ""
 };
 
 // flag tells mailer which template to use
 // email({ options }, flag);
 // obj key name: email, username, password, challenge_id, challenge_proof
 module.exports = function(options = email_options, flag) {
+   console.log(options);
 
    // missing image for email verification, 0 = veri, 1 = chal_issue, 2 = chal_accept, chal_complete
    const imageLinks = [
@@ -50,12 +52,12 @@ module.exports = function(options = email_options, flag) {
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
-         "/user/arChallenge?challenger=" + options.challenger_name + "&challenge_id=" + options.challenge_id,
+         "/login?challenger=" + options.challenger_id + "&instance_id=" + options.instance_id /*+ "&challenge_id=" + options.challenge_id*/
       ],
       linktext = [
          "Click me to verify",
          "Click to know more about the challenge"
-      ], 
+      ],
       flag_name = [
          "email_verification.html",
          "email_chalrecipient.html",
@@ -65,14 +67,14 @@ module.exports = function(options = email_options, flag) {
    const hrefLink = "http://localhost:8080" + routes[flag],
       customContent = {
          "%username%": options.username,
-         "%challenger": options.challenger_name,
+         "%challenger%": options.challenger_name,
          "%image%": imageLinks[flag],
          "%link%": hrefLink,
          "%linktext%": linktext[flag]
       };
 
    // original regexp: /(?=[%])(?:.*[a-z])(?:[%])/gi
-   const mailContent = emailTemplates[flag_name[flag]].replace(/\%?\w+(?![>])?\%/gi, (matched) => {
+   const mailContent = emailTemplates[flag_name[flag]].replace(/\%\w+(?![>])?\%/gi, (matched) => {
       return customContent[matched];
    });
 
@@ -89,7 +91,7 @@ module.exports = function(options = email_options, flag) {
             subject: 'Rise to Challenge',
          }],
          from: {
-            email: 'risetochallengeteam@brave.org'
+            email: 'risetochallengeteam@challenge.org'
          },
          content: [{
             type: 'text/html',
