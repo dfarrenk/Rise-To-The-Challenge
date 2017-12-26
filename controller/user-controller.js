@@ -60,6 +60,7 @@ module.exports = function(app) {
        }).then(function(results) {
          var challengesIssued=results;
          challengesIssued.map(v => v.challengedIssued = true); //assign value to each of challengedIssued==true
+         challengesIssued
          db.Instance.findAll({
             where:{accepter_id:req.user.dataValues.id},
          }).then(function(results2){
