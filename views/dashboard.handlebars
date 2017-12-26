@@ -21,6 +21,11 @@
                     <h4>Challenges Issued</h4>
                     <div class="collection">
                         <div class="collection">
+                            {{#each key}}
+                                {{#if challengesIssued}}
+                                  <a href="./revProof.html" class="collection-item">{{Template.Template.datavalues.name}}</a>
+                                {{/if}}
+                            {{/each}}
                             <a href="./revProof.html" class="collection-item">Basketball Challenge</a>
                             <a href="#!" class="collection-item">Putt Challenge</a>
                             <a href="#!" class="collection-item">Coding Challenge</a>
@@ -35,6 +40,11 @@
                 <div>
                     <h4>Received Challenges</h4>
                     <div class="collection">
+                        {{#each key}}
+                            {{#unless challengesIssued}}
+                              <a href="./revProof.html" class="collection-item">{{Template.Template.datavalues.name}}</a>
+                            {{/unless}}
+                        {{/each}}
                         <a href="./challenge.html" class="collection-item">- NEW CHALLENGE - Tim</a>
                         <a href="#!" class="collection-item">Running Challenge - Jim</a>
                         <a href="#!" class="collection-item">Football Challenge - David</a>
