@@ -48,10 +48,8 @@ module.exports = function(app) {
       //    userid: req.user.id,
       //    email: req.user.email
       // });
-      console.log("_______________");
-      console.log(req.user);
-      console.log("--------------");
-      console.log(req.user.dataValues.id);
+;
+
       //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       db.Instance.findAll({
           where:{issuer_id:req.user.dataValues.id},
@@ -59,6 +57,19 @@ module.exports = function(app) {
        }).then(function(results) {
          var challengesIssued=results;
          challengesIssued.map(v => v.challengedIssued = true); //assign value to each of challengedIssued==true
+         for (var i =0; i<challengesIssued.length;i++){ //loop through results, assign correct truthy value and change any old ones for Hbars to grab onto.
+            console.log(challengesIssued[i]);
+            if (challengesIssued[i].dataValues.state === "challenge-issued"){ //create a truthy value for handlebars logic
+               challengesIssued[i]['challenge-issued']=true;
+            }else if(challengesIssued[i].dataValues.state === "challenge-accepted"){ // change truthy and use different variable
+               challengesIssued[i]['challenge-issued']=false;
+               challengesIssued[i]['challenge-accepted']=true;
+            }else if(challengesIssued[i].dataValues.state === 'provided-proof'){//change and add truthy
+               challengesIssued[i]['challenge-issued']=false;
+               challengesIssued[i]['challenge-accepted']=false;
+               challengesIssued[i]['provide-proof']=true
+            }
+         }
          db.Instance.findAll({
             where:{accepter_id:req.user.dataValues.id},
          }).then(function(results2){
@@ -66,9 +77,9 @@ module.exports = function(app) {
             challengesRecieved.map(y => y.challengedIssued=false)//assign value to each of challengeIssued = false.
             var allChallenges= challengesIssued.concat(challengesRecieved);
             var hbsObject={key:allChallenges};
-            console.log(hbsObject);
-            console.log(hbsObject.key[0].dataValues)
-            console.log(hbsObject.key[0].dataValues.Template.dataValues.name)
+            //.log(hbsObject);
+            //console.log(hbsObject.key[0].dataValues)
+            //console.log(hbsObject.key[0].dataValues.Template.dataValues.name)
             res.render('dashboard', hbsObject)
          });
          //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
