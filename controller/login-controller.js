@@ -47,27 +47,21 @@ module.exports = function() {
       failureRedirect: "/",
       failureFlash: false
    }), function(req, res) {
-      if (req.path.length > 6) {
-         // get from req.path
-         const queryString = req.path.substring(1),
-            userData = queryString.replace(/[a-z](?:[=])/g, "").split("&"),
-            userObj = {
-               challenger_id: userData[0],
-               instance_id: userData[1]
-            };
-
+      if (req.body.challenger_id) {
          dataBase.Instance.update({
             accepter_id: req.user.id
          }, {
             where: {
-               id: userData.instance_id,
-               issuer_id: userData.challenger_id
+               challenge_id: req.body.instance_id,
+               issuer_id: req.body.challenger_id
             }
          }).then((data) => {
             console.log("success");
+            return res.status(200).send("/user/dashboard");
          });
+      } else {
+         res.status(200).send("/user/dashboard");   
       }
-      res.status(200).redirect("/user/dashboard");
    });
 
    loginRoute.post("/login/new_user", function(req, res) { //new user account creation route linked to route in challenge js
@@ -78,7 +72,7 @@ module.exports = function() {
       bcrypt.hash(req.body.password, 10, function(err, hash) {
          // Store hash in your password DB.
          dataBase.User.create({
-            name: req.body.username || req.body.name, // please move html to public/
+            name: req.body.username, // please move html to public/
             password: hash,
             alias: req.body.alias || req.body.username,
             email: req.body.email

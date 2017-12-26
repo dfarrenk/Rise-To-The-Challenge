@@ -4,37 +4,38 @@ var db = require("../models"),
 module.exports = function(app) {
 
    app.post('/challenge/new', function(req, res) { // post route for a new challenge, also a parent to challenge instance
+      const recipient_name = req.body.challenged_name,
+         recipient = req.body.challenged,
+         template_name = req.body.challenge_name,
+         template_rule = req.body.rules,
+         proof = req.body.postLink;
+
       var newChallenge = { //grab request body info to create new challenge object
-         name: req.body.name,
-         rule: req.body.rule,
+         name: template_name,
+         rule: template_rule,
       }
       var newInstance = { // grab instance items
-         accepter_id: req.body.challenged,
-         challenger_proof: req.body.proof,
+         challenger_proof: proof,
       }
 
-      const proof = req.body.proof,
-         recipient = req.body.challenged;
-
       db.Template.create(newChallenge).then(function(results) { //post a new row in the challenge table.
-         console.log(results)
+         // console.log(results);
 
          //grab the newly created template_id and add it to the newInstance here
-         newInstance[template_id] = results.dataValues.template_id;
-         newInstance[issuer_id] = req.user.id;
+         newInstance["template_id"] = results.dataValues.id;
+         newInstance["issuer_id"] = req.user.id;
 
          db.Instance.create(newInstance).then(function(results2) { // post a new row in instance table.
+            console.log(results2);
             mailer({
                email: recipient,
-               // we can add an input field for sending email to none user
-               challenge_id: results.id,
+               username: recipient_name,
                // the challenger's username
                challenger_name: req.user.name,
-               challenge_proof: proof,
                challenger_id: req.user.id,
-               instance_id: results2.id
+               instance_id: results2.challenge_id
             }, 1);
-            res.redirect('/dashboard');
+            res.status(200).send("/user/dashboard");
          })
       })
 

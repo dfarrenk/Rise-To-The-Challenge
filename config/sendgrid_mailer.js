@@ -41,6 +41,7 @@ const email_options = {
 // email({ options }, flag);
 // obj key name: email, username, password, challenge_id, challenge_proof
 module.exports = function(options = email_options, flag) {
+   console.log(options);
 
    // missing image for email verification, 0 = veri, 1 = chal_issue, 2 = chal_accept, chal_complete
    const imageLinks = [
@@ -66,14 +67,14 @@ module.exports = function(options = email_options, flag) {
    const hrefLink = "http://localhost:8080" + routes[flag],
       customContent = {
          "%username%": options.username,
-         "%challenger": options.challenger_name,
+         "%challenger%": options.challenger_name,
          "%image%": imageLinks[flag],
          "%link%": hrefLink,
          "%linktext%": linktext[flag]
       };
 
    // original regexp: /(?=[%])(?:.*[a-z])(?:[%])/gi
-   const mailContent = emailTemplates[flag_name[flag]].replace(/\%?\w+(?![>])?\%/gi, (matched) => {
+   const mailContent = emailTemplates[flag_name[flag]].replace(/\%\w+(?![>])?\%/gi, (matched) => {
       return customContent[matched];
    });
 

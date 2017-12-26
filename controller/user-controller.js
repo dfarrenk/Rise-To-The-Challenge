@@ -44,7 +44,7 @@ module.exports = function(app) {
       //    email: req.user.email
       // });
       console.log("_______________");
-      console.log(req);
+      // console.log(req);
       res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       // db.user.findAll({
       //    where:{id:req.}

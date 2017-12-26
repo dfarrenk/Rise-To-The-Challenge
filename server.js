@@ -35,7 +35,7 @@ app.use(passport.session());
 // check for login session
 app.get("/*/*", function(req, res, next) {
    console.log("get...%s", req.path);
-   if (req.path.match(/(?:account)||(?:email)/)) {
+   if (req.path.match(/\account|\email/)) {
    // if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
       console.log("I should return here");
       return next();
@@ -57,16 +57,6 @@ app.post("/login/*?", require("./controller/login-controller.js")());
 app.post("/login", require("./controller/login-controller.js")());
 
 db.sequelize.sync({ force: true }).then(function() {
-   // temp for testing only
-   db.User.create({
-      name: "71emj",
-      password: "!wtuce40B65",
-      alias: "71emj",
-      email: "tim.jeng@gmail.com"
-   }).catch((err) => {
-      console.log(err);
-   });
-
    app.listen(PORT, function() {
 
       console.log(passport);
