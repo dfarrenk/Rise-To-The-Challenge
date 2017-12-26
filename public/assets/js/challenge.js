@@ -6,8 +6,8 @@ $(function() {
     $("#login").on("click", function(event) {
         //should submit username and password for authentication
         console.log("login clicked");
-        var username = $(this).data("username");
-        var password = $(this).data("password");
+        var username = $("#username").val();
+        var password = $("#password").val();
         var login = {
             username: username,
             password: password
@@ -33,10 +33,10 @@ $(function() {
             return modalWrite(validateResult);
         }
 
-        var userName = $(this).data("userName");
-        var password = $(this).data("password");
-        var confPassword = $(this).data("confPassword");
-        var email = $(this).data("email");
+        var userName = $("#userName").val();
+        var password = $("#newPassword").val();
+        var confPassword = $("#confPassword").val();
+        var email = $("email").val();
         var newUser = {
             name: userName,
             password: password,
@@ -62,10 +62,10 @@ $(function() {
     }
 
     function validateInput() {
-        var userName = $(this).data("userName");
-        var password = $(this).data("password");
-        var confPassword = $(this).data("confPassword");
-        var email = $(this).data("email");
+        var userName = $("#userName").val();
+        var password = $("#newPassword").val();
+        var confPassword = $("#confPassword").val();
+        var email = $("email").val();
 
 
         if (!userName || !password || !confPassword || !email) {
@@ -77,7 +77,7 @@ $(function() {
         if (!password === confPassword) {
             return "password-mismatch";
         }
-        if (!email.match(/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/)) {
+        if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
             return "email-invalid";
         }
     }
