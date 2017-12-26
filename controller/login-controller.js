@@ -63,11 +63,14 @@ module.exports = function() {
                id: userData.instance_id,
                issuer_id: userData.challenger_id
             }
+         }).then((data) => {
+            console.log("success");
          });
       }
+      res.status(200).redirect("/user/dashboard");
    });
 
-   loginRoute.post("/login/account", function(req, res) {//new user account creation route linked to route in challenge js
+   loginRoute.post("/login/new_user", function(req, res) {//new user account creation route linked to route in challenge js
       console.log(req.body);
 
       // if (req.challenge_id) {...}
@@ -79,7 +82,7 @@ module.exports = function() {
             password: hash,
             alias: req.body.alias || req.body.username,
             email: req.body.email
-         }).then(() => {
+         }).then((data) => {
             // mailer(options, flag);
             mailer({ 
                email: req.body.email, 
@@ -87,7 +90,7 @@ module.exports = function() {
                password: hash
             }, 0);
 
-            res.status(201).send("Registered..please verify your email address");
+            res.status(201).send(data);
          }).catch((err) => {
             // handling sequelize error only
             if (err.contructor === Array) {

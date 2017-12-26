@@ -21,6 +21,7 @@ $(function() {
         });
 
     });
+    
     $("#createProfile").on("click", function(event) {
         //should submit new user info
         console.log("profile creation requested");
@@ -34,10 +35,11 @@ $(function() {
             email: email,
             alias: alias
         };
-        $.ajax("/newaccount", {
+        $.ajax("/login/new_user", {
             type: "POST",
             data: newUser
-        }).then(function() {
+        }).then(function(data) {
+            console.log(data);
             console.log("new account submitted");
         });
     });
