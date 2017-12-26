@@ -34,7 +34,7 @@ $(function() {
             email: email,
             alias: alias
         };
-        $.ajax("/newaccount", {
+        $.ajax("/login/account", {
             type: "POST",
             data: newUser
         }).then(function() {
