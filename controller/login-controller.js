@@ -43,12 +43,28 @@ module.exports = function() {
    });
 
    loginRoute.post("/login", passport.authenticate("local", {
-      successRedirect: "/user/dashboard",
+      // successRedirect: "/user/dashboard",
       failureRedirect: "/",
       failureFlash: false
-   }));
+   }), function(req, res) {
+      if (req.body.challenger_id) {
+         dataBase.Instance.update({
+            accepter_id: req.user.id
+         }, {
+            where: {
+               challenge_id: req.body.instance_id,
+               issuer_id: req.body.challenger_id
+            }
+         }).then((data) => {
+            console.log("success");
+            return res.status(200).send("/user/dashboard");
+         });
+      } else {
+         res.status(200).send("/user/dashboard");   
+      }
+   });
 
-   loginRoute.post("/login/account", function(req, res) {//new user account creation route linked to route in challenge js
+   loginRoute.post("/login/new_user", function(req, res) { //new user account creation route linked to route in challenge js
       console.log(req.body);
 
       // if (req.challenge_id) {...}
@@ -56,19 +72,19 @@ module.exports = function() {
       bcrypt.hash(req.body.password, 10, function(err, hash) {
          // Store hash in your password DB.
          dataBase.User.create({
-            name: req.body.username || req.body.name, // please move html to public/
+            name: req.body.username, // please move html to public/
             password: hash,
             alias: req.body.alias || req.body.username,
             email: req.body.email
-         }).then(() => {
+         }).then((data) => {
             // mailer(options, flag);
-            mailer({ 
-               email: req.body.email, 
-               username: req.body.username, 
+            mailer({
+               email: req.body.email,
+               username: req.body.username,
                password: hash
             }, 0);
 
-            res.status(201).send("Registered..please verify your email address");
+            res.status(201).send(data);
          }).catch((err) => {
             // handling sequelize error only
             if (err.contructor === Array) {

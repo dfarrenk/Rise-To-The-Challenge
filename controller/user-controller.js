@@ -49,7 +49,6 @@ module.exports = function(app) {
       //    email: req.user.email
       // });
       console.log("_______________");
-      
       console.log(req.user);
       console.log("--------------");
       console.log(req.user.dataValues.id);
