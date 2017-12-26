@@ -49,6 +49,7 @@ module.exports = function(app) {
       //    email: req.user.email
       // });
 ;
+
       //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       db.Instance.findAll({
           where:{issuer_id:req.user.dataValues.id},
