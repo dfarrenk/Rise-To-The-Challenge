@@ -56,7 +56,7 @@ module.exports = function(app) {
       //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       db.Instance.findAll({
           where:{issuer_id:req.user.dataValues.id},
-          include:[db.Templates]
+          include:[db.Template]
        }).then(function(results) {
          var challengesIssued=results;
          challengesIssued.map(v => v.challengedIssued = true); //assign value to each of challengedIssued==true
