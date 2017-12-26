@@ -4,4 +4,4 @@ INSERT INTO `challenge`.`Users` (`id`, `name`, `password`, `alias`, `email`, `em
 
 INSERT INTO `challenge`.`Templates` (`id`, `name`, `rule`, `createdAt`, `updatedAt`) VALUES (NULL, 'test', 'rules aren''t there for a test', '', '');
 
-INSERT INTO `challenge`.`Instances` (`challenge_id`, `accepter_id`, `challenger_proof`, `challenged_proof`, `state`, `createdAt`, `updatedAt`, `TemplateId`, `template_id`, `issuer_id`) VALUES (NULL, NULL, 'www.placehold.com', NULL, 'challenge-issued', '', '', '1', '1', '1');
+INSERT INTO `challenge`.`Instances` (`challenge_id`, `challenger_proof`, `challenged_proof`, `state`, `createdAt`, `updatedAt`, `issuer_id`, `accepter_id`, `template_id`) VALUES (NULL, 'www.placehold.com', NULL, 'challenge-issued', '', '', '1', NULL, '1');
