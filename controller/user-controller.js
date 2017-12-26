@@ -56,18 +56,24 @@ module.exports = function(app) {
       //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       db.Instance.findAll({
           where:{issuer_id:req.user.dataValues.id},
+          include:[db.Templates]
        }).then(function(results) {
-          console.log("trying to render");
-          console.log(results);
-          console.log("--------- above lower case instance")
-          console.log(results[0]);
-          console.log("------- above upper case instance");
-          console.log(results[0].dataValues);
-          console.log('------');
+         var challengesIssued=results;
+         challengesIssued.map(v => v.challengedIssued = true); //assign value to each of challengedIssued==true
+         db.Instance.findAll({
+            where:{accepter_id:req.user.dataValues.id},
+         }).then(function(results2){
+            var challengesRecieved=results2;
+            challengesRecieved.map(y => y.challengedIssued=false)//assign value to each of challengeIssued = false.
+            var allChallenges= challengesIssued.concat(challengesRecieved);
+            var hbsObject={key:allChallenges};
+            console.log(hbsObject);
+            console.log(hbsObject.key[0].dataValues)
+            //res.render('dashboard', hbsObject)
+         })
+          
          //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
-         var hbsObject = { key: results[0].dataValues }
-         console.log(hbsObject);
-          res.render('dashboard', hbsObject)
+         
        });
    });
 
