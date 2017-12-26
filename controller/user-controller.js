@@ -69,6 +69,7 @@ module.exports = function(app) {
             var hbsObject={key:allChallenges};
             console.log(hbsObject);
             console.log(hbsObject.key[0].dataValues)
+            console.log(hbsObject.key[0].dataValues.Template.dataValues.name)
             res.render('dashboard', hbsObject)
          })
           
