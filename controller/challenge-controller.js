@@ -1,22 +1,53 @@
-var db = require("../models");
+var db = require("../models"),
+   mailer = require("../config/sendgrid_mailer.js");
 
 module.exports = function(app) {
-
   app.post('/challenge/new', function(req, res) {// post route for a new challenge, also a parent to challenge instance
         var newChallenge={ //grab request body info to create new challenge object
-            challenge_name: req.body.name,
-            challenge_rule: req.body.rule
+            name: req.body.name,
+            rule: req.body.rule,
         }
-        db.Template.create(newChallenge).then(function(results){ //post a new row in the challenge table
-            res.redirect('/dashboard');
+        var newInstance={// grab instance items
+            accepter_id:req.body.challenged,
+            challenger_proof:req.body.proof,
+        }
+        
+      const proof = req.body.proof,
+         recipient = req.body.challenged;
+         
+        db.Template.create(newChallenge).then(function(results){ //post a new row in the challenge table.
+            console.log(results)
+            
+            //grab the newly created template_id and add it to the newInstance here
+            newInstance[template_id]=results.dataValues.template_id;
+            newInstance[issuer_id]=req.user.id;
+            
+            db.Instance.create(newInstance).then(function(results2){ // post a new row in instance table.
+                mailer({
+                    email: recipient,
+                    // we can add an input field for sending email to none user
+                    challenge_id: results.id,
+                    // the challenger's username
+                    challenger_name: req.user.name,
+                    challenge_proof: proof,
+                    challenger_id:req.user.id,
+                    instance_id:results2.id
+                 }, 1);
+                res.redirect('/dashboard');
+            })
         })
+
+        //or should I make a seperate call here.
     })
 
+    //new challenge instance should be made at the same time as the challenge
   app.post('/challenge/instance/new', function(req,res){ //post route for a challenge instance , child of user and challenge
         var newChallengeInstance ={ // need to know all vars required (what doesn't have a default value in model)
-            //challenge_id: req.body.challenge,
+            template_id: req.body[template_id],
+            challenger_proof:req.body.proof,
+            issuer_id:req.user.user,
             //issuerName:req.body.issuer,
-            accepter_id:req.body.accepter
+            accepter_id:req.body.challenged
             //startState should be default defined boolean
             //gameState should be default value defined boolean
         }
@@ -30,7 +61,7 @@ module.exports = function(app) {
             state:'challenge-accepted'
             },{
                 where:{id:req.body.id} //grab challenge id from req
-            }).then(function(results){
+            }).then(function(results){s
                 res.redirect('/dashboard');
             })
     })
@@ -133,3 +164,4 @@ module.exports = function(app) {
 
 
 };
+

@@ -21,7 +21,7 @@
 </head>
 
 <body>
-   <h2>Email Verified!!</h2>
+   <h2></h2>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
    <script>
    (function($) {
@@ -33,16 +33,25 @@
             password: userData[1]
          };
       console.log(userObj);
-      setTimeout(function() {
-         $.ajax({
-            url: "/login/email_verification",
-            method: "POST",
-            data: userObj
-         }).then((res) => {
-            console.log(res);
+
+      $.ajax({
+         url: "/login/email_verification",
+         method: "POST",
+         data: userObj
+      }).then((res) => {
+         $("h2").text("Email Verified!!");
+
+         console.log(res);
+         setTimeout(function() {
             location.replace(res);
-         });
-      }, 1000);
+         }, 2500);
+      }).catch((err) => {
+         $("h2").text("Sign in session expired");
+
+         setTimeout(function() {
+            location.replace("/");
+         }, 2500);
+      });
    }(jQuery));
    </script>
 </body>

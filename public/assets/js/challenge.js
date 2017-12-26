@@ -12,6 +12,7 @@ $(function() {
             username: username,
             password: password
         };
+        console.log(login);
         $.ajax("/login", {
             type: "POST",
             data: login
@@ -119,22 +120,21 @@ $(function() {
         var challenged = $(this).data("challenged");
         var rules = $(this).data("rules");
         var proof = $(this).data("proof");
-        var newChallenge = {
-            title: title,
-            challenged: challenged,
-            rules: rules,
-            proof: proof
-        };
-        console.log($(this).serializeArray());
-        console.log("===============");
-        console.log($(this));
+        var newChallenge = {};
+
+        $.map($(this).serializeArray(), function(n, i) {
+            newChallenge[n['name']] = n['value'];
+        });
+
+        console.log(newChallenge);
         //ajax call
-        // $.ajax("user/challenge/new", {
-        //     type: "POST",
-        //     data: newChallenge
-        // }).then(function() {
-        //     console.log("new challenge submitted");
-        // });
+        $.ajax("/challenge/new", {
+            type: "POST",
+            data: newChallenge
+        }).then(function(status) {
+            console.log(status);
+            console.log("new challenge submitted");
+        });
         //should receive success/err message?
         return true;
     });
