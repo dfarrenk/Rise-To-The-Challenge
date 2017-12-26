@@ -87,11 +87,12 @@ module.exports = function() {
             res.status(201).send(data);
          }).catch((err) => {
             // handling sequelize error only
-            if (err.contructor === Array) {
+            if (err.errors.constructor === Array) {
                const errorType = err.errors[0].message;
-               errorIdentifier(errorType);
+               return errorIdentifier(res, errorType);
             } else {
-               console.log(err.message);
+               console.log("EEEEEEEEEE");
+               console.error(err.message);
             }
          });
       });
@@ -100,14 +101,14 @@ module.exports = function() {
    return loginRoute;
 }
 
-function errorIdentifier(errtype) {
-   console.error(errtype);
+function errorIdentifier(res, errortype) {
+   console.error(errortype);
    // identify error type using regex to match key word
-   if (!!errtype.match(/\w*(?:name)/g)) {
-      return res.status(409).send("Username taken");
+   if (!!errortype.match(/\w*(?:name)/g)) {
+      return res.status(409).send("username-taken");
    }
 
-   if (!!errtype.match(/\w*(?:password)/g)) {
+   if (!!errortype.match(/\w*(?:password)/g)) {
       return res.status(406).send("Invalid password format");
    }
 

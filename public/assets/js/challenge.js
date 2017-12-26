@@ -95,6 +95,8 @@ $(function() {
                location.assign(response);
             }, 1000);
          });
+      }).catch(function(err) {
+        return modalWrite(err);
       });
    }
 
@@ -127,6 +129,9 @@ $(function() {
       $("modalErrorHeader").text("Oops, something went wrong...");
 
       switch (result) {
+         case "username-taken":
+            $("#userName").attr("placeholder", "Username already taken");
+            break;
          case "name-invalid":
             $("#userName").attr("placeholder", "Please enter a username");
             break;

@@ -70,8 +70,7 @@ module.exports = function(app) {
             console.log(hbsObject.key[0].dataValues)
             console.log(hbsObject.key[0].dataValues.Template.dataValues.name)
             res.render('dashboard', hbsObject)
-         })
-          
+         });
          //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
          
        });
