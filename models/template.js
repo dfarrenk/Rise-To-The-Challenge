@@ -9,10 +9,11 @@ module.exports = function(sequelize, DataTypes) {
         rule: {
             type: DataTypes.TEXT,
             allowNull: false
-        }
+        },
     });
 
     Template.associate = function(models) {
+        Template.belongsTo(models.User, { foreignKey: 'creator_id' });
         Template.belongsToMany(models.User, { through: { model: models.Instance, unique: false }, foreignKey: 'template_id' });
     };
 

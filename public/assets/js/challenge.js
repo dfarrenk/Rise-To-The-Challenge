@@ -1,4 +1,5 @@
 $(function() {
+
    console.log("challenge.js loaded");
 
    //Login Handlers
