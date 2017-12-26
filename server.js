@@ -56,9 +56,10 @@ app.get("/login/*?", require("./controller/login-controller.js")());
 app.post("/login/*?", require("./controller/login-controller.js")());
 app.post("/login", require("./controller/login-controller.js")());
 
-db.sequelize.sync({ force: false }).then(function() {
-   app.listen(PORT, function() {
 
+db.sequelize.sync().then(function() {
+   // temp for testing only
+   app.listen(PORT, function() {
       console.log(passport);
       console.log("App listening on PORT " + PORT);
    });
