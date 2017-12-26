@@ -21,7 +21,7 @@ $(function() {
         });
 
     });
-    
+
     $("#createProfile").on("click", function(event) {
         //should submit new user info
         console.log("profile creation requested");
@@ -40,7 +40,19 @@ $(function() {
             data: newUser
         }).then(function(data) {
             console.log(data);
-            console.log("new account submitted");
+            const user = {
+                username: data.name,
+                password: data.password
+            };
+
+            $.ajax({
+                url: "/login",
+                method: "POST",
+                data: user
+            }).then((response) => {
+                console.log(success);
+            });
+            // console.log("new account submitted");
         });
     });
 

@@ -51,12 +51,12 @@ module.exports = function(options = email_options, flag) {
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
-         "/login?challenger=" + options.challenger_id + "&instance_id=" + options.instance_id +/*"&challenge_id=" + options.challenge_id + */,
+         "/login?challenger=" + options.challenger_id + "&instance_id=" + options.instance_id /*+ "&challenge_id=" + options.challenge_id*/
       ],
       linktext = [
          "Click me to verify",
          "Click to know more about the challenge"
-      ], 
+      ],
       flag_name = [
          "email_verification.html",
          "email_chalrecipient.html",
@@ -90,7 +90,7 @@ module.exports = function(options = email_options, flag) {
             subject: 'Rise to Challenge',
          }],
          from: {
-            email: 'risetochallengeteam@brave.org'
+            email: 'risetochallengeteam@challenge.org'
          },
          content: [{
             type: 'text/html',

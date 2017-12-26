@@ -50,11 +50,11 @@ module.exports = function() {
       if (req.path.length > 6) {
          // get from req.path
          const queryString = req.path.substring(1),
-         const userData = queryString.replace(/[a-z](?:[=])/g, "").split("&"),
-         userObj = {
-            challenger_id: userData[0],
-            instance_id: userData[1]
-         };
+            userData = queryString.replace(/[a-z](?:[=])/g, "").split("&"),
+            userObj = {
+               challenger_id: userData[0],
+               instance_id: userData[1]
+            };
 
          dataBase.Instance.update({
             accepter_id: req.user.id
@@ -70,7 +70,7 @@ module.exports = function() {
       res.status(200).redirect("/user/dashboard");
    });
 
-   loginRoute.post("/login/new_user", function(req, res) {//new user account creation route linked to route in challenge js
+   loginRoute.post("/login/new_user", function(req, res) { //new user account creation route linked to route in challenge js
       console.log(req.body);
 
       // if (req.challenge_id) {...}
@@ -84,9 +84,9 @@ module.exports = function() {
             email: req.body.email
          }).then((data) => {
             // mailer(options, flag);
-            mailer({ 
-               email: req.body.email, 
-               username: req.body.username, 
+            mailer({
+               email: req.body.email,
+               username: req.body.username,
                password: hash
             }, 0);
 
