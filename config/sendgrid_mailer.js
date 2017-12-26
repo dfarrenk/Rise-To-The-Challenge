@@ -50,7 +50,7 @@ module.exports = function(options = email_options, flag) {
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
-         "/user/arChallenge?challenger=" + options.challenger_name + "&challenge_id=" + options.challenge_id,
+         "/user/arChallenge?challenger=" + options.challenger_name + "&challenge_id=" + options.challenge_id + "&proof=" + options.challenge_proof,
       ],
       linktext = [
          "Click me to verify",
@@ -65,7 +65,7 @@ module.exports = function(options = email_options, flag) {
    const hrefLink = "http://localhost:8080" + routes[flag],
       customContent = {
          "%username%": options.username,
-         "%challenger": options.challenger_name,
+         "%challenger%": options.challenger_name,
          "%image%": imageLinks[flag],
          "%link%": hrefLink,
          "%linktext%": linktext[flag]
@@ -89,7 +89,7 @@ module.exports = function(options = email_options, flag) {
             subject: 'Rise to Challenge',
          }],
          from: {
-            email: 'risetochallengeteam@brave.org'
+            email: 'risetochallengeteam@challenge.org'
          },
          content: [{
             type: 'text/html',

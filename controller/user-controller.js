@@ -1,5 +1,5 @@
 var db = require("../models"),
-    path = require("path");
+   path = require("path");
 
 module.exports = function(app) {
 
@@ -28,7 +28,8 @@ module.exports = function(app) {
    });
 
    app.get('/user/subProof', function(req, res) { //go to login page
-      res.sendFile(path.join(__dirname, "../public/subProof.html")) // need to make a "login.handlebars" file to render
+      // res.sendFile(path.join(__dirname, "../public/subProof.html")) // need to make a "login.handlebars" file to render
+      res.sendFile(path.join(__dirname, "../views/layouts/subProof.html"))
    });
 
    app.get('/user/arChallenge', function(req, res) { //go to login page
@@ -54,10 +55,10 @@ module.exports = function(app) {
       // });
    });
 
-   app.get('/user/createChallenge.html', function(req,res){ //load the create new challenge page
-        res.status(200).sendFile(path.join(__dirname, "../views/layouts/sendChallenge.html"));
-       // res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
-   })// challenge form now a modal
+   app.get('/user/createChallenge.html', function(req, res) { //load the create new challenge page
+      // res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
+      res.status(200).sendFile(path.join(__dirname, "../views/layouts/sendChallenge.html"));
+   }) // challenge form now a modal
 
    app.get('/user/proveChallenge', function(req, res) { //load the prove challenge page on selected challenge instance, need to find the challenge instance
       /* db.challengeInstance.findAll({

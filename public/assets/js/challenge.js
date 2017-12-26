@@ -13,14 +13,18 @@ $(function() {
             password: password
         };
         console.log(login);
+
         $.ajax("/login", {
             type: "POST",
             data: login
         }).then(function() {
             console.log("login request submitted");
+        }).catch(function(err) {
+            console.log(err);
         });
 
     });
+
     $("#createProfile").on("click", function(event) {
         //should submit new user info
         console.log("profile creation requested");

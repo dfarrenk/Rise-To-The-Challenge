@@ -37,7 +37,7 @@ app.use(passport.session());
 // check for login session
 app.get("/*/*", function(req, res, next) {
    DEBUG && console.log("get...%s", req.path);
-   if (req.path.match(/(?:email|account).*/)) {
+   if (req.path.match(/(?:email|account|arChallenge).*/)) {
       DEBUG && console.log("I should return here");
       return next();
    }

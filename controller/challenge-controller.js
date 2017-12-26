@@ -10,7 +10,7 @@ module.exports = function(app) {
          rule: req.body.rules,
       };
 
-      const proof = req.body.proof,
+      const proof = req.body.postLink,
          recipient = req.body.challenged;
 
       console.log(newChallenge);
