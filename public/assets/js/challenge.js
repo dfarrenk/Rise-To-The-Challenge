@@ -29,8 +29,11 @@ $(function() {
       $.ajax("/login", {
          type: "POST",
          data: login
-      }).then(function() {
+      }).then(function(response) {
          console.log("login request submitted");
+         setTimeout(function() {
+            location.assign(response);
+         }, 1000);
       });
 
    });
@@ -96,7 +99,7 @@ $(function() {
             }, 1000);
          });
       }).catch(function(err) {
-        return modalWrite(err);
+         return modalWrite(err);
       });
    }
 

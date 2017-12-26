@@ -2,112 +2,93 @@
 <html>
 
 <head>
-    <title>Login</title>
-
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link href="../../public/assets/css/style.css" type="text/css" rel="stylesheet">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script src="assets/js/challenge.js"></script>
-    <script src="assets/js/UI.js"></script>
-
+   <title>Login</title>
+   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+   <link href="../../public/assets/css/style.css" type="text/css" rel="stylesheet">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+   <script src="assets/js/challenge.js"></script>
+   <script src="assets/js/UI.js"></script>
 </head>
 
 <body>
-    <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo">DUELLO</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-            </ul>
-        </div>
-    </nav>
-    <main>
-        <div>
-            <h1>Login</h1>
-        </div>
-        <div class="row">
-            <form class="col s12">
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input placeholder="Placeholder" id="username" type="text" class="validate">
-                        <label class="active" for="username">User Name</label>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <input id="password" type="password" class="validate">
-                            <label class="active" for="password">Password</label>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-        </div>
-        <a href="./dashboard.html">
-            <button id="login" class="btn waves-effect waves-light" type="submit" name="action">Login
-                </button>
-        </a>
-        <button id="newUser" data-target="signUp" class="btn modal-trigger waves-effect waves-light">New User</button>
-
-
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-
-
-
-    </main>
-
-    <div class="container">
-        © 2017 Rise to the Challenge
-    </div>
-
-    <!-- modal trigger -->
-
-    <!-- Modal Structure -->
-    <div id="signUp" class="modal">
-        <div class="modal-content">
-            <h4>New User Details</h4>
-            <div id="modalErrorHeader"></div>
+   <nav>
+      <div class="nav-wrapper">
+         <a href="#" class="brand-logo">DUELLO</a>
+         <ul id="nav-mobile" class="right hide-on-med-and-down">
+         </ul>
+      </div>
+   </nav>
+   <main>
+      <div>
+         <h1>Login</h1>
+      </div>
+      <div class="row">
+         <form class="col s12">
             <div class="row">
-
-                <!-- ===================================== -->
-
-                <form class="col s12">
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <input placeholder="" id="userName" type="text" class="validate">
-                            <label for="userName">Username</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input placeholder="" id="email" type="email" class="validate">
-                            <label for="email">Email</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input placeholder="" id="new_password" type="password" class="validate">
-                            <label for="new_password">Password</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input placeholder="" id="confPassword" type="password" class="validate">
-                            <label for="password">Confirm Password</label>
-                        </div>
-                    </div>
-                </form>
+               <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="username" type="text" class="validate">
+                  <label class="active" for="username">User Name</label>
+               </div>
+               <div class="row">
+                  <div class="input-field col s6">
+                     <input id="password" type="password" class="validate">
+                     <label class="active" for="password">Password</label>
+                  </div>
+               </div>
             </div>
-
-            <!-- =========================================== -->
-
-        </div>
-        <div class="modal-footer">
-            <a href="#!" id="createProfile" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
-        </div>
-    </div>
-
+         </form>
+      </div>
+      <button id="login" class="btn waves-effect waves-light" type="submit" name="action">Login
+      </button>
+      <button id="newUser" data-target="signUp" class="btn modal-trigger waves-effect waves-light">New User</button>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+   </main>
+   <div class="container">
+      © 2017 Rise to the Challenge
+   </div>
+   <!-- modal trigger -->
+   <!-- Modal Structure -->
+   <div id="signUp" class="modal">
+      <div class="modal-content">
+         <h4>New User Details</h4>
+         <div id="modalErrorHeader"></div>
+         <div class="row">
+            <!-- ===================================== -->
+            <form class="col s12">
+               <div class="row">
+                  <div class="input-field col s6">
+                     <input placeholder="" id="userName" type="text" class="validate">
+                     <label for="userName">Username</label>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="input-field col s12">
+                     <input placeholder="" id="email" type="email" class="validate">
+                     <label for="email">Email</label>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="input-field col s12">
+                     <input placeholder="" id="new_password" type="password" class="validate">
+                     <label for="new_password">Password</label>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="input-field col s12">
+                     <input placeholder="" id="confPassword" type="password" class="validate">
+                     <label for="password">Confirm Password</label>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <!-- =========================================== -->
+      </div>
+      <div class="modal-footer">
+         <a id="createProfile" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+         <a class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+      </div>
+   </div>
 </body>
 
 </html>
