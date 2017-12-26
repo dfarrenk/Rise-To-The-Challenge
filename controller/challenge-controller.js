@@ -9,7 +9,7 @@ module.exports = function(app) {
         }
         var newInstance={// grab instance items
             accepter_id:req.body.challenged,
-            challenger_proof:req.body.proof
+            challenger_proof:req.body.proof,
         }
         
       const proof = req.body.proof,
@@ -27,6 +27,7 @@ module.exports = function(app) {
              }, 1);
             //grab the newly created template_id and add it to the newInstance here
             newInstance[template_id]=results.dataValues.template_id;
+            newInstance[issuer_id]=req.user.user;
             
             db.Instance.create(newInstance).then(function(results2){ // post a new row in instance table.
                 
@@ -37,12 +38,14 @@ module.exports = function(app) {
         //or should I make a seperate call here.
     })
 
+    //new challenge instance should be made at the same time as the challenge
   app.post('/challenge/instance/new', function(req,res){ //post route for a challenge instance , child of user and challenge
         var newChallengeInstance ={ // need to know all vars required (what doesn't have a default value in model)
             template_id: req.body[template_id],
-            challenger_proof:req.body[challenger_proof],
+            challenger_proof:req.body.proof,
+            issuer_id:req.user.user,
             //issuerName:req.body.issuer,
-            accepter_id:req.body.accepter
+            accepter_id:req.body.challenged
             //startState should be default defined boolean
             //gameState should be default value defined boolean
         }
@@ -56,7 +59,7 @@ module.exports = function(app) {
             state:'challenge-accepted'
             },{
                 where:{id:req.body.id} //grab challenge id from req
-            }).then(function(results){
+            }).then(function(results){s
                 res.redirect('/dashboard');
             })
     })
