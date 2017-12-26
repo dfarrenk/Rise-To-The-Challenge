@@ -23,6 +23,15 @@
                         <div class="collection">
                             {{#each key}}
                                 {{#if challengedIssued}}
+                                    {{#if challlenge-issued}}
+                                        <span class="collection-item">{{dataValues.Template.dataValues.name}}</span>
+                                    {{/if}}
+                                    {{#if challlenge-accepted}}
+                                        <span class="collection-item">{{dataValues.Template.dataValues.name}}</span>
+                                    {{/if}}
+                                    {{#if provide-proof}}
+                                        <a href="/user/revProof/"{{dataValues.challenge_id}} class="collection-item">{{dataValues.Template.dataValues.name}}</a> 
+                                    {{/if}}
                                 
                                   <a href="./revProof.html" class="collection-item"> {{dataValues.Template.dataValues.name}}</a>
                                 {{/if}}
