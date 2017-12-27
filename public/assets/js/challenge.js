@@ -134,8 +134,7 @@ $(function() {
                 setTimeout(function() {
                     location.assign(response);
                 }, 1000);
-            });
-        }).catch(function(err) {
+            }).catch(function(err) {
         return modalWrite(err);
     });
 }
@@ -279,7 +278,7 @@ $("#proofSub").on("click", function(event) {
         console.log("proof submitted: " + proof);
     });
 });
-});
+})
 $("newUser").on("click", function() {
     $("#signUp").modal()
 });
