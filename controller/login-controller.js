@@ -7,6 +7,7 @@ const dataBase = require("../models"),
    path = require("path"),
    passport = require("../config/local.js"),
    mailer = require("../config/sendgrid_mailer.js"),
+   userTimeout = require("../config/verification_timeout.js"),
    loginRoute = new require("express").Router();
 
 module.exports = function() {
@@ -47,6 +48,7 @@ module.exports = function() {
       failureRedirect: "/",
       failureFlash: false
    }), function(req, res) {
+      console.log(req.body);
       if (req.body.challenger_id) {
          dataBase.Instance.update({
             accepter_id: req.user.id
@@ -84,14 +86,14 @@ module.exports = function() {
                password: hash
             }, 0);
 
+            userTimeout(data.dataValues);
             res.status(201).send(data);
          }).catch((err) => {
             // handling sequelize error only
-            if (err.errors.constructor === Array) {
+            if (err.errors && err.errors.constructor === Array) {
                const errorType = err.errors[0].message;
                return errorIdentifier(res, errorType);
             } else {
-               console.log("EEEEEEEEEE");
                console.error(err.message);
             }
          });

@@ -51,7 +51,7 @@ $(function() {
       }
 
       var userName = $("#userName").val();
-      var password = $("#new_password").val();
+      var password = $("#newPassword").val();
       var confPassword = $("#confPassword").val();
       var email = $("#email").val();
       var newUser = {
@@ -72,7 +72,7 @@ $(function() {
          data: data,
          traditional: true
       }).done(function(data) {
-         console.log(data);
+
          const queryString = location.search.substring(1),
             user = {
                username: data.name,
@@ -107,7 +107,7 @@ $(function() {
       console.log("something here");
 
       var userName = $("#userName").val();
-      var password = $("#new_password").val();
+      var password = $("#newPassword").val();
       var confPassword = $("#confPassword").val();
       var email = $("#email").val();
 
@@ -133,16 +133,16 @@ $(function() {
 
       switch (result) {
          case "username-taken":
-            $("#userName").attr("placeholder", "Username already taken");
+            $("#userName").prop("placeholder", "Username already taken");
             break;
          case "name-invalid":
-            $("#userName").attr("placeholder", "Please enter a username");
+            $("#userName").prop("placeholder", "Please enter a username");
             break;
          case "email-invalid":
-            $("#email").attr("placeholder", "Please enter a valid email address");
+            $("#email").prop("placeholder", "Please enter a valid email address");
             break;
          case "password-mismatch":
-            $("#confPassword").attr("placeholder", "Password does not match");
+            $("#confPassword").prop("placeholder", "Password does not match");
             break;
       }
    }
