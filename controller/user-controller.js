@@ -60,7 +60,8 @@ module.exports = function(app) {
          challengesIssued.map(v => v.challengedIssued = true); //assign value to each of challengedIssued==true
          for (var i = 0; i < challengesIssued.length; i++) { //loop through results, assign correct truthy value and change any old ones for Hbars to grab onto.
             console.log(challengesIssued[i]);
-            if (challengesIssued[i].dataValues.state === "challenge-issued") { //create a truthy value for handlebars logic
+            if (challengesIssued[i].dataValues.state === "challenge-issued") {
+               console.log("this challenge is in the challenge issued state") //create a truthy value for handlebars logic
                challengesIssued[i]['challenge-issued'] = true;
             } else if (challengesIssued[i].dataValues.state === "challenge-accepted") { // change truthy and use different variable
                challengesIssued[i]['challenge-issued'] = false;
