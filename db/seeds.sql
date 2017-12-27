@@ -8,6 +8,6 @@ INSERT INTO `challenge`.`Instances` (`challenge_id`, `challenger_proof`, `challe
 
 INSERT INTO `challenge`.`Users` (`id`, `name`, `password`, `alias`, `email`, `email_verified`, `createdAt`, `updatedAt`) VALUES (NULL, 'testuser', '$2a$10$WiXE0YZF.LJ7.lePA1t8..qy4ITCfkaGmqpg2369HZnuNcP/cNAvW', NULL, 'tim.jeng@gmail.com', '0', '', '');
 
-INSERT INTO `challenge`.`Instances` (`challenge_id`, `challenger_proof`, `challenged_proof`, `state`, `createdAt`, `updatedAt`, `issuer_id`, `accepter_id`, `template_id`) VALUES (NULL, 'www.placehold2.com', NULL, 'proof-accepted', '', '', '4', '1', '1');
+INSERT INTO `challenge`.`Instances` (`challenge_id`, `challenger_proof`, `challenged_proof`, `state`, `createdAt`, `updatedAt`, `issuer_id`, `accepter_id`, `template_id`) VALUES (NULL, 'www.placehold2.com', NULL, 'proof-accepted', '', '', '1', '1', '1');
 
-INSERT INTO `challenge`.`Instances` (`challenge_id`, `challenger_proof`, `challenged_proof`, `state`, `createdAt`, `updatedAt`, `issuer_id`, `accepter_id`, `template_id`) VALUES (NULL, 'www.whocared.com', 'www.Icared.com', 'provided-proof', '', '', '4', '1', '1');
+INSERT INTO `challenge`.`Instances` (`challenge_id`, `challenger_proof`, `challenged_proof`, `state`, `createdAt`, `updatedAt`, `issuer_id`, `accepter_id`, `template_id`) VALUES (NULL, 'www.whocared.com', 'www.Icared.com', 'provided-proof', '', '', '1', '1', '1');
