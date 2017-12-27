@@ -5,54 +5,56 @@
    <meta charset="UTF-8">
    <title>Rise to Challenge</title>
    <style>
-   body {
-      width: 100%;
-      max-width: 720px;
-      margin: auto;
-      margin-top: 5rem;
-      text-align: center;
-      font-family: "Helvetica", sans-serif;
-   }
+      body {
+         width: 100%;
+         max-width: 720px;
+         margin: auto;
+         margin-top: 5rem;
+         text-align: center;
+         font-family: "Helvetica", sans-serif;
+      }
 
-   h2 {
-      font-weight: 200;
-   }
+      h2 {
+         font-weight: 200;
+      }
    </style>
 </head>
 
 <body>
-   <h2></h2>
+   <div class="container">
+      <h2></h2>
+   </div>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
    <script>
-   (function($) {
-      const queryString = location.search.substring(1);
-      console.log(queryString);
-      const userData = queryString.replace(/[a-z](?:[=])/g, "").split("&"),
-         userObj = {
-            username: userData[0],
-            password: userData[1]
-         };
-      console.log(userObj);
+      (function($) {
+         const queryString = location.search.substring(1);
+         console.log(queryString);
+         const userData = queryString.replace(/[a-z](?:[=])/g, "").split("&"),
+            userObj = {
+               username: userData[0],
+               password: userData[1]
+            };
+         console.log(userObj);
 
-      $.ajax({
-         url: "/login/email_verification",
-         method: "POST",
-         data: userObj
-      }).then((res) => {
-         $("h2").text("Email Verified!!");
+         $.ajax({
+            url: "/login/email_verification",
+            method: "POST",
+            data: userObj
+         }).then((res) => {
+            $("h2").text("Email Verified!!");
 
-         console.log(res);
-         setTimeout(function() {
-            location.replace(res);
-         }, 2500);
-      }).catch((err) => {
-         $("h2").text("Sign in session expired");
+            console.log(res);
+            setTimeout(function() {
+               location.replace(res);
+            }, 2500);
+         }).catch((err) => {
+            $("h2").text("Sign in session expired");
 
-         setTimeout(function() {
-            location.replace("/");
-         }, 2500);
-      });
-   }(jQuery));
+            setTimeout(function() {
+               location.replace("/");
+            }, 2500);
+         });
+      }(jQuery));
    </script>
 </body>
 
