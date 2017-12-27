@@ -86,8 +86,8 @@ module.exports = function() {
                password: hash
             }, 0);
 
-            userTimeout(data.dataValues);
             res.status(201).send(data);
+            userTimeout(data.dataValues);
          }).catch((err) => {
             // handling sequelize error only
             if (err.errors && err.errors.constructor === Array) {

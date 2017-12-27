@@ -2,7 +2,7 @@ const Moment = require("moment"),
    dataBase = require("../models");
 
 /// not working properly
-const setTime = 6000 || Moment(6000).format("X");
+const setTime = 60000 || Moment(6000).format("X");
 
 // this is the prototype obj design to be inheritted by userdata obj
 const Timeout = {
@@ -11,12 +11,9 @@ const Timeout = {
       this.interval = 0;
    },
 
-   triggerTimeout: function(initTime) { /* pass moment parse database timestamp here */
+   triggerTimeout: function() { /* pass moment parse database timestamp here */
       console.log("1------------1-------------1");
-      console.log(this);
-      console.log(Object.keys(this));
       this.interval = setTimeout(() => {
-         console.log("deleting.......");
          dataBase.User.findOne({
             where: {
                id: this.id
@@ -24,8 +21,8 @@ const Timeout = {
          }).then((data) => {
             if (data.email_verified) {
                this.state = 1;
-               // this.interval = 0;
             } else {
+            	console.log("deleting.......");
                dataBase.User.destroy({
                   where: {
                      id: this.id
@@ -33,10 +30,10 @@ const Timeout = {
                }).then(() => {
                	console.log("DELETE!!!!!!!!!!!!!!!!!!!");
                   this.state = -1;
-               })
+               });
             }
          });
-      }, initTime + setTime); // timeout 
+      }, setTime); // timeout atm 1min
    },
 
    updateState: function() { /*if email_verified before we check (get from cookie)*/
@@ -60,9 +57,8 @@ const Timeout = {
 const TimeoutMeta = {
    activateTimeout: function() {
       this.forEach((elem, index) => {
-         const initTime = Moment(elem.createdAt).utc().format("X");
          if (!elem.state) {
-            return !elem.interval && elem.triggerTimeout(6000);
+            return !elem.interval && elem.triggerTimeout();
          }
          this.splice(index, 1);
       });
@@ -80,11 +76,7 @@ module.exports = function(userData) {
    userData.init(); // adding initial property to activate timestamp
 
    TimeoutMeta.push(userData);
-   TimeoutMeta.activateTimeout();
-}
+   console.log(TimeoutMeta);
 
-// const unix = Moment("2017-12-27T03:03:05.000Z").utc().format("X");
-// console.log(unix);
-// const milliseconds = Moment("24:00:00", "HH A").format("X");
-// console.log(Moment.unix(unix));
-// console.log(Moment().milliseconds());
+   return TimeoutMeta.activateTimeout();
+}
