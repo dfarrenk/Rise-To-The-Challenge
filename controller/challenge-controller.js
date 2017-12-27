@@ -13,6 +13,7 @@ module.exports = function(app) {
       var newChallenge = { //grab request body info to create new challenge object
          name: template_name,
          rule: template_rule,
+         creator_id: req.user.id
       }
       var newInstance = { // grab instance items
          challenger_proof: proof,
