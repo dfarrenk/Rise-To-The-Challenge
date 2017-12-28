@@ -41,7 +41,7 @@
                <h4>Received Challenges</h4>
                <div class="collection">
                   {{#each key}} {{#unless challengedIssued}}
-                  <a href="/user/arChallenge/" class="collection-item"> {{dataValues.Template.dataValues.name}}</a> {{/unless}} {{/each}}
+                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}}</a> {{/unless}} {{/each}}
                   <a href="/user/createChallenge/" class="collection-item">- NEW CHALLENGE - Tim</a>
                   <a href="#!" class="collection-item">Running Challenge - Jim</a>
                   <a href="#!" class="collection-item">Football Challenge - David</a>

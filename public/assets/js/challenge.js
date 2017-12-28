@@ -1,4 +1,8 @@
 $(function() {
+   
+   $("newUser").on("click", function() {
+      $("#signUp").modal()
+   });
 
    console.log("challenge.js loaded");
    $("#logout").on("click", function(event) {
@@ -20,11 +24,13 @@ $(function() {
       console.log("login clicked");
       var username = $("#username").val();
       var password = $("#password").val();
-      const url = location.href,
+      const url = !!location.href.match(/\/?login(?!\w)/) ? location.href : "/login",
          login = {
             username: username,
             password: password
          };
+
+
 
       $.ajax(url, {
          type: "POST",
@@ -76,7 +82,7 @@ $(function() {
          traditional: true
       }).done(function(data) {
          console.log(data);
-         const url = location.href,
+         const url = !!location.href.match(/\/?login(?!\w)/) ? location.href : "/login",
             user = {
                username: data.name,
                password: data.password,
@@ -223,22 +229,30 @@ $(function() {
    //View New Challenge Handlers
    //===========================
    $("#accept").on("click", function(event) {
-      $.ajax("challenge/instance/accept", {
+      const url = "../challenge/instance/accept" + location.search;
+
+      $.ajax(url, {
          type: "PUT"
-      }).then(function() {
+      }).then(function(response) {
          console.log("challenge accepted");
+         console.log(response);
+         // setTimeout(function() {
+         //    location.replace(response);
+         // }, 1000);
       });
       //should change state of instance record to "accepted"
-
    });
+
    $("#reject").on("click", function(event) {
       //should change state of instance record to "rejected"
       $.ajax("challenge/instance/reject", {
-         type: "PUT"
-      }).then(function() {
+         type: "PUT" // delete might be more appropriate since once rejected we are not opening it again
+      }).then(function(response) {
          console.log("challenge rejected");
+         setTimeout(function() {
+            location.replace(response);
+         }, 1000);
       });
-
    });
 
    //Proof Handler
@@ -253,7 +267,5 @@ $(function() {
          console.log("proof submitted: " + proof);
       });
    });
-});
-$("newUser").on("click", function() {
-   $("#signUp").modal()
+
 });

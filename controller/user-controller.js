@@ -35,7 +35,7 @@ module.exports = function(app) {
       res.sendFile(path.join(__dirname, "../public/subProof.html")) // 
    });
 
-   app.get('/user/arChallenge/:instanceId', function(req, res) { //go to accept/reject a newly issued challenge page.
+   app.get('/user/arChallenge', function(req, res) { //go to accept/reject a newly issued challenge page.
       // res.sendFile(path.join(__dirname, "../public/challenge.html")) // 
       console.log("path");
       res.sendFile(path.join(__dirname, "../views/layouts/challenge.html"));
@@ -83,6 +83,7 @@ module.exports = function(app) {
             var challengesRecieved = results2;
             challengesRecieved.map(y => y.challengedIssued = false) //assign value to each of challengeIssued = false.
             var allChallenges = challengesIssued.concat(challengesRecieved);
+            console.log(results2);
             var hbsObject = { key: allChallenges };
             //.log(hbsObject);
             //console.log(hbsObject.key[0].dataValues)
