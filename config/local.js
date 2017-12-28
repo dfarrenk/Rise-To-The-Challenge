@@ -8,8 +8,7 @@ const Passport = require("passport"),
 
 Passport.use(new LocalStrategy({
       usernameField: "username",
-      passwordField: "password",
-      // passReqToCallback : true
+      passwordField: "password"
    },
    function(username, password, done) {
       console.log("user: %s | pass: %s", username, password);
@@ -55,7 +54,7 @@ Passport.deserializeUser(function(username, done) {
       done(null, user);
    }).catch((err) => {
       done(err);
-   })
+   });
 });
 
 module.exports = Passport;

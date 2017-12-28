@@ -20,24 +20,13 @@ $(function() {
       console.log("login clicked");
       var username = $("#username").val();
       var password = $("#password").val();
-      var login = {
-         username: username,
-         password: password
-      };
-      console.log(login);
+      const url = location.href,
+         login = {
+            username: username,
+            password: password
+         };
 
-      const queryString = location.search.substring(1);
-
-      if (queryString) {
-         const data = queryString.match(/\w+(?:[=])?\d/g).map((elem) => {
-            return elem.replace(/\D/g, "");
-         });
-         console.log(data);
-         login.challenger_id = data[0];
-         login.instance_id = data[1]
-      }
-
-      $.ajax("/login", {
+      $.ajax(url, {
          type: "POST",
          data: login
       }).then(function(response) {
@@ -86,23 +75,14 @@ $(function() {
          traditional: true
       }).done(function(data) {
          console.log(data);
-         const queryString = location.search.substring(1),
+         const url = location.href,
             user = {
                username: data.name,
                password: data.password,
             };
 
-         if (queryString) {
-            const data = queryString.match(/\w+(?:[=])?\d/g).map((elem) => {
-               return elem.replace(/\D/g, "");
-            });
-            console.log(data);
-            user.challenger_id = data[0];
-            user.instance_id = data[1]
-         }
-
          $.ajax({
-            url: "/login",
+            url: url,
             method: "POST",
             data: user
          }).then((response) => {
@@ -199,7 +179,7 @@ $(function() {
       }).then(function(response) {
          console.log(response);
          console.log("new challenge submitted");
-         location.replace(response);
+         location.replace(response); // set timeout on this 
       });
       //should receive success/err message?
       return true;

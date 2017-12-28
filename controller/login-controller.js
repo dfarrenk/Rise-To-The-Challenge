@@ -13,7 +13,7 @@ const dataBase = require("../models"),
 module.exports = function() {
 
    loginRoute.get("/login/email_verification", function(req, res) {
-      console.log("Okay");
+      DEBUG && console.log("Okay");
       res.status(200).sendFile(path.join(__dirname, "../public/verification.html"));
    });
 
@@ -22,7 +22,7 @@ module.exports = function() {
       // could set a timer somehow to nullified expired link
       failureRedirect: "error",
    }), function(req, res) {
-      console.log(req.user);
+      DEBUG && console.log(req.user);
       dataBase.User.update({
          email_verified: true
       }, {
@@ -30,7 +30,7 @@ module.exports = function() {
             name: req.body.username
          }
       }).then((data) => {
-         console.log("success %s", data);
+         DEBUG && console.log("success %s", data);
          res.status(200).send("/user/dashboard");
       }).catch((err) => {
          // handling sequelize error only
@@ -38,7 +38,7 @@ module.exports = function() {
             const errorType = err.errors[0].message;
             return errorIdentifier(res, errorType);
          } else {
-            console.error(err.message);
+            DEBUG && console.error(err.message);
          }
       });
    });
@@ -48,18 +48,20 @@ module.exports = function() {
       // failureRedirect: ,
       // failureFlash: true
    }), function(req, res) {
-      console.log(req.user);
+      DEBUG && console.log(req.user);
+      DEBUG && console.log(req.query["challenger"]);
+
       userTimeout(req.user.dataValues).activateTimeout();
-      if (req.body.challenger_id) {
+      if (req.query["challenger"]) {
          dataBase.Instance.update({
             accepter_id: req.user.id
          }, {
             where: {
-               challenge_id: req.body.instance_id,
-               issuer_id: req.body.challenger_id
+               challenge_id: req.query["instance"],
+               issuer_id: req.query["challenger"]
             }
          }).then((data) => {
-            console.log("success");
+            DEBUG && console.log("success");
             return res.status(200).send("/user/dashboard");
          });
       } else {
@@ -68,7 +70,7 @@ module.exports = function() {
    });
 
    loginRoute.post("/login/new_user", function(req, res) { //new user account creation route linked to route in challenge js
-      console.log(req.body);
+      DEBUG && console.log(req.body);
 
       // if (req.challenge_id) {...}
 
@@ -95,7 +97,7 @@ module.exports = function() {
                const errorType = err.errors[0].message;
                return errorIdentifier(res, errorType);
             } else {
-               console.error(err.message);
+               DEBUG && console.error(err.message);
             }
          });
       });
@@ -105,7 +107,7 @@ module.exports = function() {
 }
 
 function errorIdentifier(res, errortype) {
-   console.error(errortype);
+   DEBUG && console.error(errortype);
    // identify error type using regex to match key word
    if (!!errortype.match(/\w*(?:name)/g)) {
       return res.status(409).send("username-taken");

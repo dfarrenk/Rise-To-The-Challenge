@@ -41,7 +41,7 @@ const email_options = {
 // email({ options }, flag);
 // obj key name: email, username, password, challenge_id, challenge_proof
 module.exports = function(options = email_options, flag) {
-   console.log(options);
+   DEBUG && console.log(options);
 
    // missing image for email verification, 0 = veri, 1 = chal_issue, 2 = chal_accept, chal_complete
    const imageLinks = [
@@ -52,7 +52,7 @@ module.exports = function(options = email_options, flag) {
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
-         "/login?challenger=" + options.challenger_id + "&instance_id=" + options.instance_id /*+ "&challenge_id=" + options.challenge_id*/
+         "/login?challenger=" + options.challenger_id + "&instance=" + options.instance_id /*+ "&challenge_id=" + options.challenge_id*/
       ],
       linktext = [
          "Click me to verify",

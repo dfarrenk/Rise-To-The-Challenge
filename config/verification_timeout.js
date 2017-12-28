@@ -1,3 +1,4 @@
+"use strict";
 const DEBUG = true;
 
 const dataBase = require("../models");

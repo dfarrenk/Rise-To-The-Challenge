@@ -78,6 +78,7 @@ module.exports = function(app) {
          }
          db.Instance.findAll({
             where: { accepter_id: req.user.dataValues.id },
+            include: [db.Template]
          }).then(function(results2) {
             var challengesRecieved = results2;
             challengesRecieved.map(y => y.challengedIssued = false) //assign value to each of challengeIssued = false.
@@ -94,7 +95,7 @@ module.exports = function(app) {
    });
 
    app.get('/user/createChallenge.html', function(req, res) { //load the create new challenge page
-      res.status(200).sendFile(path.join(__dirname, "../views/layouts/sendChallenge.html"));
+      res.status(200).sendFile(path.join(__dirname, "../public/testing_send_challenge.html"));
       // res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
    }) // challenge form now a modal
 
