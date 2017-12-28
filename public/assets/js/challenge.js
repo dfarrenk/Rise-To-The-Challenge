@@ -1,6 +1,17 @@
 $(function() {
 
    console.log("challenge.js loaded");
+   $("#logout").on("click", function(event) {
+      event.preventDefault();
+      $.ajax({
+         url: "/user/logout",
+         method: "GET"
+      }).then((response) => {
+         location.replace(response);
+      }).catch((err) => {
+         console.log(err);
+      })
+   });
 
    //Login Handlers
    //===========================
@@ -30,12 +41,14 @@ $(function() {
          type: "POST",
          data: login
       }).then(function(response) {
+         console.log(response);
          console.log("login request submitted");
          setTimeout(function() {
             location.assign(response);
          }, 1000);
+      }).catch((err) => {
+         err.status == 401 && console.log("username or password incorrect");
       });
-
    });
 
    //New Profile Creation
@@ -51,7 +64,7 @@ $(function() {
       }
 
       var userName = $("#userName").val();
-      var password = $("#new_password").val();
+      var password = $("#newPassword").val();
       var confPassword = $("#confPassword").val();
       var email = $("#email").val();
       var newUser = {
@@ -99,7 +112,8 @@ $(function() {
             }, 1000);
          });
       }).catch(function(err) {
-         return modalWrite(err);
+         console.log(err);
+         return modalWrite(err.responseText);
       });
    }
 
@@ -107,7 +121,7 @@ $(function() {
       console.log("something here");
 
       var userName = $("#userName").val();
-      var password = $("#new_password").val();
+      var password = $("#newPassword").val();
       var confPassword = $("#confPassword").val();
       var email = $("#email").val();
 
@@ -133,16 +147,18 @@ $(function() {
 
       switch (result) {
          case "username-taken":
-            $("#userName").attr("placeholder", "Username already taken");
+            console.log("username  is nottttttt ava");
+            $("#userName").text("");
+            $("#userName").prop("placeholder", "Username already taken");
             break;
          case "name-invalid":
-            $("#userName").attr("placeholder", "Please enter a username");
+            $("#userName").prop("placeholder", "Please enter a username");
             break;
          case "email-invalid":
-            $("#email").attr("placeholder", "Please enter a valid email address");
+            $("#email").prop("placeholder", "Please enter a valid email address");
             break;
          case "password-mismatch":
-            $("#confPassword").attr("placeholder", "Password does not match");
+            $("#confPassword").prop("placeholder", "Password does not match");
             break;
       }
    }
