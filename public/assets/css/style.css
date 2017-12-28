@@ -10,3 +10,25 @@ main {
     flex: 1 0 auto;
     margin: 10%;
 }
+
+input::-webkit-input-placeholder {
+    color: red !important;
+}
+
+input:-moz-placeholder {
+    /* Firefox 18- */
+    color: red !important;
+}
+
+input::-moz-placeholder {
+    /* Firefox 19+ */
+    color: red !important;
+}
+
+input:-ms-input-placeholder {
+    color: red !important;
+}
+
+#modalErrorHeader {
+    color: red;
+}
