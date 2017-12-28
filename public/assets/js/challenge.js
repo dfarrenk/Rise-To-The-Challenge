@@ -42,6 +42,7 @@ $(function() {
 
    //New Profile Creation
    $("#createProfile").on("click", function(event) {
+      $("#modalErrorHeader").text("Please complete all fields");
       //should submit new user info
       console.log("profile creation requested");
 
@@ -68,7 +69,7 @@ $(function() {
    // ajax
    function sendRequest(data) {
       console.log("sending request....");
-
+      clearNewUserInput();
       $.ajax("/login/new_user", {
          method: "POST",
          data: data,
@@ -98,7 +99,7 @@ $(function() {
    }
 
    function validateInput() {
-      console.log("something here");
+      console.log("validating...");
 
       var userName = $("#userName").val();
       var password = $("#newPassword").val();
@@ -106,11 +107,12 @@ $(function() {
       var email = $("#email").val();
 
       if (!userName || !password || !confPassword || !email) {
-         console.log("Am I stopped here everytime");
+         console.log("Am I stopped here everytime?");
          return "form-empty";
       }
       if (name.match(/[^a-z]/gi)) {
          return "userName-invalid";
+         console.log("invalid user-name, should write username restrictions here")
       }
       if (password !== confPassword) {
          return "password-mismatch";
@@ -123,24 +125,35 @@ $(function() {
    }
 
    function modalWrite(result) {
-      $("modalErrorHeader").text("Oops, something went wrong...");
+      console.log("initiating modalWrite");
 
       switch (result) {
+         case "form-empty":
+            $("#modalErrorHeader").text("Please complete all fields");
+            break;
          case "username-taken":
-            console.log("username  is nottttttt ava");
-            $("#userName").text("");
+            $("#userName").val("");
             $("#userName").prop("placeholder", "Username already taken");
             break;
-         case "name-invalid":
-            $("#userName").prop("placeholder", "Please enter a username");
+         case "userName-invalid":
+            $("#userName").prop("placeholder", "Please enter a valid username");
             break;
          case "email-invalid":
+            $("#email").val('')
             $("#email").prop("placeholder", "Please enter a valid email address");
             break;
          case "password-mismatch":
+            $("#newPassword").val('');
+            $("#confPassword").val('');
             $("#confPassword").prop("placeholder", "Password does not match");
+            $("#confPassword").addClass("placeholder", "red-text");
             break;
       }
+   }
+
+   function clearNewUserInput() {
+      console.log("clearing input");
+      $(".clearNewUser").val('');
    }
 
    //Dashboard Handlers
