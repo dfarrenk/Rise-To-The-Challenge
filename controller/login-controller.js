@@ -22,7 +22,7 @@ module.exports = function() {
       // could set a timer somehow to nullified expired link
       failureRedirect: "error",
    }), function(req, res) {
-      console.log(req.body);
+      console.log(req.user);
       dataBase.User.update({
          email_verified: true
       }, {
@@ -34,21 +34,22 @@ module.exports = function() {
          res.status(200).send("/user/dashboard");
       }).catch((err) => {
          // handling sequelize error only
-         if (err.contructor === Array) {
+         if (err.errors && err.errors.constructor === Array) {
             const errorType = err.errors[0].message;
-            errorIdentifier(errorType);
+            return errorIdentifier(res, errorType);
          } else {
-            console.log(err.message);
+            console.error(err.message);
          }
       });
    });
 
    loginRoute.post("/login", passport.authenticate("local", {
       // successRedirect: "/user/dashboard",
-      failureRedirect: "/",
-      failureFlash: false
+      // failureRedirect: ,
+      // failureFlash: true
    }), function(req, res) {
-      console.log(req.body);
+      console.log(req.user);
+      userTimeout(req.user.dataValues).activateTimeout();
       if (req.body.challenger_id) {
          dataBase.Instance.update({
             accepter_id: req.user.id
@@ -62,7 +63,7 @@ module.exports = function() {
             return res.status(200).send("/user/dashboard");
          });
       } else {
-         res.status(200).send("/user/dashboard");   
+         res.status(200).send("/user/dashboard");
       }
    });
 
@@ -87,7 +88,7 @@ module.exports = function() {
             }, 0);
 
             res.status(201).send(data);
-            userTimeout(data.dataValues);
+            // userTimeout(data.dataValues).activateTimeout();
          }).catch((err) => {
             // handling sequelize error only
             if (err.errors && err.errors.constructor === Array) {

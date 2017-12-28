@@ -3,7 +3,8 @@ var bodyParser = require("body-parser");
 // var methodOverride=require("method-override");
 var exphbs = require("express-handlebars");
 var Exsess = require("express-session");
-var CookieParser = require("cookie-parser")
+var CookieParser = require("cookie-parser");
+var flash = require("connect-flash");
 
 var PORT = process.env.PORT || 8080;
 var app = express();
@@ -19,6 +20,7 @@ app.use(CookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(Exsess({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(flash());
 app.use(function(err, req, res, next) {
    if (err) {
       console.error(err.stack);
@@ -35,7 +37,7 @@ app.use(passport.session());
 // check for login session
 app.get("/*/*", function(req, res, next) {
    console.log("get...%s", req.path);
-   if (req.path.match(/\account|\email/)) {
+   if (req.path.match(/\account|\email|\logout/)) {
       // if (req.path === "/login" || req.path === "/" || req.path === "/newaccount" || req.path === "/emailverification") {
       console.log("I should return here");
       return next();

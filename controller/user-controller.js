@@ -14,6 +14,10 @@ module.exports = function(app) {
            res.redirect('/dashboard');
        })
    })*/
+   app.get("/user/logout", function(req, res) {
+      console.log("heeeer");
+      res.status(200).clearCookie("connect.sid").send("/login");
+   });
 
    app.get('/user/id/:id', function(req, res) { //when called, returns this users data
       db.user.findAll({

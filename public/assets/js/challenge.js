@@ -1,6 +1,17 @@
 $(function() {
 
    console.log("challenge.js loaded");
+   $("#logout").on("click", function(event) {
+      event.preventDefault();
+      $.ajax({
+         url: "/user/logout",
+         method: "GET"
+      }).then((response) => {
+         location.replace(response);
+      }).catch((err) => {
+         console.log(err);
+      })
+   });
 
    //Login Handlers
    //===========================
@@ -30,12 +41,14 @@ $(function() {
          type: "POST",
          data: login
       }).then(function(response) {
+         console.log(response);
          console.log("login request submitted");
          setTimeout(function() {
             location.assign(response);
          }, 1000);
+      }).catch((err) => {
+         err.status == 401 && console.log("username or password incorrect");
       });
-
    });
 
    //New Profile Creation
@@ -72,7 +85,7 @@ $(function() {
          data: data,
          traditional: true
       }).done(function(data) {
-
+         console.log(data);
          const queryString = location.search.substring(1),
             user = {
                username: data.name,
@@ -99,7 +112,8 @@ $(function() {
             }, 1000);
          });
       }).catch(function(err) {
-         return modalWrite(err);
+         console.log(err);
+         return modalWrite(err.responseText);
       });
    }
 
@@ -133,6 +147,8 @@ $(function() {
 
       switch (result) {
          case "username-taken":
+            console.log("username  is nottttttt ava");
+            $("#userName").text("");
             $("#userName").prop("placeholder", "Username already taken");
             break;
          case "name-invalid":

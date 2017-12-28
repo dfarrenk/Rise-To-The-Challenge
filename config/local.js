@@ -9,6 +9,7 @@ const Passport = require("passport"),
 Passport.use(new LocalStrategy({
       usernameField: "username",
       passwordField: "password",
+      // passReqToCallback : true
    },
    function(username, password, done) {
       console.log("user: %s | pass: %s", username, password);
@@ -23,7 +24,7 @@ Passport.use(new LocalStrategy({
          }
          // decrypt password
          bcrypt.compare(password, data.password, function(err, res) {
-            console.log(res);
+            console.log(res); 
             // two possible ways to sign in login/auto sign in when email verified 
             if (res) {
                return done(null, data);
@@ -40,7 +41,7 @@ Passport.use(new LocalStrategy({
 
 Passport.serializeUser(function(user, done) {
    DEBUG && console.log("---------------------");
-   DEBUG && console.log(user);
+   // DEBUG && console.log(user);
    done(null, user.name);
 });
 

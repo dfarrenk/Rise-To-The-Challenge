@@ -1,8 +1,7 @@
-const Moment = require("moment"),
-   dataBase = require("../models");
+const DEBUG = true;
 
-/// not working properly
-const setTime = 60000 || Moment(6000).format("X");
+const dataBase = require("../models");
+const setTime = 60000; // set to 1 hour for demo, 12 hours in production
 
 // this is the prototype obj design to be inheritted by userdata obj
 const Timeout = {
@@ -12,7 +11,7 @@ const Timeout = {
    },
 
    triggerTimeout: function() { /* pass moment parse database timestamp here */
-      console.log("1------------1-------------1");
+      DEBUG && console.log("1------------1-------------1");
       this.interval = setTimeout(() => {
          dataBase.User.findOne({
             where: {
@@ -20,15 +19,16 @@ const Timeout = {
             }
          }).then((data) => {
             if (data.email_verified) {
+               DEBUG && console.log("hew made it in time");
                this.state = 1;
             } else {
-            	console.log("deleting.......");
+               DEBUG && console.log("deleting.......");
                dataBase.User.destroy({
                   where: {
                      id: this.id
                   }
                }).then(() => {
-               	console.log("DELETE!!!!!!!!!!!!!!!!!!!");
+                  DEBUG && console.log("DELETE!!!!!!!!!!!!!!!!!!!");
                   this.state = -1;
                });
             }
@@ -39,6 +39,7 @@ const Timeout = {
    updateState: function() { /*if email_verified before we check (get from cookie)*/
       if (this.email_verified) {
          this.state = 1;
+         DEBUG && console.log("cooooooooooooooooooool");
          clearTimeout(this.interval);
       }
    } // currently unaccessable
@@ -52,31 +53,31 @@ const Timeout = {
 // state > 0 --> metaobj.splice(this.index, 1) ||
 // state < 0 --> metaobj.splice(this.index, 1)
 
-// this is the metaObj consist of all the user created since server starts
-// will inherit Array.prototype for better iteration and private methods
 const TimeoutMeta = {
    activateTimeout: function() {
+      DEBUG && console.log("We are starting");
       this.forEach((elem, index) => {
+         elem.updateState();
          if (!elem.state) {
-            return !elem.interval && elem.triggerTimeout();
+            !elem.interval && elem.triggerTimeout();
+         } else {
+            this.splice(index, 1);
+            DEBUG && console.log(this);
          }
-         this.splice(index, 1);
       });
    }
 }
 
-// this line is key to successfully run the whole module
-// Object.setPrototypeOf(TimeoutMeta, Array);
 Object.setPrototypeOf(TimeoutMeta, Array.prototype);
 
 module.exports = function(userData) {
-   console.log("-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-");
-   // // let userData inherit timeout methods
+   DEBUG && console.log("-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-");
+
    Object.setPrototypeOf(userData, Timeout);
    userData.init(); // adding initial property to activate timestamp
 
    TimeoutMeta.push(userData);
-   console.log(TimeoutMeta);
+   DEBUG && console.log(TimeoutMeta);
 
-   return TimeoutMeta.activateTimeout();
+   return TimeoutMeta;
 }
