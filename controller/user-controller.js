@@ -83,7 +83,6 @@ module.exports = function(app) {
             var challengesRecieved = results2;
             challengesRecieved.map(y => y.challengedIssued = false) //assign value to each of challengeIssued = false.
             var allChallenges = challengesIssued.concat(challengesRecieved);
-            console.log(results2);
             var hbsObject = { key: allChallenges };
             //.log(hbsObject);
             //console.log(hbsObject.key[0].dataValues)
