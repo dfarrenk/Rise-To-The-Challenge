@@ -1,7 +1,7 @@
 "use strict";
 const DEBUG = true;
 
-// dependencies 
+// dependencies
 const dataBase = require("../models"),
    bcrypt = require("bcrypt"),
    path = require("path"),
@@ -37,7 +37,8 @@ module.exports = function() {
          if (err.errors && err.errors.constructor === Array) {
             const errorType = err.errors[0].message;
             return errorIdentifier(res, errorType);
-         } else {
+         }
+         else {
             DEBUG && console.error(err.message);
          }
       });
@@ -64,7 +65,8 @@ module.exports = function() {
             DEBUG && console.log("success");
             return res.status(200).send("/user/dashboard");
          });
-      } else {
+      }
+      else {
          res.status(200).send("/user/dashboard");
       }
    });
@@ -96,7 +98,8 @@ module.exports = function() {
             if (err.errors && err.errors.constructor === Array) {
                const errorType = err.errors[0].message;
                return errorIdentifier(res, errorType);
-            } else {
+            }
+            else {
                DEBUG && console.error(err.message);
             }
          });
@@ -104,7 +107,7 @@ module.exports = function() {
    });
 
    return loginRoute;
-}
+};
 
 function errorIdentifier(res, errortype) {
    DEBUG && console.error(errortype);

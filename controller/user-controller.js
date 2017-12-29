@@ -23,26 +23,26 @@ module.exports = function(app) {
       db.user.findAll({
          where: { id: req.params.id } //grab user id
       }).then(function(results) {
-         res.json(results)
-      })
+         res.json(results);
+      });
    });
 
    app.get('/user/revProof/:instanceId', function(req, res) { //go to review proof page
-      res.sendFile(path.join(__dirname, "../public/revProof.html"))
+      res.sendFile(path.join(__dirname, "../public/revProof.html"));
    });
 
    app.get('/user/subProof/:instanceId', function(req, res) { // go to user proof submission page
-      res.sendFile(path.join(__dirname, "../public/subProof.html")) // 
+      res.sendFile(path.join(__dirname, "../public/subProof.html")); //
    });
 
    app.get('/user/arChallenge', function(req, res) { //go to accept/reject a newly issued challenge page.
-      // res.sendFile(path.join(__dirname, "../public/challenge.html")) // 
+      // res.sendFile(path.join(__dirname, "../public/challenge.html")) //
       console.log("path");
       res.sendFile(path.join(__dirname, "../views/layouts/challenge.html"));
       /* db.Instance.findAll({
           where:{id:}
        }).then(function(results){
-          
+
        })*/
    });
 
@@ -53,7 +53,6 @@ module.exports = function(app) {
       //    userid: req.user.id,
       //    email: req.user.email
       // });
-      ;
 
       //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
       db.Instance.findAll({
@@ -65,15 +64,17 @@ module.exports = function(app) {
          for (var i = 0; i < challengesIssued.length; i++) { //loop through results, assign correct truthy value and change any old ones for Hbars to grab onto.
             console.log(challengesIssued[i]);
             if (challengesIssued[i].dataValues.state === "challenge-issued") {
-               console.log("this challenge is in the challenge issued state") //create a truthy value for handlebars logic
+               console.log("this challenge is in the challenge issued state"); //create a truthy value for handlebars logic
                challengesIssued[i]['challenge-issued'] = true;
-            } else if (challengesIssued[i].dataValues.state === "challenge-accepted") { // change truthy and use different variable
+            }
+            else if (challengesIssued[i].dataValues.state === "challenge-accepted") { // change truthy and use different variable
                challengesIssued[i]['challenge-issued'] = false;
                challengesIssued[i]['challenge-accepted'] = true;
-            } else if (challengesIssued[i].dataValues.state === 'provided-proof') { //change and add truthy
+            }
+            else if (challengesIssued[i].dataValues.state === 'provided-proof') { //change and add truthy
                challengesIssued[i]['challenge-issued'] = false;
                challengesIssued[i]['challenge-accepted'] = false;
-               challengesIssued[i]['provide-proof'] = true
+               challengesIssued[i]['provide-proof'] = true;
             }
          }
          db.Instance.findAll({
@@ -81,13 +82,13 @@ module.exports = function(app) {
             include: [db.Template]
          }).then(function(results2) {
             var challengesRecieved = results2;
-            challengesRecieved.map(y => y.challengedIssued = false) //assign value to each of challengeIssued = false.
+            challengesRecieved.map(y => y.challengedIssued = false); //assign value to each of challengeIssued = false.
             var allChallenges = challengesIssued.concat(challengesRecieved);
             var hbsObject = { key: allChallenges };
             //.log(hbsObject);
             //console.log(hbsObject.key[0].dataValues)
             //console.log(hbsObject.key[0].dataValues.Template.dataValues.name)
-            res.render('dashboard', hbsObject)
+            res.render('dashboard', hbsObject);
          });
          //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
 
@@ -97,7 +98,7 @@ module.exports = function(app) {
    app.get('/user/createChallenge.html', function(req, res) { //load the create new challenge page
       res.status(200).sendFile(path.join(__dirname, "../public/testing_send_challenge.html"));
       // res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
-   }) // challenge form now a modal
+   }); // challenge form now a modal
 
    app.get('/user/proveChallenge', function(req, res) { //load the prove challenge page on selected challenge instance, need to find the challenge instance
       /* db.challengeInstance.findAll({
@@ -106,5 +107,5 @@ module.exports = function(app) {
            var hbsObject = {key:results.dataValues}
            res.render('proveChallenge',hbsObject)
        })*/
-   })
-}
+   });
+};
