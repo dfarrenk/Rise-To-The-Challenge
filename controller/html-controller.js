@@ -16,6 +16,26 @@ module.exports = function(app) {
     // test route
     app.get("/handlebars", function(req, res) {
         // console.log(handlebarsObject);
-        res.render("dashboard" /*, handlebarsObject*/ );
+        res.json("hello world");
+        var handlebarsObject;
+        db.User.findAll({
+            where: { id: '1' }, //grab user id
+            include: [{
+                model: db.Instance,
+                as: "issued"
+            }]
+            // , {
+            //     model: db.Instance,
+            //     as: "accepted"
+            // }],
+
+        }).then(function(results) {
+
+            // handlebarsObject = results;
+
+        });
+
+        console.log(handlebarsObject);
+        // res.render("dashboard" /*, handlebarsObject*/ );
     });
 };
