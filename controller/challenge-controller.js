@@ -76,12 +76,19 @@ module.exports = function(app) {
             include: [{
                model: db.User,
                as: "issuer"
+            }, {
+               model: db.Template
             }]
          }).then((data) => {
             console.log(data);
             console.log(data.issuer.email);
-            
-            // res.status(200).json(data);
+            mailer({
+               email: data.issuer.email,
+               username: req.user.name,
+               challenger_name: data.issuer.name,
+               challenge_name: data.Template.name
+            }, 2);
+            res.status(200).send("user/dashboard");
          });
       });
    });

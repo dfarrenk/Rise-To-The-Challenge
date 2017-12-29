@@ -32,6 +32,7 @@ const email_options = {
    username: null,
    password: null,
    challenge_id: 0,
+   challenge_name: "",
    challenger_id: 0,
    challenger_name: "",
    instance_id: ""
@@ -52,15 +53,23 @@ module.exports = function(options = email_options, flag) {
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
-         "/login?challenger=" + options.challenger_id + "&instance=" + options.instance_id /*+ "&challenge_id=" + options.challenge_id*/
+         "/login?challenger=" + options.challenger_id + "&instance=" + options.instance_id, /*+ "&challenge_id=" + options.challenge_id*/
+         "/login"
+      ],
+      subjects = [
+         "Verify your email and start challenging today!!",
+         "You've been challenged.",
+         "Challenge accepted!!"
       ],
       linktext = [
          "Click me to verify",
-         "Click to know more about the challenge"
+         "Click to know more about the challenge",
+         "View your challenge board"
       ],
       flag_name = [
          "email_verification.html",
          "email_chalrecipient.html",
+         "email_chalaccepted.html"
       ];
 
    // need to work out a pattern
@@ -88,7 +97,7 @@ module.exports = function(options = email_options, flag) {
             to: [{
                email: options.email
             }],
-            subject: 'Rise to Challenge',
+            subject: subjects[flag], // array
          }],
          from: {
             email: 'risetochallengeteam@challenge.org'

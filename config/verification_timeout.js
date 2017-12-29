@@ -19,6 +19,12 @@ const Timeout = {
                id: this.id
             }
          }).then((data) => {
+         	// this block is here to prevent process hang when do data returns
+         	if (!data) {
+         		this.state = -1;
+         		return console.log("It seems like we don't have to continue after all");
+         	}
+
             if (data.email_verified) {
                DEBUG && console.log("hew made it in time");
                this.state = 1;
@@ -82,3 +88,8 @@ module.exports = function(userData) {
 
    return TimeoutMeta;
 }
+
+
+// if for some reason the user is deleted from the database not by the module
+// the process will hang because the server doesn't know what to do when it can't find 
+// the data it is looking for
