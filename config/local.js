@@ -24,7 +24,7 @@ Passport.use(new LocalStrategy({
          }
          // decrypt password
          bcrypt.compare(password, data.password, function(err, res) {
-            console.log(res); 
+            console.log(res);
             // two possible ways to sign in login/auto sign in when email verified 
             if (res) {
                return done(null, data);
@@ -39,7 +39,7 @@ Passport.use(new LocalStrategy({
       });
    }));
 
-Passport.serializeUser(async function(user, done) {
+async function serializeCallback(user, done) {
    DEBUG && console.log("---------------------");
    // DEBUG && console.log(user.dataValues);
    const tokenObj = await token.genToken(user.dataValues);
@@ -50,11 +50,13 @@ Passport.serializeUser(async function(user, done) {
 
    done(null, tokenObj.name);
    // done(null, user.name);
-});
+}
+
+Passport.serializeUser(serializeCallback);
 
 Passport.deserializeUser(function(tokenKey, done) {
    DEBUG && console.log("////////////////////////");
-   
+
    const username = !!token[tokenKey] ? token[tokenKey].info.name : "empty";
    DEBUG && console.log(username);
 
