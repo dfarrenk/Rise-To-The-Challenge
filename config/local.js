@@ -4,6 +4,7 @@ const DEBUG = true;
 const Passport = require("passport"),
    LocalStrategy = require('passport-local').Strategy,
    bcrypt = require("bcrypt"),
+   token = require("./token.js"),
    dataBase = require("../models");
 
 Passport.use(new LocalStrategy({
@@ -38,14 +39,25 @@ Passport.use(new LocalStrategy({
       });
    }));
 
-Passport.serializeUser(function(user, done) {
+Passport.serializeUser(async function(user, done) {
    DEBUG && console.log("---------------------");
-   // DEBUG && console.log(user);
-   done(null, user.name);
+   // DEBUG && console.log(user.dataValues);
+   const tokenObj = await token.genToken(user.dataValues);
+   DEBUG && console.log(tokenObj);
+
+   token[tokenObj.name] = tokenObj;
+   token[tokenObj.name].timeout(token);
+
+   done(null, tokenObj.name);
+   // done(null, user.name);
 });
 
-Passport.deserializeUser(function(username, done) {
+Passport.deserializeUser(function(tokenKey, done) {
    DEBUG && console.log("////////////////////////");
+   
+   const username = !!token[tokenKey] ? token[tokenKey].info.name : "empty";
+   DEBUG && console.log(username);
+
    dataBase.User.findOne({
       where: {
          name: username
