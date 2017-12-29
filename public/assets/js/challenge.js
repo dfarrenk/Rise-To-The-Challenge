@@ -30,8 +30,6 @@ $(function() {
             password: password
          };
 
-
-
       $.ajax(url, {
          type: "POST",
          data: login
@@ -45,10 +43,12 @@ $(function() {
          err.status == 401 && console.log("username or password incorrect");
       });
    });
-
+   $("#exitModal").on("click", function() {
+      clearNewUserInput();
+   });
    //New Profile Creation
    $("#createProfile").on("click", function(event) {
-      $("#modalErrorHeader").text("Please complete all fields");
+      $("#modalErrorHeader").text("");
       //should submit new user info
       console.log("profile creation requested");
 
@@ -106,7 +106,7 @@ $(function() {
 
    function validateInput() {
       console.log("validating...");
-
+      var caseArray = [];
       var userName = $("#userName").val();
       var password = $("#newPassword").val();
       var confPassword = $("#confPassword").val();
@@ -114,46 +114,57 @@ $(function() {
 
       if (!userName || !password || !confPassword || !email) {
          console.log("Am I stopped here everytime?");
-         return "form-empty";
+         //return "form-empty";
+         caseArray.push("form-empty");
       }
       if (name.match(/[^a-z]/gi)) {
-         return "userName-invalid";
-         console.log("invalid user-name, should write username restrictions here")
+         //return "userName-invalid";
+         caseArray.push("userName-invalid");
+         console.log("invalid user-name, should write username restrictions here");
       }
       if (password !== confPassword) {
-         return "password-mismatch";
+         //return "password-mismatch";
+         caseArray.push("password-mismatch");
       }
       if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-         return "email-invalid";
+         //return "email-invalid";
+         caseArray.push("email-invalid");
       }
-
+      return caseArray;
+      console.log(caseArray);
       return 1;
    }
 
    function modalWrite(result) {
       console.log("initiating modalWrite");
 
-      switch (result) {
-         case "form-empty":
-            $("#modalErrorHeader").text("Please complete all fields");
-            break;
-         case "username-taken":
-            $("#userName").val("");
-            $("#userName").prop("placeholder", "Username already taken");
-            break;
-         case "userName-invalid":
-            $("#userName").prop("placeholder", "Please enter a valid username");
-            break;
-         case "email-invalid":
-            $("#email").val('')
-            $("#email").prop("placeholder", "Please enter a valid email address");
-            break;
-         case "password-mismatch":
-            $("#newPassword").val('');
-            $("#confPassword").val('');
-            $("#confPassword").prop("placeholder", "Password does not match");
-            $("#confPassword").addClass("placeholder", "red-text");
-            break;
+      //turning this into loop...
+      console.log(result);
+      for (var i = 0; i < result.length; i++) {
+         console.log("result[i]: ", result[i]);
+         switch (result[i]) {
+            case "form-empty":
+               $("#modalErrorHeader").text("Please complete all fields");
+               break;
+            case "username-taken":
+               $("#userName").val("");
+               $("#userName").prop("placeholder", "Username already taken");
+               break;
+            case "userName-invalid":
+               $("#userName").val("");
+               $("#userName").prop("placeholder", "Please enter a valid username");
+               break;
+            case "email-invalid":
+               $("#email").val('')
+               $("#email").prop("placeholder", "Please enter a valid email address");
+               break;
+            case "password-mismatch":
+               $("#newPassword").val('');
+               $("#confPassword").val('');
+               $("#confPassword").prop("placeholder", "Password does not match");
+               $("#confPassword").addClass("placeholder", "red-text");
+               break;
+         }
       }
    }
 
