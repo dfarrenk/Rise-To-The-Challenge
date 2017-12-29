@@ -76,6 +76,7 @@ module.exports = function(options = email_options, flag) {
    const hrefLink = "http://localhost:8080" + routes[flag],
       customContent = {
          "%username%": options.username,
+         "%challengename%": options.challenge_name,
          "%challenger%": options.challenger_name,
          "%image%": imageLinks[flag],
          "%link%": hrefLink,

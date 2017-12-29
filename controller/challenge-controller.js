@@ -81,14 +81,14 @@ module.exports = function(app) {
             }]
          }).then((data) => {
             console.log(data);
-            console.log(data.issuer.email);
+            console.log(data.Template.name);
             mailer({
                email: data.issuer.email,
                username: req.user.name,
                challenger_name: data.issuer.name,
                challenge_name: data.Template.name
             }, 2);
-            res.status(200).send("user/dashboard");
+            res.status(200).send("dashboard");
          });
       });
    });

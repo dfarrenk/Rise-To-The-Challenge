@@ -247,9 +247,9 @@ $(function() {
       }).then(function(response) {
          console.log("challenge accepted");
          console.log(response);
-         // setTimeout(function() {
-         //    location.replace(response);
-         // }, 1000);
+         setTimeout(function() {
+            location.replace(response);
+         }, 1000);
       });
       //should change state of instance record to "accepted"
    });
