@@ -14,10 +14,10 @@ module.exports = function(app) {
          name: template_name,
          rule: template_rule,
          creator_id: req.user.id
-      }
+      };
       var newInstance = { // grab instance items
          challenger_proof: proof,
-      }
+      };
 
       db.Template.create(newChallenge).then(function(results) { //post a new row in the challenge table.
          // console.log(results);
@@ -36,8 +36,8 @@ module.exports = function(app) {
                instance_id: results2.challenge_id
             }, 1);
             res.status(200).send("/user/dashboard");
-         })
-      })
+         });
+      });
    });
 
    //new challenge instance should be made at the same time as the challenge
@@ -50,14 +50,14 @@ module.exports = function(app) {
          accepter_id: req.body.challenged
          //startState should be default defined boolean
          //gameState should be default value defined boolean
-      }
+      };
       db.Instance.create(newChallengeInstance).then(function(results) { //post a new row in the challenge_instance table
          res.redirect('/dashboard');
-      })
-   })
+      });
+   });
 
    app.put('/challenge/instance/accept', function(req, res) { //update the instance state  (user accepted challenge)
-      console.log(req.originalUrl)
+      console.log(req.originalUrl);
 
       db.Instance.update({
          state: 'challenge-accepted'
@@ -100,8 +100,8 @@ module.exports = function(app) {
          where: { id: req.body.id } //grab challenge id from req
       }).then(function(results) {
          res.redirect('/dashboard');
-      })
-   })
+      });
+   });
 
    app.put('/challenge/instance/prove', function(req, res) { //update the instance state  (user added proof)
       db.Instance.update({
@@ -110,8 +110,8 @@ module.exports = function(app) {
          where: { id: req.body.id } //grab challenge id from req.
       }).then(function(results) {
          res.redirect('/dashboard');
-      })
-   })
+      });
+   });
 
    app.put('/challenge/instance/proofreject', function(req, res) { //update the instance state  (user proof rejected!)
       db.Instance.update({
@@ -120,8 +120,8 @@ module.exports = function(app) {
          where: { id: req.body.id } //grab challenge id from req.
       }).then(function(results) {
          res.redirect('/dashboard');
-      })
-   })
+      });
+   });
 
    app.put('/challenge/instance/proofaccept', function(req, res) { //update the instance state  (user proof accepted!)
       db.Instance.update({
@@ -130,8 +130,8 @@ module.exports = function(app) {
          where: { id: req.body.id } //grab challenge id from req.
       }).then(function(results) {
          res.redirect('/dashboard');
-      })
-   })
+      });
+   });
 
    app.put('/challenge/instance/archive-success', function(req, res) { //update the instance state  (user proof accepted! acknowledged)
       db.Instance.update({
@@ -140,8 +140,8 @@ module.exports = function(app) {
          where: { id: req.body.id } //grab challenge id from req.
       }).then(function(results) {
          res.redirect('/dashboard');
-      })
-   })
+      });
+   });
 
    app.put('/challenge/instance/archive-fail', function(req, res) { //update the instance state  (user proof rejected! acknowledged)
       db.Instance.update({
@@ -150,24 +150,24 @@ module.exports = function(app) {
          where: { id: req.body.id } //grab challenge id from req.
       }).then(function(results) {
          res.redirect('/dashboard');
-      })
-   })
+      });
+   });
 
    app.get('/challenge/instance/id/:id', function(req, res) { //when called, returns this instance's data
       db.Instance.findAll({
          where: { id: req.params.id } //grab challenge id
       }).then(function(results) {
-         res.json(results)
-      })
-   })
+         res.json(results);
+      });
+   });
 
    app.get('/challenge/template/id/:id', function(req, res) { //when called, returns this challenge template data
       db.Template.findAll({
          where: { id: req.params.id } //grab challenge id
       }).then(function(results) {
-         res.json(results)
-      })
-   })
+         res.json(results);
+      });
+   });
 
    //use this while we keep the instance
    /*app.put('/challenge/instance/reject', function(req,res){//update the instance complete to true (user proof accepted!)
