@@ -1,12 +1,16 @@
 $(function() {
-   
+
    $("newUser").on("click", function() {
       $("#signUp").modal()
    });
 
    console.log("challenge.js loaded");
+
+   //Logout handler
+
    $("#logout").on("click", function(event) {
       event.preventDefault();
+      console.log("loggin out");
       $.ajax({
          url: "/user/logout",
          method: "GET"
@@ -14,7 +18,7 @@ $(function() {
          location.replace(response);
       }).catch((err) => {
          console.log(err);
-      })
+      });
    });
 
    //Login Handlers
