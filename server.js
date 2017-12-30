@@ -14,6 +14,17 @@ var errorHandler = require("./errorhandler/handler.js");
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
+// Allows comparisons in handlebars
+var Handlebars = require('handlebars');
+Handlebars.registerHelper('if_eq', function(a, b, opts) {
+   if (a == b) {
+      return opts.fn(this);
+   }
+   else {
+      return opts.inverse(this);
+   }
+});
+
 app.use(express.static("public"));
 app.use(CookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -21,7 +21,7 @@
                <div>
                   <div class="collection">
 
-                     {{#each issued}}
+                     {{#each issued}}{{/each}} {{#each issued}}
                      <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/each}}
 
                   </div>
@@ -43,6 +43,7 @@
             </div>
          </div>
       </div>
+      {{#if_eq 'Foo' 'Foo'}} true {{else}} false {{/if_eq}}
    </main>
    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
    {{!--
