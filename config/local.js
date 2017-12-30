@@ -39,20 +39,31 @@ Passport.use(new LocalStrategy({
       });
    }));
 
-async function serializeCallback(user, done) {
+// async function serializeCallback(user, done) {
+//    DEBUG && console.log("---------------------");
+//    // DEBUG && console.log(user.dataValues);
+//    const tokenObj = await token.genToken(user.dataValues);
+//    DEBUG && console.log(tokenObj);
+
+//    token[tokenObj.name] = tokenObj;
+//    token[tokenObj.name].timeout(token);
+
+//    done(null, tokenObj.name);
+//    // done(null, user.name);
+// }
+
+Passport.serializeUser(function(user, done) {
    DEBUG && console.log("---------------------");
    // DEBUG && console.log(user.dataValues);
-   const tokenObj = await token.genToken(user.dataValues);
-   DEBUG && console.log(tokenObj);
+   token.genToken(user.dataValues).then((tokenObj) => {
+      DEBUG && console.log(tokenObj);
 
-   token[tokenObj.name] = tokenObj;
-   token[tokenObj.name].timeout(token);
+      token[tokenObj.name] = tokenObj;
+      token[tokenObj.name].timeout(token);
 
-   done(null, tokenObj.name);
-   // done(null, user.name);
-}
-
-Passport.serializeUser(serializeCallback);
+      done(null, tokenObj.name);
+   });
+});
 
 Passport.deserializeUser(function(tokenKey, done) {
    DEBUG && console.log("////////////////////////");
