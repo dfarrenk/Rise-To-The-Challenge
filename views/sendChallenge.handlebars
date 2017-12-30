@@ -1,0 +1,104 @@
+{{> challenge_nav }}
+<main>
+   <div>
+      <h1>Rise-to-the-Challenge</h1>
+   </div>
+   <div>
+      <h4>Issue your Challenge</h4>
+      <div class="collection">
+         <br>
+         <div class="row">
+            <form class="col s12" id="challengeIssue">
+               <div class="row">
+                  <div class="input-field col s6">
+                     <input id="challenge_autocomplete" placeholder="Ice bucket Challenge" name="challenge_name" type="text" class="autocomplete validate">
+                     <label class="active" for="challenge_autocomplete">Name of the Challenge:</label>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="input-field col s6">
+                     <input id="recepient_autocomplete" placeholder="Placeholder" name="challenged" type="text" class="autocomplete validate" multiple>
+                     <label class="active" for="name_autocomplete">Name of the Person you wish to challenge:</label>
+                  </div>
+                  <div class="input-field col s6">
+                     <input id="email_autocomplete" placeholder="example@gmail.com" name="challenged" type="text" class="autocomplete validate" multiple>
+                     <label class="active" for="email_autocomplete">Their Email:</label>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="input-field col s12">
+                     <textarea name="rules" class="materialize-textarea"></textarea>
+                     <label class="active" for="textarea1">Rules:</label>
+                  </div>
+               </div>
+               <div class="col s12">
+                  <div class="input-field">
+                     <input placeholder="link your proof video or image here" name="postLink" type="url" class="validate">
+                     <label class="active" for="email" data-error="wrong" data-success="right">Proof: Image or Video</label>
+                  </div>
+               </div>
+               <!--<a href="./dashboard.html">-->
+               <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                  <!--<i class="material-icons right">send</i>-->
+               </button>
+            </form>
+            <!--</a>-->
+         </div>
+</main>
+<script type="text/javascript">
+(function($) {
+   const template = {{json template}};
+   const user = {{json user}};
+
+   // materialize autocomplete
+   const template_name = {},
+      template_rule = {};
+
+   template.forEach((elem) => {
+      template_name[elem.name] = null;
+      template_rule[elem.name] = elem.rule; // this is autofilled
+   });
+
+   $("#challenge_autocomplete").autocomplete({
+      source: template_name,
+      limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+      onAutocomplete: function(val) {
+         // Callback function when value is autcompleted.
+      },
+      minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+   });
+
+   const user_name = {},
+      user_email = {};
+
+   user.forEach((elem) => {
+      user_name[elem.name] = null;
+      user_email[elem.name] = elem.email;
+   });
+
+   console.log(user_name);
+
+   $("#recepient_autocomplete").autocomplete({
+      source: user_name,
+      limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+      onAutocomplete: function(val) {
+         // Callback function when value is autcompleted.
+      },
+      minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+   });
+
+
+
+
+   $("#recepient_autocomplete").blur(function() {
+      const paired_email = user_info[this.val()];
+      console.log(this.val());
+      !!paired_email ? $("#email_autocomplete").text(paired_email) : console.log("...");
+   });
+
+
+
+
+   console.log(template);
+}(jQuery));
+</script>

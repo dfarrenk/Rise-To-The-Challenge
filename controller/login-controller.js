@@ -44,11 +44,7 @@ module.exports = function() {
       });
    });
 
-   loginRoute.post("/login", passport.authenticate("local", {
-      // successRedirect: "/user/dashboard",
-      // failureRedirect: ,
-      // failureFlash: true
-   }), function(req, res) {
+   loginRoute.post("/login", passport.authenticate("local"), function(req, res) {
       DEBUG && console.log(req.user);
       DEBUG && console.log(req.query["challenger"]);
 
@@ -73,8 +69,6 @@ module.exports = function() {
 
    loginRoute.post("/login/new_user", function(req, res) { //new user account creation route linked to route in challenge js
       DEBUG && console.log(req.body);
-
-      // if (req.challenge_id) {...}
 
       bcrypt.hash(req.body.password, 10, function(err, hash) {
          // Store hash in your password DB.
