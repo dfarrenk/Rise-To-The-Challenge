@@ -280,8 +280,17 @@ $(function() {
 
    //Proof Handler
    //===========================
-   $("#proofSub").on("click", function(event) {
-      //should submit proof from challenged user
+   $("#proofLinkButton").on("click", function(event) {
+      //since we are married to youtube link for prototype testing
+      const link = $("#proofForm").val();
+
+      if (!link || !link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
+         $("#proofForm").text("please paste in a youtube link before submit");
+         return;
+      }
+
+      // const linkRestruct = 
+
       var proof = $(this).data("proof");
       $.ajax("challenge/instance/prove", {
          type: "PUT",
