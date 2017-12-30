@@ -1,7 +1,16 @@
 var db = require("../models"),
+   path = require("path"),
    mailer = require("../config/sendgrid_mailer.js");
 
 module.exports = function(app) {
+
+   app.use("/challenge/?", function(req, res, next) {
+      if (!req.user) {
+         console.log(req.user);
+         return res.status(401).sendFile(path.join(__dirname, "../public/plsLogin.html"));
+      }
+      next();
+   });
 
    app.post('/challenge/new', function(req, res) { // post route for a new challenge, also a parent to challenge instance
       const recipient_name = req.body.challenged_name,
@@ -75,7 +84,7 @@ module.exports = function(app) {
             },
             include: [{
                model: db.User,
-               as: "issuer"
+               as: "issued"
             }, {
                model: db.Template
             }]
@@ -83,9 +92,9 @@ module.exports = function(app) {
             console.log(data);
             console.log(data.Template.name);
             mailer({
-               email: data.issuer.email,
+               email: data.issued.email,
                username: req.user.name,
-               challenger_name: data.issuer.name,
+               challenger_name: data.issued.name,
                challenge_name: data.Template.name
             }, 2);
             res.status(200).send("dashboard");

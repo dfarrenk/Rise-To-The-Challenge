@@ -29,8 +29,16 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     User.associate = function(models) {
-        User.hasMany(models.Template, { foreignKey: 'creator_id' })
+        User.hasMany(models.Template, { foreignKey: 'creator_id' });
         // User.belongsToMany(models.Template, { through: { model: models.Instance, unique: false }, foreignKey: 'issuer_id' });
+        User.hasMany(models.Instance, {
+            foreignKey: 'issuer_id',
+            as: "issued"
+        });
+        User.hasMany(models.Instance, {
+            foreignKey: 'accepter_id',
+            as: "accepted"
+        });
     };
 
     return User;

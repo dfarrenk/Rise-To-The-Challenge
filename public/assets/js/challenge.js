@@ -230,23 +230,23 @@ $(function() {
    //Review Response Handlers
    //===========================
    $("#pass").on("click", function(event) {
-      //should change state of instance record to "passed"
-      $.ajax("challenge/instance/proofaccept", {
+      const url = "../challenge/instance/proofaccept" + location.search;
+
+      $.ajax(url, {
          type: "PUT"
       }).then(function() {
          console.log("proof accepted");
       });
-
-
    });
+
    $("#fail").on("click", function(event) {
-      //should change state of instance record to "failed"
-      $.ajax("challenge/instance/proofreject", {
+      const url = "../challenge/instance/proofreject" + location.search;
+
+      $.ajax(url, {
          type: "PUT"
       }).then(function() {
          console.log("proof rejected");
       });
-
    });
 
    //View New Challenge Handlers

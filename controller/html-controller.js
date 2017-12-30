@@ -13,9 +13,4 @@ module.exports = function(app) {
         // res.sendFile(path.join(__dirname, "../public/login.html")); // need to make a "login.handlebars" file to render
     });
 
-    // test route
-    app.get("/handlebars", function(req, res) {
-        // console.log(handlebarsObject);
-        res.render("dashboard" /*, handlebarsObject*/ );
-    });
 };
