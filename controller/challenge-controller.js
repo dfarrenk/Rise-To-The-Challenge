@@ -1,4 +1,5 @@
 var db = require("../models"),
+   path = require("path"),
    mailer = require("../config/sendgrid_mailer.js");
 
 module.exports = function(app) {
@@ -6,7 +7,7 @@ module.exports = function(app) {
    app.use("/challenge/?", function(req, res, next) {
       if (!req.user) {
          console.log(req.user);
-         return res.status(401).send("Please login");
+         return res.status(401).sendFile(path.join(__dirname, "../public/plsLogin.html"));
       }
       next();
    });

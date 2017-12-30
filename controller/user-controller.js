@@ -1,5 +1,13 @@
 var db = require("../models"),
+   handlebars = require("handlebars"),
    path = require("path");
+
+const isVerified = function(req, res, next) {
+   if (!req.user.email_verified) {
+      return res.status(401).send("please verified your email before using this function");
+   }
+   next();
+}
 
 module.exports = function(app) {
 
@@ -11,53 +19,18 @@ module.exports = function(app) {
 
       if (!req.user) {
          console.log(req.user);
-         return res.status(401).send("Please login");
+         return res.status(401).sendFile(path.join(__dirname, "../public/plsLogin.html"));
       }
+
       next();
    });
 
 
    app.get("/user/logout", function(req, res) {
       console.log("heeeer");
-      res.status(200).clearCookie("connect.sid").send("/login");
+      !req.cookies["connect.sid"] ? res.status(200).send("../login") :
+         res.status(200).clearCookie("connect.sid").send("../login");
    });
-
-
-   app.get('/user/revProof', function(req, res) { //go to review proof page
-      console.log(req.query["instance"]);
-      db.Instance.findOne({
-         where: {
-            challenge_id: req.query["instance"]
-         },
-         include: [db.Template]
-      }).then((data) => {
-         
-         res.status(200).render("revProof", data);
-         // res.sendFile(path.join(__dirname, "../views/layouts/revProof.html"));
-      });
-   });
-
-   app.get('/user/subProof/:instanceId', function(req, res) { // go to user proof submission page
-      res.sendFile(path.join(__dirname, "../public/subProof.html")); //
-   });
-
-   app.get('/user/arChallenge', function(req, res) { //go to accept/reject a newly issued challenge page.
-      console.log(req.originalUrl);
-
-      db.Instance.findOne({
-         where: {
-            challenge_id: req.query["instance"]
-         },
-         include: [db.Template]
-      }).then(function(data) {
-         const renderObj = data;
-         renderObj.state === "challenge-accepted" ? renderObj.dataValues.state_code = 1 :
-            renderObj.dataValues.state_code = 0;
-
-         res.status(200).render("challenge", renderObj);
-      });
-   });
-
 
    // test route
    app.get("/user/dashboard", function(req, res) {
@@ -79,22 +52,76 @@ module.exports = function(app) {
          }]
       }).then(function(results) {
          handlebarsObject = results[0];
-         // res.json(handlebarsObject);
-         // console.log(handlebarsObject);
          res.render("dashboard", handlebarsObject);
       });
    });
 
+   app.get('/user/createChallenge', isVerified, function(req, res) { //load the create new challenge page
 
+      handlebars.registerHelper("json", function(obj) {
+         console.log("Helper is running ", obj);
+         return new handlebars.SafeString(JSON.stringify(obj));
+      });
 
-   app.get('/user/createChallenge', function(req, res) { //load the create new challenge page
-      if (!req.user.email_verified) {
-         return res.status(401).send("please verified your email before using this function");
-      }
+      const template = new Array(),
+         user = new Array();
 
-      res.status(200).sendFile(path.join(__dirname, "../public/testing_send_challenge.html"));
-      // res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
+      db.User.findAll().then((user_data) => {
+         db.Template.findAll().then((template_data) => {
+
+            template_data.forEach((elem) => {
+               template.push({
+                  name: elem.name,
+                  rule: elem.rule
+               })
+            });
+
+            user_data.forEach((elem) => {
+               user.push({
+                  name: elem.name,
+                  email: elem.email
+               });
+            });
+
+            res.render("sendChallenge", { template: template, user: user });
+         });
+      });
    }); // challenge form now a modal
+
+   app.get('/user/arChallenge', isVerified, function(req, res) { //go to accept/reject a newly issued challenge page.
+      console.log(req.originalUrl);
+
+      db.Instance.findOne({
+         where: {
+            challenge_id: req.query["instance"]
+         },
+         include: [db.Template]
+      }).then(function(data) {
+         const renderObj = data;
+         renderObj.state === "challenge-accepted" ? renderObj.dataValues.state_code = 1 :
+            renderObj.dataValues.state_code = 0;
+
+         res.status(200).render("challenge", renderObj);
+      });
+   });
+
+   app.get('/user/revProof', isVerified, function(req, res) { //go to review proof page
+      console.log(req.query["instance"]);
+      db.Instance.findOne({
+         where: {
+            challenge_id: req.query["instance"]
+         },
+         include: [db.Template]
+      }).then((data) => {
+
+         res.status(200).render("revProof", data);
+         // res.sendFile(path.join(__dirname, "../views/layouts/revProof.html"));
+      });
+   });
+
+   app.get('/user/subProof/:instanceId', function(req, res) { // go to user proof submission page
+      res.sendFile(path.join(__dirname, "../public/subProof.html")); //
+   });
 
    app.get('/user/proveChallenge', function(req, res) { //load the prove challenge page on selected challenge instance, need to find the challenge instance
       /* db.challengeInstance.findAll({
