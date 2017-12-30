@@ -42,16 +42,23 @@ module.exports = function(app) {
             as: "issued",
             include: [{
                model: db.Template
+            }, {
+               model: db.User,
+               as: "accepted"
             }]
          }, {
             model: db.Instance,
             as: "accepted",
             include: [{
                model: db.Template
+            }, {
+               model: db.User,
+               as: "issued"
             }]
          }]
       }).then(function(results) {
          handlebarsObject = results[0];
+         // res.json(handlebarsObject);
          res.render("dashboard", handlebarsObject);
       });
    });
@@ -111,16 +118,11 @@ module.exports = function(app) {
          where: {
             challenge_id: req.query["instance"]
          },
-         include: [{
-               model: db.User,
-               as: "accepted"
-            }, {
-               model: db.Template
-            }]
+         include: [db.Template]
       }).then((data) => {
-         console.log("? What!!", req.query["instance"]);
-         // console.log(data.dataValues);
+
          res.status(200).render("revProof", data);
+         // res.sendFile(path.join(__dirname, "../views/layouts/revProof.html"));
       });
    });
 
