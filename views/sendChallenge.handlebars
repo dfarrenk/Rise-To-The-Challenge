@@ -28,7 +28,7 @@
                <div class="row">
                   <div class="input-field col s12">
                      <textarea id="rules" name="rules" class="materialize-textarea"></textarea>
-                     <label class="active" for="textarea1">Rules:</label>
+                     <label class="active" for="rules">Rules:</label>
                   </div>
                </div>
                <div class="col s12">
@@ -50,7 +50,7 @@
    const template = {{json template}};
    const user = {{json user}};
 
-   // materialize autocomplete
+   // template
    const template_name = new Array(),
       template_rule = {};
 
@@ -68,6 +68,13 @@
       minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
    });
 
+   $("#challenge_autocomplete").blur(function() {
+      const paired_rule = template_rule[$(this).val()];
+      console.log(paired_rule);
+      !!paired_rule ? $("#rules").val(paired_rule).prop("placeholder", "").next("label").text("") : console.log("...");
+   });
+
+   // user
    const user_name = new Array(),
       user_email = {};
 
@@ -75,8 +82,6 @@
       user_name.push(elem.name);
       user_email[elem.name] = elem.email;
    });
-
-   console.log(user_name);
 
    $("#recepient_autocomplete").autocomplete({
       source: user_name,
@@ -86,14 +91,6 @@
       },
       minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
    });
-
-
-   $("#challenge_autocomplete").blur(function() {
-      const paired_rule = template_rule[$(this).val()];
-      console.log(paired_rule);
-      !!paired_rule ? $("#rules").val(paired_rule).prop("placeholder", "") : console.log("...");
-   });
-
 
    $("#recepient_autocomplete").blur(function() {
       const paired_email = user_email[$(this).val()];

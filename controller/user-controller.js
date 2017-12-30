@@ -111,7 +111,12 @@ module.exports = function(app) {
          where: {
             challenge_id: req.query["instance"]
          },
-         include: [db.Template]
+         include: [{
+               model: db.User,
+               as: "issued"
+            }, {
+               model: db.Template
+            }]
       }).then((data) => {
 
          res.status(200).render("revProof", data);
