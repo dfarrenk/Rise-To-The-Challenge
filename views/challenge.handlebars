@@ -1,29 +1,19 @@
-<nav>
-   <div class="nav-wrapper">
-      <a href="#" class="brand-logo">(Our Logo Here)</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-         <li><a href="./dashboard.html">Dashboard</a></li>
-         <li><a href="#">About</a></li>
-         <li><a id="logout" href="#">Logout</a></li>
-      </ul>
-   </div>
-</nav>
+{{> challenge_nav }}
 <main>
    <div>
-      <h1>Rise-to-the-Challenge</h1>
+      <h1>{{ dataValues.Template.dataValues.name }}</h1>
    </div>
    <div>
-      <h4>{{dataValues.Template.dataValues.name}}</h4>
-      <h4>Challenge Status: {{dataValues.state}}</h4>
+      <h4>Challenge Status: {{ dataValues.state }}</h4>
       <div class="collection">
          <h4>Rules:</h4>
          <div class="collection">
-            <p>{{dataValues.Template.dataValues.rule}}</p>
+            <p>{{ dataValues.Template.dataValues.rule }}</p>
          </div>
-         {{#if dataValues.state_code}}
+         {{#if dataValues.state_code }}
             {{> state_challenge_accepted }}
          {{/if}}
-         {{#unless dataValues.state_code}}
+         {{#unless dataValues.state_code }}
             {{> state_challenge_issued }}
          {{/unless}}
       </div>

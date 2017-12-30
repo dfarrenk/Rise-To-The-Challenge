@@ -3,32 +3,38 @@ var db = require("../models"),
 
 module.exports = function(app) {
 
-   /*app.post('/newuser', function(req, res) { // post route to user should be a parent to challenge instance
-       var newuser = { //need to know all vars in the model but basic
-           user_name: req.body.name,
-           user_password:req.body.password,
-           user_alias:req.body.alias,
-           email: req.body.email
-       }
-       db.user.create(newuser).then(function(results){ //post a new row in the user table
-           res.redirect('/dashboard');
-       })
-   })*/
+   app.get("/user/*?", function(req, res, next) {
+      if (req.path.match(/\logout/)) {
+         console.log("I should return here");
+         return next();
+      }
+
+      if (!req.user) {
+         console.log(req.user);
+         return res.status(401).send("Please login");
+      }
+      next();
+   });
+
+
    app.get("/user/logout", function(req, res) {
       console.log("heeeer");
       res.status(200).clearCookie("connect.sid").send("/login");
    });
 
-   app.get('/user/id/:id', function(req, res) { //when called, returns this users data
-      db.user.findAll({
-         where: { id: req.params.id } //grab user id
-      }).then(function(results) {
-         res.json(results);
-      });
-   });
 
-   app.get('/user/revProof/:instanceId', function(req, res) { //go to review proof page
-      res.sendFile(path.join(__dirname, "../public/revProof.html"));
+   app.get('/user/revProof', function(req, res) { //go to review proof page
+      console.log(req.query["instance"]);
+      db.Instance.findOne({
+         where: {
+            challenge_id: req.query["instance"]
+         },
+         include: [db.Template]
+      }).then((data) => {
+         
+         res.status(200).render("revProof", data);
+         // res.sendFile(path.join(__dirname, "../views/layouts/revProof.html"));
+      });
    });
 
    app.get('/user/subProof/:instanceId', function(req, res) { // go to user proof submission page
@@ -36,73 +42,56 @@ module.exports = function(app) {
    });
 
    app.get('/user/arChallenge', function(req, res) { //go to accept/reject a newly issued challenge page.
-      // res.sendFile(path.join(__dirname, "../public/challenge.html")) //
-      console.log("path");
       console.log(req.originalUrl);
+
       db.Instance.findOne({
          where: {
             challenge_id: req.query["instance"]
          },
          include: [db.Template]
       }).then(function(data) {
-         console.log(data);
          const renderObj = data;
-         renderObj.state === "challenge-accepted" ? renderObj.dataValues.state_code = 1 : 
+         renderObj.state === "challenge-accepted" ? renderObj.dataValues.state_code = 1 :
             renderObj.dataValues.state_code = 0;
+
          res.status(200).render("challenge", renderObj);
-         // res.json(data);
-         // res.sendFile(path.join(__dirname, "../views/layouts/challenge.html"));   
       });
    });
 
-   app.get( /*'/user/dashboard'*/ "/tempdisabled", function(req, res) { //get data from  our tables to populate home page
-      // testing for response
-      // res.status(200).json({
-      //    user: req.user.name,
-      //    userid: req.user.id,
-      //    email: req.user.email
-      // });
 
-      //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
-      db.Instance.findAll({
-         where: { issuer_id: req.user.dataValues.id },
-         include: [db.Template]
+   // test route
+   app.get("/user/dashboard", function(req, res) {
+      var handlebarsObject;
+      db.User.findAll({
+         where: { id: req.user.id }, //grab user id
+         include: [{
+            model: db.Instance,
+            as: "issued",
+            include: [{
+               model: db.Template
+            }]
+         }, {
+            model: db.Instance,
+            as: "accepted",
+            include: [{
+               model: db.Template
+            }]
+         }]
       }).then(function(results) {
-         var challengesIssued = results;
-         challengesIssued.map(v => v.challengedIssued = true); //assign value to each of challengedIssued==true
-         for (var i = 0; i < challengesIssued.length; i++) { //loop through results, assign correct truthy value and change any old ones for Hbars to grab onto.
-            console.log(challengesIssued[i]);
-            if (challengesIssued[i].dataValues.state === "challenge-issued") {
-               console.log("this challenge is in the challenge issued state"); //create a truthy value for handlebars logic
-               challengesIssued[i]['challenge-issued'] = true;
-            } else if (challengesIssued[i].dataValues.state === "challenge-accepted") { // change truthy and use different variable
-               challengesIssued[i]['challenge-issued'] = false;
-               challengesIssued[i]['challenge-accepted'] = true;
-            } else if (challengesIssued[i].dataValues.state === 'provided-proof') { //change and add truthy
-               challengesIssued[i]['challenge-issued'] = false;
-               challengesIssued[i]['challenge-accepted'] = false;
-               challengesIssued[i]['provide-proof'] = true;
-            }
-         }
-         db.Instance.findAll({
-            where: { accepter_id: req.user.dataValues.id },
-            include: [db.Template]
-         }).then(function(results2) {
-            var challengesRecieved = results2;
-            challengesRecieved.map(y => y.challengedIssued = false); //assign value to each of challengeIssued = false.
-            var allChallenges = challengesIssued.concat(challengesRecieved);
-            var hbsObject = { key: allChallenges };
-            //.log(hbsObject);
-            //console.log(hbsObject.key[0].dataValues)
-            //console.log(hbsObject.key[0].dataValues.Template.dataValues.name)
-            res.render('dashboard', hbsObject);
-         });
-         //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
-
+         handlebarsObject = results[0];
+         // res.json(handlebarsObject);
+         // console.log(handlebarsObject);
+         res.render("dashboard", handlebarsObject);
       });
    });
 
-   app.get('/user/createChallenge.html', function(req, res) { //load the create new challenge page
+
+
+   app.get('/user/createChallenge', function(req, res) { //load the create new challenge page
+      if (!req.user.email_verified) {
+         return res.status(401).send("please verified your email before using this function");
+      }
+
       res.status(200).sendFile(path.join(__dirname, "../public/testing_send_challenge.html"));
       // res.render('newChallenge'); // need to make a "newChallenge.handlebars" file to render
    }); // challenge form now a modal
@@ -115,4 +104,72 @@ module.exports = function(app) {
            res.render('proveChallenge',hbsObject)
        })*/
    });
+
+   // app.get('/user/dashboard', function(req, res) { //get data from  our tables to populate home page
+   //    // testing for response
+   //    // res.status(200).json({
+   //    //    user: req.user.name,
+   //    //    userid: req.user.id,
+   //    //    email: req.user.email
+   //    // });
+
+   //    //res.status(200).sendFile(path.join(__dirname, "../views/layouts/dashboard.html"));
+   //    db.Instance.findAll({
+   //       where: { issuer_id: req.user.dataValues.id },
+   //       include: [db.Template]
+   //    }).then(function(results) {
+   //       var challengesIssued = results;
+   //       challengesIssued.map(v => v.challengedIssued = true); //assign value to each of challengedIssued==true
+   //       for (var i = 0; i < challengesIssued.length; i++) { //loop through results, assign correct truthy value and change any old ones for Hbars to grab onto.
+   //          console.log(challengesIssued[i]);
+   //          if (challengesIssued[i].dataValues.state === "challenge-issued") {
+   //             console.log("this challenge is in the challenge issued state"); //create a truthy value for handlebars logic
+   //             challengesIssued[i]['challenge-issued'] = true;
+   //          } else if (challengesIssued[i].dataValues.state === "challenge-accepted") { // change truthy and use different variable
+   //             challengesIssued[i]['challenge-issued'] = false;
+   //             challengesIssued[i]['challenge-accepted'] = true;
+   //          } else if (challengesIssued[i].dataValues.state === 'provided-proof') { //change and add truthy
+   //             challengesIssued[i]['challenge-issued'] = false;
+   //             challengesIssued[i]['challenge-accepted'] = false;
+   //             challengesIssued[i]['provide-proof'] = true;
+   //          }
+   //       }
+   //       db.Instance.findAll({
+   //          where: { accepter_id: req.user.dataValues.id },
+   //          include: [db.Template]
+   //       }).then(function(results2) {
+   //          var challengesRecieved = results2;
+   //          challengesRecieved.map(y => y.challengedIssued = false); //assign value to each of challengeIssued = false.
+   //          var allChallenges = challengesIssued.concat(challengesRecieved);
+   //          var hbsObject = { key: allChallenges };
+   //          //.log(hbsObject);
+   //          //console.log(hbsObject.key[0].dataValues)
+   //          //console.log(hbsObject.key[0].dataValues.Template.dataValues.name)
+   //          res.render('dashboard', hbsObject);
+   //       });
+   //       //fill in logic here to create our hbsObject needs to populate user challenges, sent and recieved, sample
+
+   //    });
+   // });
+
+
+   // app.get('/user/id/:id', function(req, res) { //when called, returns this users data
+   //    db.user.findAll({
+   //       where: { id: req.params.id } //grab user id
+   //    }).then(function(results) {
+   //       res.json(results);
+   //    });
+   // });
+
+   /*app.post('/newuser', function(req, res) { // post route to user should be a parent to challenge instance
+       var newuser = { //need to know all vars in the model but basic
+           user_name: req.body.name,
+           user_password:req.body.password,
+           user_alias:req.body.alias,
+           email: req.body.email
+       }
+       db.user.create(newuser).then(function(results){ //post a new row in the user table
+           res.redirect('/dashboard');
+       })
+   })*/
 };
