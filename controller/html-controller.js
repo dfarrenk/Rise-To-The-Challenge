@@ -15,27 +15,27 @@ module.exports = function(app) {
 
     // test route
     app.get("/handlebars", function(req, res) {
-        // console.log(handlebarsObject);
-        res.json("hello world");
         var handlebarsObject;
         db.User.findAll({
             where: { id: '1' }, //grab user id
             include: [{
                 model: db.Instance,
-                as: "issued"
+                as: "issued",
+                include: [{
+                    model: db.Template
+                }]
+            }, {
+                model: db.Instance,
+                as: "accepted",
+                include: [{
+                    model: db.Template
+                }]
             }]
-            // , {
-            //     model: db.Instance,
-            //     as: "accepted"
-            // }],
-
         }).then(function(results) {
-
-            // handlebarsObject = results;
-
+            handlebarsObject = results[0];
+            // res.json(handlebarsObject);
+            // console.log(handlebarsObject);
+            res.render("dashboard", handlebarsObject);
         });
-
-        console.log(handlebarsObject);
-        // res.render("dashboard" /*, handlebarsObject*/ );
     });
 };

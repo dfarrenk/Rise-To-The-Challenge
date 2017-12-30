@@ -12,22 +12,18 @@
       <div>
          <h1>Rise-to-the-Challenge</h1>
          <!-- three panels -->
+         <h5> Welcome, {{dataValues.name}} </h5>
       </div>
       <div class="row">
          <div class="col s6">
             <div>
                <h4>Challenges Issued</h4>
-               <div class="collection">
+               <div>
                   <div class="collection">
-                     {{#each key}} {{#if challengedIssued}} {{#if challlenge-issued}}
-                     <span class="collection-item">{{dataValues.Template.dataValues.name}}</span> {{/if}} {{#if challlenge-accepted}}
-                     <span class="collection-item">{{dataValues.Template.dataValues.name}}</span> {{/if}} {{#if provide-proof}}
-                     <a href="/user/revProof/" {{dataValues.challenge_id}} class="collection-item">{{dataValues.Template.dataValues.name}}</a> {{/if}}
-                     <a href="/user/arChallenge/" class="collection-item"> {{dataValues.Template.dataValues.name}}</a> {{/if}} {{/each}}
-                     <a href="./revProof.html" class="collection-item">Basketball Challenge</a>
-                     <a href="#!" class="collection-item">Putt Challenge</a>
-                     <a href="#!" class="collection-item">Coding Challenge</a>
-                     <a href="#!" class="collection-item">Breath-holding Challenge</a>
+
+                     {{#each issued}}
+                     <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/each}}
+
                   </div>
                   <a href="/user/createChallenge.html">
                      <button class="btn waves-effect waves-light" type="submit" name="action">Create New Challenge
@@ -40,20 +36,15 @@
             <div>
                <h4>Received Challenges</h4>
                <div class="collection">
-                  {{#each key}} {{#unless challengedIssued}}
-                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}}</a> {{/unless}} {{/each}}
-                  <a href="/user/createChallenge/" class="collection-item">- NEW CHALLENGE - Tim</a>
-                  <a href="#!" class="collection-item">Running Challenge - Jim</a>
-                  <a href="#!" class="collection-item">Football Challenge - David</a>
-                  <a href="#!" class="collection-item">Hand-stand Challenge - Patrick</a>
+
+                  {{#each accepted}}
+                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/each}}
                </div>
             </div>
          </div>
       </div>
    </main>
-   <div class="container">
-      © 2017 Rise to the Challenge
-   </div>
    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-   <script type="text/javascript" src="js/materialize.min.js"></script>
+   {{!--
+   <script type="text/javascript" src="js/materialize.min.js"></script>--}}
 </body>
