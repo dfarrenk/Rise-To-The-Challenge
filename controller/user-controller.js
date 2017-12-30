@@ -38,15 +38,24 @@ module.exports = function(app) {
    app.get('/user/arChallenge', function(req, res) { //go to accept/reject a newly issued challenge page.
       // res.sendFile(path.join(__dirname, "../public/challenge.html")) //
       console.log("path");
-      res.sendFile(path.join(__dirname, "../views/layouts/challenge.html"));
-      /* db.Instance.findAll({
-          where:{id:}
-       }).then(function(results){
-
-       })*/
+      console.log(req.originalUrl);
+      db.Instance.findOne({
+         where: {
+            challenge_id: req.query["instance"]
+         },
+         include: [db.Template]
+      }).then(function(data) {
+         console.log(data);
+         const renderObj = data;
+         renderObj.state === "challenge-accepted" ? renderObj.dataValues.state_code = 1 : 
+            renderObj.dataValues.state_code = 0;
+         res.status(200).render("challenge", renderObj);
+         // res.json(data);
+         // res.sendFile(path.join(__dirname, "../views/layouts/challenge.html"));   
+      });
    });
 
-   app.get('/user/dashboard', function(req, res) { //get data from  our tables to populate home page
+   app.get( /*'/user/dashboard'*/ "/tempdisabled", function(req, res) { //get data from  our tables to populate home page
       // testing for response
       // res.status(200).json({
       //    user: req.user.name,
@@ -66,12 +75,10 @@ module.exports = function(app) {
             if (challengesIssued[i].dataValues.state === "challenge-issued") {
                console.log("this challenge is in the challenge issued state"); //create a truthy value for handlebars logic
                challengesIssued[i]['challenge-issued'] = true;
-            }
-            else if (challengesIssued[i].dataValues.state === "challenge-accepted") { // change truthy and use different variable
+            } else if (challengesIssued[i].dataValues.state === "challenge-accepted") { // change truthy and use different variable
                challengesIssued[i]['challenge-issued'] = false;
                challengesIssued[i]['challenge-accepted'] = true;
-            }
-            else if (challengesIssued[i].dataValues.state === 'provided-proof') { //change and add truthy
+            } else if (challengesIssued[i].dataValues.state === 'provided-proof') { //change and add truthy
                challengesIssued[i]['challenge-issued'] = false;
                challengesIssued[i]['challenge-accepted'] = false;
                challengesIssued[i]['provide-proof'] = true;

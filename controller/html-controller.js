@@ -14,10 +14,10 @@ module.exports = function(app) {
     });
 
     // test route
-    app.get("/handlebars", function(req, res) {
+    app.get("/user/dashboard", function(req, res) {
         var handlebarsObject;
         db.User.findAll({
-            where: { id: '1' }, //grab user id
+            where: { id: req.user.id }, //grab user id
             include: [{
                 model: db.Instance,
                 as: "issued",
