@@ -32,3 +32,11 @@ input:-ms-input-placeholder {
 #modalErrorHeader {
     color: red;
 }
+
+#Copyright {
+    text-align: center
+}
+
+.page-footer {
+    height: 60px;
+}
