@@ -4,11 +4,13 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background-image: url("/assets/images/duel.jpg");
 }
 
 main {
     flex: 1 0 auto;
     margin: 10%;
+    /*background-color: #709597;*/
 }
 
 input::-webkit-input-placeholder {
