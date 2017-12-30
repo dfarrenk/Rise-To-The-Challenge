@@ -56,7 +56,7 @@ $(function() {
       //should submit new user info
       console.log("profile creation requested");
 
-      let validateResult = validateInput();
+      let validateResult = validateNewUserInput();
 
       if (isNaN(validateResult)) {
          console.log(validateResult);
@@ -108,7 +108,7 @@ $(function() {
       });
    }
 
-   function validateInput() {
+   function validateNewUserInput() {
       console.log("validating...");
       var caseArray = [];
       var userName = $("#userName").val();
@@ -148,17 +148,25 @@ $(function() {
          console.log("result[i]: ", result[i]);
          switch (result[i]) {
             case "form-empty":
+               $("#newPassword").val('');
+               $("#confPassword").val('');
                $("#modalErrorHeader").text("Please complete all fields");
                break;
             case "username-taken":
+               $("#newPassword").val('');
+               $("#confPassword").val('');
                $("#userName").val("");
                $("#userName").prop("placeholder", "Username already taken");
                break;
             case "userName-invalid":
+               $("#newPassword").val('');
+               $("#confPassword").val('');
                $("#userName").val("");
                $("#userName").prop("placeholder", "Please enter a valid username");
                break;
             case "email-invalid":
+               $("#newPassword").val('');
+               $("#confPassword").val('');
                $("#email").val('')
                $("#email").prop("placeholder", "Please enter a valid email address");
                break;
