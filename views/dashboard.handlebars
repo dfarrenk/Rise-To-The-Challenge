@@ -1,6 +1,6 @@
 <body>
    <nav>
-      <div class="nav-wrapper">
+      <div class="nav-wrapper z-depth-4">
          <a href="/user/dashboard" class="brand-logo center" id="logo">Duello</a>
          <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="/">About</a></li>
@@ -16,10 +16,10 @@
       </div>
       <div class="row">
          <div class="col s6">
-            <div id="issuedContainer">
-               <h4>Challenges Issued</h4>
+            <div id="issuedContainer" class="cont">
+               <h5>Challenges Issued</h5>
                <div>
-                  <div class="collection" id="issuedBox">
+                  <div class="collection z-depth-2 Form" id="issuedBox">
                      {{!--{{#if_eq 'Foo' 'Foo'}} true {{else}} false {{/if_eq}}--}} {{#each issued}} {{#if_eq dataValues.state 'challenge-issued'}}
                      <a href="/user/revProof?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-accepted'}}
                      <a href="/user/revProof?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-rejected'}}
@@ -31,16 +31,16 @@
                      <a href="/user/revProof?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{/each}}
                   </div>
                   <a href="/user/createChallenge">
-                     <button class="btn waves-effect waves-light" type="submit" name="action">Create New Challenge
+                     <button class="btn waves-effect waves-light z-depth-1" type="submit" name="action">Create New Challenge
                      </button>
                   </a>
                </div>
             </div>
          </div>
          <div class="col s6">
-            <div id="receivedContainer">
-               <h4>Received Challenges</h4>
-               <div class="collection" id="receivedBox">
+            <div id="receivedContainer" class="cont">
+               <h5>Received Challenges</h5>
+               <div class="collection z-depth-2 Form" id="receivedBox">
                   {{#each accepted}} {{#if_eq dataValues.state 'challenge-issued'}}
                   <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-accepted'}}
                   <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-rejected'}}

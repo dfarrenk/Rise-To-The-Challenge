@@ -4,14 +4,12 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    /*background-image: url("/assets/images/duel.jpg");
-    */
+    /*background-image: url("/assets/images/duel.jpg");*/
 }
 
 main {
     flex: 1 0 auto;
-    margin: 10%;
-    /*background-color: #709597;*/
+    margin: 100px 10%;
 }
 
 input::-webkit-input-placeholder {
@@ -44,13 +42,27 @@ input:-ms-input-placeholder {
     height: 60px;
 }
 
-#issuedContainer,
-#receivedContainer {
-    /*background-color: #709597;*/
-    /*padding: 3px;*/
-    /*opacity: .9;*/
+.cont {
+    background-color: #709597;
+    padding: 3px;
+    opacity: .95;
 }
 
 #logo {
     font-family: 'Pinyon Script', cursive;
+}
+
+.Form {
+    background-color: white;
+    margin: 0, 10px;
+    padding: 10px;
+}
+
+.nav-wrapper,
+.page-footer {
+    background-color: #CA8982;
+}
+
+.btn {
+    background-color: #82A0CA;
 }
