@@ -1,7 +1,7 @@
 <body>
    <nav>
       <div class="nav-wrapper">
-         <a href="/user/dashboard" class="brand-logo center">Duello</a>
+         <a href="/user/dashboard" class="brand-logo center" id="logo">Duello</a>
          <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="/">About</a></li>
             <li><a id="logout" href="">Logout</a></li>
@@ -16,10 +16,10 @@
       </div>
       <div class="row">
          <div class="col s6">
-            <div>
+            <div id="issuedContainer">
                <h4>Challenges Issued</h4>
                <div>
-                  <div class="collection">
+                  <div class="collection" id="issuedBox">
                      {{!--{{#if_eq 'Foo' 'Foo'}} true {{else}} false {{/if_eq}}--}} {{#each issued}} {{#if_eq dataValues.state 'challenge-issued'}}
                      <a href="/user/revProof?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-accepted'}}
                      <a href="/user/revProof?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-rejected'}}
@@ -38,9 +38,9 @@
             </div>
          </div>
          <div class="col s6">
-            <div>
+            <div id="receivedContainer">
                <h4>Received Challenges</h4>
-               <div class="collection">
+               <div class="collection" id="receivedBox">
                   {{#each accepted}} {{#if_eq dataValues.state 'challenge-issued'}}
                   <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-accepted'}}
                   <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-rejected'}}

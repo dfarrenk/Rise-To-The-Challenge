@@ -4,7 +4,8 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    background-image: url("/assets/images/duel.jpg");
+    /*background-image: url("/assets/images/duel.jpg");
+    */
 }
 
 main {
@@ -41,4 +42,15 @@ input:-ms-input-placeholder {
 
 .page-footer {
     height: 60px;
+}
+
+#issuedContainer,
+#receivedContainer {
+    /*background-color: #709597;*/
+    /*padding: 3px;*/
+    /*opacity: .9;*/
+}
+
+#logo {
+    font-family: 'Pinyon Script', cursive;
 }
