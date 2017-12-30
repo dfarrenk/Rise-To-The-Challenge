@@ -1,8 +1,8 @@
 USE challenge;
 
-INSERT INTO `challenge`.`Users` (`id`, `name`, `password`, `alias`, `email`, `email_verified`, `createdAt`, `updatedAt`) VALUES (NULL, 'testuser2', '$2a$10$KV6qPn/yM/ppvYzJqCG4y.DdkuRTdO4VPYcwwg.VROB4V5hAKANXG', NULL, 'pat2382@yahoo.com', '0', '', '');
+INSERT INTO `challenge`.`Users` (`id`, `name`, `password`, `alias`, `email`, `email_verified`, `createdAt`, `updatedAt`) VALUES (NULL, 'testuser2', '$2a$10$KV6qPn/yM/ppvYzJqCG4y.DdkuRTdO4VPYcwwg.VROB4V5hAKANXG', NULL, 'pat2382@yahoo.com', '1', '', '');
 
-INSERT INTO `challenge`.`Users` (`id`, `name`, `password`, `alias`, `email`, `email_verified`, `createdAt`, `updatedAt`) VALUES (NULL, 'testuser', '$2a$10$WiXE0YZF.LJ7.lePA1t8..qy4ITCfkaGmqpg2369HZnuNcP/cNAvW', NULL, 'tim.jeng@gmail.com', '0', '', '');
+INSERT INTO `challenge`.`Users` (`id`, `name`, `password`, `alias`, `email`, `email_verified`, `createdAt`, `updatedAt`) VALUES (NULL, 'testuser', '$2a$10$WiXE0YZF.LJ7.lePA1t8..qy4ITCfkaGmqpg2369HZnuNcP/cNAvW', NULL, 'tim.jeng@gmail.com', '1', '', '');
 
 INSERT INTO `challenge`.`Templates` (`id`, `name`, `rule`, `createdAt`, `updatedAt`) VALUES (NULL, 'test', 'rules aren''t there for a test', '', '');
 

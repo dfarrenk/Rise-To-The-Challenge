@@ -1,2 +1,14 @@
 <button id="proofSub" class="btn waves-effect waves-light" type="submit" name="action">Submit Proof
 </button>
+
+<form class="input-field scale-transition scale-out" id="emailForm0">
+    <input id="proofLink" type="email" class="validate" style="width:80%">
+    <label for="proofLink">Link</label>
+    <button id="proofLinkButton" type="button" class="btn-floating btn-large right"><i class="material-icons">arrow_forward</i></button>
+</form>
+
+<script>
+    $("#proofSub").click(function() {
+        $("#emailForm0").toggleClass("scale-out").toggleClass("scale-in");
+    });
+</script>
