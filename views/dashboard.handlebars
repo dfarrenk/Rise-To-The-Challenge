@@ -37,12 +37,12 @@
                   {{#each accepted}} {{#if_eq dataValues.state 'challenge-issued'}}
                   <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-accepted'}}
                   <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-rejected'}}
-                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'provided-proof'}}
-                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'proof-accepted'}}
-                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'proof-rejected'}}
-                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'archive-success'}}
-                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'archive-fail'}}
-                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{/each}}
+                  {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'provided-proof'}}
+                  {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'proof-accepted'}}
+                  {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'proof-rejected'}}
+                  {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'archive-success'}}
+                  {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'archive-fail'}}
+                  {{> received_collapsible}} {{/if_eq}} {{/each}}
                </div>
 
             </div>
