@@ -62,7 +62,6 @@ Passport.serializeUser(function(user, done) {
       token[tokenObj.name].timeout(token);
 
       done(null, tokenObj.name);
-      // done(null, user.name);   
    });
 });
 

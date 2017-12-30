@@ -259,9 +259,11 @@ $(function() {
    });
 
    $("#reject").on("click", function(event) {
+      const url = "../challenge/instance/reject" + location.search;
+
       //should change state of instance record to "rejected"
-      $.ajax("challenge/instance/reject", {
-         type: "PUT" // delete might be more appropriate since once rejected we are not opening it again
+      $.ajax(url, {
+         type: "PUT" 
       }).then(function(response) {
          console.log("challenge rejected");
          setTimeout(function() {

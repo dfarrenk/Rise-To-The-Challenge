@@ -75,7 +75,7 @@ module.exports = function(app) {
             },
             include: [{
                model: db.User,
-               as: "issuer"
+               as: "issued"
             }, {
                model: db.Template
             }]
@@ -83,15 +83,16 @@ module.exports = function(app) {
             console.log(data);
             console.log(data.Template.name);
             mailer({
-               email: data.issuer.email,
+               email: data.issued.email,
                username: req.user.name,
-               challenger_name: data.issuer.name,
+               challenger_name: data.issued.name,
                challenge_name: data.Template.name
             }, 2);
             res.status(200).send("dashboard");
          });
       });
    });
+
 
    app.put('/challenge/instance/reject', function(req, res) { //update the instance state  (user rejected challenge)
       db.Instance.update({
