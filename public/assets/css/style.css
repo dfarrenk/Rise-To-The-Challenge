@@ -4,11 +4,13 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background-image: url("/assets/images/duel.jpg");
 }
 
 main {
     flex: 1 0 auto;
     margin: 10%;
+    /*background-color: #709597;*/
 }
 
 input::-webkit-input-placeholder {
@@ -31,4 +33,12 @@ input:-ms-input-placeholder {
 
 #modalErrorHeader {
     color: red;
+}
+
+#Copyright {
+    text-align: center
+}
+
+.page-footer {
+    height: 60px;
 }
