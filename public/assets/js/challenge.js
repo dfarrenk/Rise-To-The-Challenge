@@ -282,22 +282,27 @@ $(function() {
    //===========================
    $("#proofLinkButton").on("click", function(event) {
       //since we are married to youtube link for prototype testing
-      const link = $("#proofForm").val();
+      const url = "../challenge/instance/prove" + location.search;
+      const link = $("#proofLink").val();
 
       if (!link || !link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
-         $("#proofForm").text("please paste in a youtube link before submit");
+         $("#proofLink").text("please paste in a youtube link before submit");
          return;
       }
 
-      // const linkRestruct = 
+      const videoId = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, ""),
+         linkRestruct = "https://www.youtube.com/embed/" + videoId;
 
-      var proof = $(this).data("proof");
-      $.ajax("challenge/instance/prove", {
+      console.log(linkRestruct);
+
+      $.ajax(url, {
          type: "PUT",
-         data: proof
-      }).then(function() {
-         console.log("proof submitted: " + proof);
+         data: { link: linkRestruct }
+      }).then(function(response) {
+         console.log(response);
+         setTimeout(function() {
+            location.replace(response);
+         }, 1000);
       });
    });
-
 });

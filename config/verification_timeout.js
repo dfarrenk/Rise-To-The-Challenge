@@ -88,8 +88,3 @@ module.exports = function(userData) {
 
    return TimeoutMeta;
 }
-
-
-// if for some reason the user is deleted from the database not by the module
-// the process will hang because the server doesn't know what to do when it can't find 
-// the data it is looking for

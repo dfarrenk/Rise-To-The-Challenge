@@ -13,7 +13,7 @@
          {{#if dataValues.state_code }} {{> state_challenge_accepted }} {{/if}} {{#unless dataValues.state_code }} {{> state_challenge_issued }} {{/unless}}
       </div>
       <form class="input-field scale-transition scale-out" id="proofForm">
-         <input id="proofLink" type="email" class="validate" style="width:80%">
+         <input id="proofLink" type="text" class="validate" style="width:80%">
          <label for="proofLink">Link</label>
          <button id="proofLinkButton" type="button" class="btn-floating btn-large"><i class="material-icons">arrow_forward</i></button>
       </form>
