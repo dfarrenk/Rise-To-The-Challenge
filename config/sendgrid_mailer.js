@@ -49,27 +49,32 @@ module.exports = function(options = email_options, flag) {
          "https://media.giphy.com/media/xT0xeCZiDf2TUJ6mGs/source.gif",
          "https://media.giphy.com/media/xT0xeCZiDf2TUJ6mGs/source.gif",
          "https://media.giphy.com/media/H34dW1FHF4JmE/giphy.gif",
+         "",
          "https://media.giphy.com/media/7rj2ZgttvgomY/giphy.gif"
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
          "/login?challenger=" + options.challenger_id + "&instance=" + options.instance_id, /*+ "&challenge_id=" + options.challenge_id*/
+         "/login",
          "/login"
       ],
       subjects = [
          "Verify your email and start challenging today!!",
          "You've been challenged.",
-         "Challenge accepted!!"
+         "Challenge accepted!!",
+         "Time to look at the result"
       ],
       linktext = [
          "Click me to verify",
          "Click to know more about the challenge",
-         "View your challenge board"
+         "View your challenge board",
+         "View your challenge board",
       ],
       flag_name = [
          "email_verification.html",
          "email_chalrecipient.html",
-         "email_chalaccepted.html"
+         "email_chalaccepted.html",
+         "email_proofsub.html"
       ];
 
    // need to work out a pattern
@@ -123,6 +128,8 @@ module.exports = function(options = email_options, flag) {
    }).catch(function(error) {
       // error is an instance of SendGridError
       // The full response is attached to error.response
+      console.log(error.body);
+      console.log(error.headers);
       console.log(error.response.statusCode);
    });
 }
