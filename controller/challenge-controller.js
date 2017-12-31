@@ -121,7 +121,7 @@ module.exports = function(app) {
             console.log(data);
             mailer({
                email: data.issued.email,
-               challenger_name: data.issued.name,
+               username: data.issued.name,
                challenge_name: data.Template.name
             }, 3);
             res.status(200).send("dashboard");
@@ -130,12 +130,17 @@ module.exports = function(app) {
    });
 
    app.put('/challenge/instance/proofreject', function(req, res) { //update the instance state  (user proof rejected!)
+
       db.Instance.update({
          state: 'proof-rejected'
       }, {
-         where: { id: req.body.id } //grab challenge id from req.
+         where: {
+            challenge_id: req.query["instance"]
+         } //grab challenge id from req.
       }).then(function(results) {
-         res.redirect('/dashboard');
+
+
+         res.status(200).send("dashboard");
       });
    });
 
@@ -143,9 +148,29 @@ module.exports = function(app) {
       db.Instance.update({
          state: 'proof-accepted'
       }, {
-         where: { id: req.body.id } //grab challenge id from req.
+         where: {
+            challenge_id: req.query["instance"]
+         } //grab challenge id from req.
       }).then(function(results) {
-         res.redirect('/dashboard');
+         db.Instance.findOne({
+            where: {
+               challenge_id: req.query["instance"]
+            },
+            include: [{
+               model: db.User,
+               as: "accepted"
+            }, {
+               model: db.Template
+            }]
+         }).then((data) => {
+            console.log(data);
+            mailer({
+               email: data.accepted.email,
+               username: data.accepted.name,
+               challenge_name: data.Template.name
+            }, 4);
+            res.status(200).send("dashboard");
+         });
       });
    });
 
@@ -169,21 +194,21 @@ module.exports = function(app) {
       });
    });
 
-   app.get('/challenge/instance/id/:id', function(req, res) { //when called, returns this instance's data
-      db.Instance.findAll({
-         where: { id: req.params.id } //grab challenge id
-      }).then(function(results) {
-         res.json(results);
-      });
-   });
+   // app.get('/challenge/instance/id/:id', function(req, res) { //when called, returns this instance's data
+   //    db.Instance.findAll({
+   //       where: { id: req.params.id } //grab challenge id
+   //    }).then(function(results) {
+   //       res.json(results);
+   //    });
+   // });
 
-   app.get('/challenge/template/id/:id', function(req, res) { //when called, returns this challenge template data
-      db.Template.findAll({
-         where: { id: req.params.id } //grab challenge id
-      }).then(function(results) {
-         res.json(results);
-      });
-   });
+   // app.get('/challenge/template/id/:id', function(req, res) { //when called, returns this challenge template data
+   //    db.Template.findAll({
+   //       where: { id: req.params.id } //grab challenge id
+   //    }).then(function(results) {
+   //       res.json(results);
+   //    });
+   // });
 
    //use this while we keep the instance
    /*app.put('/challenge/instance/reject', function(req,res){//update the instance complete to true (user proof accepted!)

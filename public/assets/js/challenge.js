@@ -203,10 +203,10 @@ $(function() {
    //===========================
    $("#challengeIssue").submit(function(event) {
       event.preventDefault();
-      var title = $(this).data("title");
-      var challenged = $(this).data("challenged");
-      var rules = $(this).data("rules");
-      var proof = $(this).data("proof");
+      // var title = $(this).data("title");
+      // var challenged = $(this).data("challenged");
+      // var rules = $(this).data("rules");
+      // var proof = $(this).data("proof");
       var newChallenge = {};
 
       $.map($(this).serializeArray(), function(n, i) {
@@ -234,8 +234,11 @@ $(function() {
 
       $.ajax(url, {
          type: "PUT"
-      }).then(function() {
+      }).then(function(response) {
          console.log("proof accepted");
+         setTimeout(function() {
+            location.replace(response);
+         }, 1000);
       });
    });
 
@@ -244,8 +247,11 @@ $(function() {
 
       $.ajax(url, {
          type: "PUT"
-      }).then(function() {
+      }).then(function(response) {
          console.log("proof rejected");
+         setTimeout(function() {
+            location.replace(response);
+         }, 1000);
       });
    });
 
