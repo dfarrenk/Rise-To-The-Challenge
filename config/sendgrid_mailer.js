@@ -56,25 +56,29 @@ module.exports = function(options = email_options, flag) {
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
          "/login?challenger=" + options.challenger_id + "&instance=" + options.instance_id, /*+ "&challenge_id=" + options.challenge_id*/
          "/login",
+         "/login",
          "/login"
       ],
       subjects = [
          "Verify your email and start challenging today!!",
          "You've been challenged.",
          "Challenge accepted!!",
-         "Time to look at the result"
+         "Time to look at the result",
+         "Congratulations, you've completed the Challenge!!!"
       ],
       linktext = [
          "Click me to verify",
          "Click to know more about the challenge",
          "View your challenge board",
          "View your challenge board",
+         "Start challenging now"
       ],
       flag_name = [
          "email_verification.html",
          "email_chalrecipient.html",
          "email_chalaccepted.html",
-         "email_proofsub.html"
+         "email_proofsub.html",
+         "email_proofaccept.html"
       ];
 
    // need to work out a pattern
