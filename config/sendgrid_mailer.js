@@ -52,7 +52,7 @@ module.exports = function(hostname, options = email_options, flag) {
          "",
          "https://media.giphy.com/media/7rj2ZgttvgomY/giphy.gif",
          "",
-         ""
+         "https://media.giphy.com/media/1077cM08hUSmFa/giphy.gif"
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
