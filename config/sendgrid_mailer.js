@@ -50,11 +50,15 @@ module.exports = function(options = email_options, flag) {
          "https://media.giphy.com/media/xT0xeCZiDf2TUJ6mGs/source.gif",
          "https://media.giphy.com/media/H34dW1FHF4JmE/giphy.gif",
          "",
-         "https://media.giphy.com/media/7rj2ZgttvgomY/giphy.gif"
+         "https://media.giphy.com/media/7rj2ZgttvgomY/giphy.gif",
+         "",
+         ""
       ],
       routes = [
          "/login/email_verification?u=" + options.username + "&p=" + options.password,
          "/login?challenger=" + options.challenger_id + "&instance=" + options.instance_id, /*+ "&challenge_id=" + options.challenge_id*/
+         "/login",
+         "/login",
          "/login",
          "/login",
          "/login"
@@ -62,23 +66,29 @@ module.exports = function(options = email_options, flag) {
       subjects = [
          "Verify your email and start challenging today!!",
          "You've been challenged.",
-         "Challenge accepted!!",
+         "Challenge accepted!! &#9786;",
          "Time to look at the result",
-         "Congratulations, you've completed the Challenge!!!"
+         "Congratulations, you've completed the Challenge!!!",
+         "Challenge rejected :(",
+         "Proof rejected"
       ],
       linktext = [
          "Click me to verify",
          "Click to know more about the challenge",
          "View your challenge board",
          "View your challenge board",
-         "Start challenging now"
+         "Start challenging now",
+         "Challenge another",
+         "Try another challenge"
       ],
       flag_name = [
          "email_verification.html",
          "email_chalrecipient.html",
          "email_chalaccepted.html",
          "email_proofsub.html",
-         "email_proofaccept.html"
+         "email_proofaccept.html",
+         "email_chalrejected.html",
+         "email_proofrejected.html"
       ];
 
    // need to work out a pattern

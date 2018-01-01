@@ -4,8 +4,6 @@ const DEBUG = true;
 const bcrypt = require("bcrypt"),
    Promise = require("bluebird");
 
-const timeout = 60000 * 30;
-
 const tokenMeta = {
    info: "This is the meta object storing all the active accesstoken",
    genToken: function(userData) {
@@ -24,7 +22,8 @@ const tokenMeta = {
             const tokenObj = {
                name: tokenKey,
                info: userData,
-               timeout: function(meta) {
+               timeout: function(meta, delay) {
+                  const timeout = 60000 * delay;
                   setTimeout(() => {
                      console.log("access token expired");
                      delete meta[this.name];

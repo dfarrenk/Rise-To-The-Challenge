@@ -1,4 +1,5 @@
 var express = require("express");
+var path = require("path");
 var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
 var Exsess = require("express-session");
@@ -26,6 +27,7 @@ Handlebars.registerHelper('if_eq', function(a, b, opts) {
 });
 
 app.use(express.static("public"));
+app.use("*", express.static('public'));
 app.use(CookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -66,6 +68,9 @@ app.get("/login/*?", require("./controller/login-controller.js")());
 app.post("/login/*?", require("./controller/login-controller.js")());
 app.post("/login", require("./controller/login-controller.js")());
 
+app.get("*", function(req, res) {
+   res.status(404).sendFile(path.join(__dirname, "public/404.html"));
+});
 
 db.sequelize.sync({ force: false }).then(function() {
 
