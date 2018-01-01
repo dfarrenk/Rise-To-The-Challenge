@@ -15,9 +15,9 @@
       <div class="row">
          <div class="col s6">
             <div id="issuedContainer" class="cont">
-               <h5>Challenges Issued</h5>
+               Challenges Issued
                <div>
-                  <div class="collection">
+                  <div class="collection z-depth-2 Form">
                      {{#each issued}} {{#if_eq dataValues.state 'provided-proof'}}
                      <a href="/user/revProof?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{else}} {{> issued_collapsible}} {{/if_eq}}{{/each}}
 
@@ -31,7 +31,7 @@
          </div>
          <div class="col s6">
             <div id="receivedContainer" class="cont">
-               <h5>Received Challenges</h5>
+               Received Challenges
                <div class="collection z-depth-2 Form" id="receivedBox">
                   {{#each accepted}} {{#if_eq dataValues.state 'challenge-issued'}}
                   <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-accepted'}}
