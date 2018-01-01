@@ -40,7 +40,7 @@ $(function() {
          }, 1000);
       }).catch((err) => {
          $("#password").val("");
-        
+
          if (err.status == 401) {
             $("#username").next("label")
                .addClass("red-text")
@@ -50,9 +50,10 @@ $(function() {
          $(".err").text("oops it seems like there is something wrong with the server, please refresh the page and try again");
       });
    });
-   $("#exitModal").on("click", function() {
-      clearNewUserInput();
-   });
+  
+   // $("#exitModal").on("click", function() {
+   //    clearNewUserInput();
+   // });
 
    //New Profile Creation
    $("#createProfile").on("click", function(event) {
@@ -83,7 +84,7 @@ $(function() {
    // ajax
    function sendRequest(data) {
       console.log("sending request....");
-      clearNewUserInput();
+      // clearNewUserInput();
 
       $.ajax("/login/new_user", {
          method: "POST",
@@ -115,7 +116,7 @@ $(function() {
 
    function validateNewUserInput() {
       console.log("validating...");
-      var caseArray = [];
+      // var caseArray = [];
       var userName = $("#userName").val();
       var password = $("#newPassword").val();
       var confPassword = $("#confPassword").val();
@@ -123,24 +124,24 @@ $(function() {
 
       if (!userName || !password || !confPassword || !email) {
          console.log("Am I stopped here everytime?");
-         //return "form-empty";
-         caseArray.push("form-empty");
+         return "form-empty";
+         // caseArray.push("form-empty");
       }
-      if (name.match(/[^a-z]/gi)) {
-         //return "userName-invalid";
-         caseArray.push("userName-invalid");
-         console.log("invalid user-name, should write username restrictions here");
-      }
+      // if (name.match(/[^a-z]/gi)) {
+      //    return "userName-invalid";
+      //    // caseArray.push("userName-invalid");
+      //    console.log("invalid user-name, should write username restrictions here");
+      // }
       if (password !== confPassword) {
-         //return "password-mismatch";
-         caseArray.push("password-mismatch");
+         return "password-mismatch";
+         // caseArray.push("password-mismatch");
       }
       if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-         //return "email-invalid";
-         caseArray.push("email-invalid");
+         return "email-invalid";
+         // caseArray.push("email-invalid");
       }
-      return caseArray;
-      console.log(caseArray);
+      // return caseArray;
+      // console.log(caseArray);
       return 1;
    }
 
@@ -149,46 +150,70 @@ $(function() {
 
       //turning this into loop...
       console.log(result);
-      for (var i = 0; i < result.length; i++) {
-         console.log("result[i]: ", result[i]);
-         switch (result[i]) {
-            case "form-empty":
-               $("#newPassword").val('');
-               $("#confPassword").val('');
-               $("#modalErrorHeader").text("Please complete all fields");
-               break;
-            case "username-taken":
-               $("#newPassword").val('');
-               $("#confPassword").val('');
-               $("#userName").val("");
-               $("#userName").prop("placeholder", "Username already taken");
-               break;
-            case "userName-invalid":
-               $("#newPassword").val('');
-               $("#confPassword").val('');
-               $("#userName").val("");
-               $("#userName").prop("placeholder", "Please enter a valid username");
-               break;
-            case "email-invalid":
-               $("#newPassword").val('');
-               $("#confPassword").val('');
-               $("#email").val('')
-               $("#email").prop("placeholder", "Please enter a valid email address");
-               break;
-            case "password-mismatch":
-               $("#newPassword").val('');
-               $("#confPassword").val('');
-               $("#confPassword").prop("placeholder", "Password does not match");
-               $("#confPassword").addClass("placeholder", "red-text");
-               break;
-         }
+      // for (var i = 0; i < result.length; i++) {
+      //    console.log("result[i]: ", result[i]);
+      //    switch (result[i]) {
+      //       case "form-empty":
+      //          $("#modalErrorHeader").text("Please complete all fields");
+      //          break;
+      //       case "username-taken":
+      //          $("#userName").val("");
+      //          $("#userName").prop("placeholder", "Username already taken");
+      //          break;
+      //       case "userName-invalid":
+      //          $("#userName").val("");
+      //          $("#userName").prop("placeholder", "Please enter a valid username");
+      //          break;
+      //       case "email-invalid":
+      //          $("#email").val('')
+      //          $("#email").prop("placeholder", "Please enter a valid email address");
+      //          break;
+      //       case "password-mismatch":
+      //          $("#confPassword").prop("placeholder", "Password does not match");
+      //          $("#confPassword").addClass("placeholder", "red-text");
+      //          break;
+      //          // account creation error
+      //       case "username-taken":
+      //          $("#modalErrorHeader").text("An account with same username has already been registered");
+      //          break;
+      //       case "email-taken":
+      //          $("#modalErrorHeader").text("An account with same email has already been registered");
+      //          break;
+      //    }
+      // }
+      switch (result) {
+         case "form-empty":
+            $("#modalErrorHeader").text("Please complete all fields");
+            break;
+         // case "username-taken":
+         //    $("#userName").val("");
+         //    $("#userName").prop("placeholder", "Username already taken");
+         //    break;
+         case "userName-invalid":
+            $("#userName").val("");
+            $("#userName").prop("placeholder", "Please enter a valid username");
+            break;
+         case "email-invalid":
+            $("#email").val('')
+            $("#email").prop("placeholder", "Please enter a valid email address");
+            break;
+         case "password-mismatch":
+            $("#confPassword").prop("placeholder", "Password does not match");
+            $("#confPassword").addClass("placeholder", "red-text");
+            break;
+            // account creation error
+         case "username-taken":
+            $("#modalErrorHeader").text("An account with same username has already been registered");
+            break;
+         case "email-taken":
+            $("#modalErrorHeader").text("An account with same email has already been registered");
+            break;
       }
+      $("#newPassword").val('');
+      $("#confPassword").val('');
    }
 
-   function clearNewUserInput() {
-      console.log("clearing input");
-      $(".clearNewUser").val('');
-   }
+
 
    //Issue Challenge Handlers
    //===========================
@@ -314,8 +339,6 @@ $(function() {
          }, 1000);
       });
    });
-
-
 
    // //Dashboard Handlers
    // //===========================

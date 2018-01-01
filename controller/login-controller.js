@@ -111,9 +111,13 @@ function errorIdentifier(res, errortype) {
       return res.status(409).send("username-taken");
    }
 
-   if (!!errortype.match(/\w*(?:password)/g)) {
-      return res.status(406).send("Invalid password format");
+   if (!!errortype.match(/\w*(?:email)/g)) {
+      return res.status(409).send("email-taken");
    }
 
-   return res.status(400).send("Bad request");
+   if (!!errortype.match(/\w*(?:password)/g)) {
+      return res.status(406).send("invalid-password-format");
+   }
+
+   return res.status(400).send("bad-request");
 }

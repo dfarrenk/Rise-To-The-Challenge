@@ -2,21 +2,22 @@
 <main>
    <div class="cont">
       <h5>{{ dataValues.Template.dataValues.name }}</h5>
-   </div>
-   <div class="Form">
-      <h5>Challenge Status: {{ dataValues.state }}</h5>
-      <div class="collection">
-         <h5>Rules:</h5>
-         <div class="collection">
-            <p>{{ dataValues.Template.dataValues.rule }}</p>
+      <div class="Form">
+         <h5>Challenge Status: {{ dataValues.state }}</h5>
+         <div class="card collection">
+            <h5>Rules:</h5>
+            <div class="">
+               <p>{{ dataValues.Template.dataValues.rule }}</p>
+            </div>
+            {{#if dataValues.state_code }} {{> state_challenge_accepted }} {{/if}} {{#unless dataValues.state_code }} {{> state_challenge_issued }} {{/unless}}
          </div>
-         {{#if dataValues.state_code }} {{> state_challenge_accepted }} {{/if}} {{#unless dataValues.state_code }} {{> state_challenge_issued }} {{/unless}}
+         <form class="input-field scale-transition scale-out" id="proofForm">
+            <input id="proofLink" type="text" class="validate" style="width:80%">
+            <label for="proofLink">Link</label>
+            <button id="proofLinkButton" type="button" class="btn-floating btn-large"><i class="material-icons">arrow_forward</i></button>
+         </form>
       </div>
-      <form class="input-field scale-transition scale-out" id="proofForm">
-         <input id="proofLink" type="text" class="validate" style="width:80%">
-         <label for="proofLink">Link</label>
-         <button id="proofLinkButton" type="button" class="btn-floating btn-large"><i class="material-icons">arrow_forward</i></button>
-      </form>
+   </div>
 </main>
 <!-- Modal Structure -->
 <div id="proof" class="modal modal-fixed-footer">
@@ -31,7 +32,6 @@
       <a id="exitModal" class="modal-action modal-close waves-effect waves-green btn-flat">close</a>
    </div>
 </div>
-
 <script type="text/javascript">
 $("#proof").modal();
 
