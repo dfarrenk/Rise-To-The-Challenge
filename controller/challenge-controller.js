@@ -4,7 +4,7 @@ var db = require("../models"),
 
 module.exports = function(app) {
 
-   app.use("/challenge/?", function(req, res, next) {
+   app.use("/challenge/*?", function(req, res, next) {
       if (!req.user) {
          console.log(req.user);
          return res.status(401).sendFile(path.join(__dirname, "../public/plsLogin.html"));
@@ -39,7 +39,6 @@ module.exports = function(app) {
             mailer({
                email: recipient,
                username: recipient_name,
-               // the challenger's username
                challenger_name: req.user.name,
                challenger_id: req.user.id,
                instance_id: results2.challenge_id
@@ -57,9 +56,7 @@ module.exports = function(app) {
       }, {
          where: {
             challenge_id: req.query["instance"]
-         },
-         returning: true,
-         plain: true //grab challenge id from req
+         }
       }).then(function(results) {
          console.log(results);
          db.Instance.findOne({
@@ -81,7 +78,7 @@ module.exports = function(app) {
                challenger_name: data.issued.name,
                challenge_name: data.Template.name
             }, 2);
-            res.status(200).send("dashboard");
+            res.status(200).send("/user/dashboard");
          });
       });
    });
@@ -90,9 +87,32 @@ module.exports = function(app) {
       db.Instance.update({
          state: 'challenge-rejected'
       }, {
-         where: { id: req.body.id } //grab challenge id from req
+         where: {
+            challenge_id: req.query["instance"]
+         }
       }).then(function(results) {
-         res.redirect('/dashboard');
+         console.log(results);
+         db.Instance.findOne({
+            where: {
+               challenge_id: req.query["instance"]
+            },
+            include: [{
+               model: db.User,
+               as: "issued"
+            }, {
+               model: db.Template
+            }]
+         }).then((data) => {
+            console.log(data);
+            console.log(data.Template.name);
+            mailer({
+               email: data.issued.email,
+               username: req.user.name,
+               challenger_name: data.issued.name,
+               challenge_name: data.Template.name
+            }, 5);
+            res.status(200).send("/user/dashboard");
+         });
       });
    });
 
@@ -124,23 +144,39 @@ module.exports = function(app) {
                username: data.issued.name,
                challenge_name: data.Template.name
             }, 3);
-            res.status(200).send("dashboard");
+            res.status(200).send("/user/dashboard");
          });
       });
    });
 
    app.put('/challenge/instance/proofreject', function(req, res) { //update the instance state  (user proof rejected!)
 
-      db.Instance.update({
+      db.Instance.update({ 
          state: 'proof-rejected'
       }, {
          where: {
             challenge_id: req.query["instance"]
-         } //grab challenge id from req.
+         }
       }).then(function(results) {
-
-
-         res.status(200).send("dashboard");
+         db.Instance.findOne({
+            where: {
+               challenge_id: req.query["instance"]
+            },
+            include: [{
+               model: db.User,
+               as: "accepted"
+            }, {
+               model: db.Template
+            }]
+         }).then((data) => {
+            console.log(data);
+            mailer({
+               email: data.accepted.email,
+               username: data.accepted.name,
+               challenge_name: data.Template.name
+            }, 6);
+            res.status(200).send("/user/dashboard");
+         });
       });
    });
 
@@ -150,7 +186,7 @@ module.exports = function(app) {
       }, {
          where: {
             challenge_id: req.query["instance"]
-         } //grab challenge id from req.
+         } 
       }).then(function(results) {
          db.Instance.findOne({
             where: {
@@ -169,7 +205,7 @@ module.exports = function(app) {
                username: data.accepted.name,
                challenge_name: data.Template.name
             }, 4);
-            res.status(200).send("dashboard");
+            res.status(200).send("/user/dashboard");
          });
       });
    });
@@ -190,7 +226,7 @@ module.exports = function(app) {
       }, {
          where: { id: req.body.id } //grab challenge id from req.
       }).then(function(results) {
-         res.redirect('/dashboard');
+         res.redirect('/user/dashboard');
       });
    });
 

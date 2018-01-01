@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<!--================================================================================
+  Item Name: Materialize - Material Design Admin Template
+  Version: 3.1
+  Author: GeeksLabs
+  Author URL: http://www.themeforest.net/user/geekslabs
+================================================================================ -->
 
 <head>
-   <title>Rise to Challenge</title>
+   <title>404</title>
    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-   <link href="../assets/css/style.css" type="text/css" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Pinyon+Script" rel="stylesheet">
+   <link href="/assets/css/style.css" type="text/css" rel="stylesheet">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-   <script src="../assets/js/challenge.js"></script>
-   <script src="../assets/js/UI.js"></script>
+   <script src="/assets/js/challenge.js"></script>
+   <script src="/assets/js/UI.js"></script>
 </head>
 
-<body>
+<body class="cyan">
    <!-- Start Page Loading -->
    <div id="loader-wrapper">
       <div id="loader"></div>
@@ -34,9 +41,16 @@
                </div>
                <div class="content">
                   <div class="row">
+                     <div id="site-layout-example-top" class="col s12">
+                        <h5 class="flat-text-logo center white-text caption-uppercase">Sorry but we couldn’t find this page :(</h5>
+                     </div>
                      <div id="site-layout-example-right" class="col s12 m12 l12">
                         <div class="row center">
-                           <h2 class="text-long-shadow col s12">Please Sign In</h2>
+                           <h1 class="text-long-shadow col s12">404</h1>
+                        </div>
+                        <div class="row center">
+                           <h5 class="center white-text col s12">It seems that this page doesn’t exist.
+                           </h5>
                         </div>
                      </div>
                   </div>
@@ -45,10 +59,15 @@
          </div>
       </div>
    </main>
-   <script>
+   <!-- ================================================
+    Scripts
+    ================================================ -->
+   <!-- jQuery Library -->
+   <script type="text/javascript">
    (function() {
       setTimeout(function() {
-         location.replace("/login");
+         // location.assign("/login");
+         window.history.back();
       }, 1000);
    }());
    </script>

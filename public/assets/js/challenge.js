@@ -1,13 +1,8 @@
 $(function() {
 
-   $("newUser").on("click", function() {
-      $("#signUp").modal()
-   });
-
    console.log("challenge.js loaded");
 
    //Logout handler
-
    $("#logout").on("click", function(event) {
       event.preventDefault();
       console.log("loggin out");
@@ -203,16 +198,25 @@ $(function() {
    //===========================
    $("#challengeIssue").submit(function(event) {
       event.preventDefault();
-      // var title = $(this).data("title");
-      // var challenged = $(this).data("challenged");
-      // var rules = $(this).data("rules");
-      // var proof = $(this).data("proof");
       var newChallenge = {};
 
       $.map($(this).serializeArray(), function(n, i) {
          newChallenge[n['name']] = n['value'];
       });
 
+      const link = newChallenge.postLink;
+
+      if (!link || !link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
+         $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
+         return;
+      }
+
+      const videoId = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, ""),
+         linkRestruct = "https://www.youtube.com/embed/" + videoId;
+
+      newChallenge.postLink = linkRestruct;
+
+      console.log(linkRestruct);
       console.log(newChallenge);
       //ajax call
       $.ajax("/challenge/new", {
@@ -230,7 +234,8 @@ $(function() {
    //Review Response Handlers
    //===========================
    $("#pass").on("click", function(event) {
-      const url = "../challenge/instance/proofaccept" + location.search;
+      const url = location.href.replace(location.pathname, "/challenge/instance/proofaccept");
+
 
       $.ajax(url, {
          type: "PUT"
@@ -243,7 +248,7 @@ $(function() {
    });
 
    $("#fail").on("click", function(event) {
-      const url = "../challenge/instance/proofreject" + location.search;
+      const url = location.href.replace(location.pathname, "/challenge/instance/proofreject");
 
       $.ajax(url, {
          type: "PUT"
@@ -258,7 +263,7 @@ $(function() {
    //View New Challenge Handlers
    //===========================
    $("#accept").on("click", function(event) {
-      const url = "../challenge/instance/accept" + location.search;
+      const url = location.href.replace(location.pathname, "/challenge/instance/accept");
 
       $.ajax(url, {
          type: "PUT"
@@ -273,8 +278,10 @@ $(function() {
    });
 
    $("#reject").on("click", function(event) {
+      const url = location.href.replace(location.pathname, "/challenge/instance/reject");
+
       //should change state of instance record to "rejected"
-      $.ajax("challenge/instance/reject", {
+      $.ajax(url, {
          type: "PUT" // delete might be more appropriate since once rejected we are not opening it again
       }).then(function(response) {
          console.log("challenge rejected");
@@ -288,11 +295,11 @@ $(function() {
    //===========================
    $("#proofLinkButton").on("click", function(event) {
       //since we are married to youtube link for prototype testing
-      const url = "../challenge/instance/prove" + location.search;
+      const url = location.href.replace(location.pathname, "/challenge/instance/prove");
       const link = $("#proofLink").val();
 
       if (!link || !link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
-         $("#proofLink").text("please paste in a youtube link before submit");
+         $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
          return;
       }
 

@@ -48,7 +48,7 @@ module.exports = function() {
       DEBUG && console.log(req.user);
       DEBUG && console.log(req.query["challenger"]);
 
-      userTimeout(req.user.dataValues).activateTimeout();
+      userTimeout(req.user.dataValues).activateTimeout(1);
       if (req.query["challenger"]) {
          dataBase.Instance.update({
             accepter_id: req.user.id

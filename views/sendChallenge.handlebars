@@ -33,7 +33,7 @@
                </div>
                <div class="col s12">
                   <div class="input-field">
-                     <input placeholder="link your proof video or image here" name="postLink" type="url" class="validate">
+                     <input id="proofLink" placeholder="link your proof video or image here" name="postLink" type="url" class="validate">
                      <label class="active" for="email" data-error="wrong" data-success="right">Proof: Image or Video</label>
                   </div>
                </div>
@@ -47,8 +47,8 @@
 </main>
 <script type="text/javascript">
    (function($) {
-      const template = { { json template } };
-      const user = { { json user } };
+      const template = JSON.parse(`{{json template}}`);
+      const user = JSON.parse(`{{json user}}`);
 
       // template
       const template_name = new Array(),
@@ -85,11 +85,10 @@
 
       $("#recepient_autocomplete").autocomplete({
          source: user_name,
-         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+         limit: 20, 
          onAutocomplete: function(val) {
-            // Callback function when value is autcompleted.
          },
-         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+         minLength: 1
       });
 
       $("#recepient_autocomplete").blur(function() {

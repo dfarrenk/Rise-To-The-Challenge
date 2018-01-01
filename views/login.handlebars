@@ -1,0 +1,83 @@
+<nav>
+   <div class="nav-wrapper">
+      <a href="#" class="brand-logo center" id="logo">DUELLO</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      </ul>
+   </div>
+</nav>
+<main>
+   <div class="cont">
+      <div>
+         <h4>Login</h4>
+      </div>
+      <div class="Form">
+         <div class="row">
+            <form class="col s12">
+               <div class="row">
+                  <div class="input-field col s6">
+                     <input placeholder="" id="username" type="text" class="validate">
+                     <label class="active" for="username">User Name</label>
+                  </div>
+                  <div class="row">
+                     <div class="input-field col s6">
+                        <input placeholder="" id="password" type="password" class="validate">
+                        <label class="active" for="password">Password</label>
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <button id="login" class="btn waves-effect waves-light" type="submit" name="action">Login
+         </button>
+         <button id="newUser" data-target="signUp" class="btn modal-trigger waves-effect waves-light">New User</button>
+         <script type="text/javascript" src="js/materialize.min.js"></script>
+      </div>
+   </div>
+</main>
+<!-- Modal Structure -->
+<div id="signUp" class="modal modal-fixed-footer">
+   <div class="modal-content">
+      <h4>New User Details</h4>
+      <div id="modalErrorHeader" class="clearNewUser"></div>
+      <div class="row">
+         <!-- ===================================== -->
+         <form class="col s12">
+            <div class="row">
+               <div class="input-field col s6">
+                  <input placeholder="" id="userName" type="text" class="validate clearNewUser">
+                  <label for="userName">Username</label>
+               </div>
+            </div>
+            <div class="row">
+               <div class="input-field col s12">
+                  <input placeholder="" id="email" type="email" class="validate clearNewUser">
+                  <label for="email">Email</label>
+               </div>
+            </div>
+            <div class="row">
+               <div class="input-field col s12">
+                  <input placeholder="" id="newPassword" type="password" class="validate clearNewUser">
+                  <label for="password">Password</label>
+               </div>
+            </div>
+            <div class="row">
+               <div class="input-field col s12">
+                  <input placeholder="" id="confPassword" type="password" class="validate clearNewUser">
+                  <label for="password">Confirm Password</label>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+   <div class="modal-footer">
+      <a href="#!" id="createProfile" class="modal-action waves-effect waves-green btn-flat">Submit</a>
+      <a href="#!" id="exitModal" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+   </div>
+   <script type="text/javascript">
+   $("#signUp").modal();
+
+   $("newUser").on("click", function() {
+      $("#signUp").modal("open");
+   });
+   </script>
+</div>
