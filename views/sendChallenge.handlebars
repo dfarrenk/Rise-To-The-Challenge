@@ -5,45 +5,48 @@
    </div>
    <div class="z-depth-2 cont">
       <h5>Issue your Challenge</h5>
-      <div class="collection Form">
-         <br>
-         <div class="row">
-            <form class="col s12" id="challengeIssue">
-               <div class="row">
-                  <div class="input-field col s6">
-                     <input id="challenge_autocomplete" placeholder="Ice bucket Challenge" name="challenge_name" type="text" class="autocomplete validate">
-                     <label class="active" for="challenge_autocomplete">Name of the Challenge:</label>
+      <div class="Form">
+         <div class="collection">
+            <br>
+            <div class="row">
+               <form class="col s12" id="challengeIssue">
+                  <div class="row">
+                     <div class="input-field col s6">
+                        <input id="challenge_autocomplete" placeholder="Ice bucket Challenge" name="challenge_name" type="text" class="autocomplete validate">
+                        <label class="active" for="challenge_autocomplete">Name of the Challenge:</label>
+                     </div>
                   </div>
-               </div>
-               <div class="row">
-                  <div class="input-field col s6">
-                     <input id="recepient_autocomplete" placeholder="Placeholder" name="challenged_name" type="text" class="autocomplete validate" multiple>
-                     <label class="active" for="name_autocomplete">Name of the Person you wish to challenge:</label>
+                  <div class="row">
+                     <div class="input-field col s6">
+                        <input id="recepient_autocomplete" placeholder="Placeholder" name="challenged_name" type="text" class="autocomplete validate" multiple>
+                        <label class="active" for="name_autocomplete">Name of the Person you wish to challenge:</label>
+                     </div>
+                     <div class="input-field col s6">
+                        <input id="email_autocomplete" placeholder="example@gmail.com" name="challenged" type="text" class="autocomplete validate" multiple>
+                        <label class="active" for="email_autocomplete">Their Email:</label>
+                     </div>
                   </div>
-                  <div class="input-field col s6">
-                     <input id="email_autocomplete" placeholder="example@gmail.com" name="challenged" type="text" class="autocomplete validate" multiple>
-                     <label class="active" for="email_autocomplete">Their Email:</label>
+                  <div class="row">
+                     <div class="input-field col s12">
+                        <textarea id="rules" name="rules" class="materialize-textarea"></textarea>
+                        <label class="active" for="rules">Rules:</label>
+                     </div>
                   </div>
-               </div>
-               <div class="row">
-                  <div class="input-field col s12">
-                     <textarea id="rules" name="rules" class="materialize-textarea"></textarea>
-                     <label class="active" for="rules">Rules:</label>
+                  <div class="col s12">
+                     <div class="input-field">
+                        <input id="proofLink" placeholder="link your proof video or image here" name="postLink" type="url" class="validate">
+                        <label class="active" for="email" data-error="wrong" data-success="right">Proof: Image or Video</label>
+                     </div>
                   </div>
-               </div>
-               <div class="col s12">
-                  <div class="input-field">
-                     <input id="proofLink" placeholder="link your proof video or image here" name="postLink" type="url" class="validate">
-                     <label class="active" for="email" data-error="wrong" data-success="right">Proof: Image or Video</label>
-                  </div>
-               </div>
-               <!--<a href="./dashboard.html">-->
-               <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                  <!--<a href="./dashboard.html">-->
+                  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
                   <!--<i class="material-icons right">send</i>-->
                </button>
-            </form>
-            <!--</a>-->
-         </div>
+               </form>
+
+               <!--</a>-->
+            </div>
+
 </main>
 <script type="text/javascript">
    (function($) {
@@ -85,9 +88,8 @@
 
       $("#recepient_autocomplete").autocomplete({
          source: user_name,
-         limit: 20, 
-         onAutocomplete: function(val) {
-         },
+         limit: 20,
+         onAutocomplete: function(val) {},
          minLength: 1
       });
 

@@ -1,18 +1,20 @@
 {{> challenge_nav }}
 <main>
    <div class="cont">
-      <h5 class="right-align">{{dataValues.Template.dataValues.name}}</h5>
-      <div class="collection">
-         <p class="right-align">The challenged: <strong>{{dataValues.accepted.dataValues.name}}</strong></p>
-         <div class="video-container">
-            <!-- <p>video Imbedded Here</p> -->
-            <iframe width="560" height="315" src="{{dataValues.challenged_proof}}?rel=0&amp;showinfo=0" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+      <div class="right-align">{{dataValues.Template.dataValues.name}}</div>
+      <div class="Form">
+         <div class="collection">
+            <p class="right-align">The challenged: <strong>{{dataValues.accepted.dataValues.name}}</strong></p>
+            <div class="video-container">
+               <!-- <p>video Imbedded Here</p> -->
+               <iframe width="560" height="315" src="{{dataValues.challenged_proof}}?rel=0&amp;showinfo=0" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+            </div>
+            <br>
+            <button id="pass" class="btn waves-effect waves-light" type="submit" name="action">Pass
+            </button>
+            <button id="fail" class="btn waves-effect waves-light" type="submit" name="action">Fail
+            </button>
          </div>
-         <br>
-         <button id="pass" class="btn waves-effect waves-light" type="submit" name="action">Pass
-      </button>
-         <button id="fail" class="btn waves-effect waves-light" type="submit" name="action">Fail
-      </button>
       </div>
    </div>
 </main>

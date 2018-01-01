@@ -46,7 +46,7 @@ input:-ms-input-placeholder {
     background-color: #709597;
     background-color: #82A0CA;
     padding: 3px;
-    opacity: .96;
+    opacity: .97;
     border: inset;
     color: white;
     font-family: 'Tangerine', cursive;
@@ -79,4 +79,12 @@ input:-ms-input-placeholder {
     background-color: #709597;
     font-family: arial;
     margin: 5px 10px;
+}
+
+.collection {
+    background-color: white;
+}
+
+.redirect {
+    background-color: blue;
 }
