@@ -1,10 +1,10 @@
 /* Sticky Footer requirements */
 
 body {
-   display: flex;
-   min-height: 100vh;
-   flex-direction: column;
-   /*background-image: url("/assets/images/duel.jpg");*/
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-image: url("/assets/images/duel.jpg");
 }
 
 main {
@@ -46,19 +46,28 @@ input.err::placeholder {
 }
 
 .cont {
-   background-color: #709597;
-   padding: 3px;
-   opacity: .95;
+    background-color: #709597;
+    background-color: #82A0CA;
+    padding: 3px;
+    opacity: .97;
+    border: inset;
+    color: white;
+    font-family: 'Tangerine', cursive;
+    font-size: 32px;
 }
 
 #logo {
-   font-family: 'Pinyon Script', cursive;
+    font-family: 'Pinyon Script', cursive;
+    font-size: 48px;
 }
 
 .Form {
-   background-color: white;
-   margin: 0, 10px;
-   padding: 10px;
+    background-color: #E2E3D4;
+    margin: 10px 10px 10px 10px;
+    padding: 10px;
+    color: black;
+    font-size: 18px;
+    font-family: arial;
 }
 
 .nav-wrapper,
@@ -67,5 +76,16 @@ input.err::placeholder {
 }
 
 .btn {
-   background-color: #82A0CA;
+    background-color: #82A0CA;
+    background-color: #709597;
+    font-family: arial;
+    margin: 5px 10px;
+}
+
+.collection {
+    background-color: white;
+}
+
+.redirect {
+    background-color: blue;
 }
