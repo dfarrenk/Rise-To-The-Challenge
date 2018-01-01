@@ -8,38 +8,41 @@ body {
 }
 
 main {
-    flex: 1 0 auto;
-    margin: 100px 10%;
+   flex: 1 0 auto;
+   margin: 100px 10%;
 }
 
-input::-webkit-input-placeholder {
-    color: red !important;
+input.err::-webkit-input-placeholder {
+   color: red;
 }
 
-input:-moz-placeholder {
-    /* Firefox 18- */
-    color: red !important;
+input.err::-moz-placeholder {
+   color: red;
 }
 
-input::-moz-placeholder {
-    /* Firefox 19+ */
-    color: red !important;
+input.err:-ms-input-placeholder {
+   color: red;
 }
 
-input:-ms-input-placeholder {
-    color: red !important;
+input.err:-moz-placeholder {
+   color: red;
+}
+
+
+input.err::placeholder {
+   color: red;
 }
 
 #modalErrorHeader {
-    color: red;
+   color: red;
 }
 
 #Copyright {
-    text-align: center
+   text-align: center
 }
 
 .page-footer {
-    height: 60px;
+   height: 60px;
 }
 
 .cont {
@@ -51,7 +54,6 @@ input:-ms-input-placeholder {
     color: white;
     font-family: 'Tangerine', cursive;
     font-size: 32px;
-
 }
 
 #logo {
@@ -66,12 +68,11 @@ input:-ms-input-placeholder {
     color: black;
     font-size: 18px;
     font-family: arial;
-
 }
 
 .nav-wrapper,
 .page-footer {
-    background-color: #CA8982;
+   background-color: #CA8982;
 }
 
 .btn {

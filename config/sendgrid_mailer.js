@@ -41,7 +41,7 @@ const email_options = {
 // flag tells mailer which template to use
 // email({ options }, flag);
 // obj key name: email, username, password, challenge_id, challenge_proof
-module.exports = function(options = email_options, flag) {
+module.exports = function(hostname, options = email_options, flag) {
    DEBUG && console.log(options);
 
    // missing image for email verification, 0 = veri, 1 = chal_issue, 2 = chal_accept, chal_complete
@@ -92,7 +92,7 @@ module.exports = function(options = email_options, flag) {
       ];
 
    // need to work out a pattern
-   const hrefLink = "http://localhost:8080" + routes[flag],
+   const hrefLink = hostname + routes[flag],
       customContent = {
          "%username%": options.username,
          "%challengename%": options.challenge_name,
