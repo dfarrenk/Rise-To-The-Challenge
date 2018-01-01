@@ -36,7 +36,7 @@ module.exports = function(app) {
 
          db.Instance.create(newInstance).then(function(results2) { // post a new row in instance table.
             console.log(results2);
-            mailer({
+            mailer(req.headers.origin, {
                email: recipient,
                username: recipient_name,
                challenger_name: req.user.name,
@@ -72,7 +72,7 @@ module.exports = function(app) {
          }).then((data) => {
             console.log(data);
             console.log(data.Template.name);
-            mailer({
+            mailer(req.headers.origin, {
                email: data.issued.email,
                username: req.user.name,
                challenger_name: data.issued.name,
@@ -105,7 +105,7 @@ module.exports = function(app) {
          }).then((data) => {
             console.log(data);
             console.log(data.Template.name);
-            mailer({
+            mailer(req.headers.origin, {
                email: data.issued.email,
                username: req.user.name,
                challenger_name: data.issued.name,
@@ -139,7 +139,7 @@ module.exports = function(app) {
             }]
          }).then((data) => {
             console.log(data);
-            mailer({
+            mailer(req.headers.origin, {
                email: data.issued.email,
                username: data.issued.name,
                challenge_name: data.Template.name
@@ -170,7 +170,7 @@ module.exports = function(app) {
             }]
          }).then((data) => {
             console.log(data);
-            mailer({
+            mailer(req.headers.origin, {
                email: data.accepted.email,
                username: data.accepted.name,
                challenge_name: data.Template.name
@@ -200,7 +200,7 @@ module.exports = function(app) {
             }]
          }).then((data) => {
             console.log(data);
-            mailer({
+            mailer(req.headers.origin, {
                email: data.accepted.email,
                username: data.accepted.name,
                challenge_name: data.Template.name
