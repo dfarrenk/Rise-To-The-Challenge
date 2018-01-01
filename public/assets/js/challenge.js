@@ -39,12 +39,21 @@ $(function() {
             location.assign(response);
          }, 1000);
       }).catch((err) => {
-         err.status == 401 && console.log("username or password incorrect");
+         $("#password").val("");
+        
+         if (err.status == 401) {
+            $("#username").next("label")
+               .addClass("red-text")
+               .text("Username or password incorrect");
+            return console.log("username or password incorrect");
+         }
+         $(".err").text("oops it seems like there is something wrong with the server, please refresh the page and try again");
       });
    });
    $("#exitModal").on("click", function() {
       clearNewUserInput();
    });
+
    //New Profile Creation
    $("#createProfile").on("click", function(event) {
       $("#modalErrorHeader").text("");
@@ -75,6 +84,7 @@ $(function() {
    function sendRequest(data) {
       console.log("sending request....");
       clearNewUserInput();
+
       $.ajax("/login/new_user", {
          method: "POST",
          data: data,
@@ -179,20 +189,6 @@ $(function() {
       console.log("clearing input");
       $(".clearNewUser").val('');
    }
-
-   //Dashboard Handlers
-   //===========================
-   $("#challengeCreate").on("click", function(event) {
-      console.log("challengeCreate clicked");
-      //should navigate to createChallenge.html
-   });
-
-   //Handler for dynamically created current challenges
-   //should link to dynamically created (Handlebars?) proof review page
-   //--will be in handlebars later
-   //Handler for dynamically created received challenges
-   //should link to dynamically created (Handlebars?) challenge review page
-   //--will be in handlebars later
 
    //Issue Challenge Handlers
    //===========================
@@ -318,4 +314,13 @@ $(function() {
          }, 1000);
       });
    });
+
+
+
+   // //Dashboard Handlers
+   // //===========================
+   // $("#challengeCreate").on("click", function(event) {
+   //    console.log("challengeCreate clicked");
+   //    //should navigate to createChallenge.html
+   // });
 });
