@@ -59,7 +59,7 @@ Passport.serializeUser(function(user, done) {
       DEBUG && console.log(tokenObj);
 
       token[tokenObj.name] = tokenObj;
-      token[tokenObj.name].timeout(token);
+      token[tokenObj.name].timeout(token, 30);
 
       done(null, tokenObj.name);
    });
@@ -68,8 +68,12 @@ Passport.serializeUser(function(user, done) {
 Passport.deserializeUser(function(tokenKey, done) {
    DEBUG && console.log("////////////////////////");
 
-   const username = !!token[tokenKey] ? token[tokenKey].info.name : "empty";
+   const username = !!token[tokenKey] ? token[tokenKey].info.name : null;
    DEBUG && console.log(username);
+
+   if (!username) {
+      return done(null, username);
+   }
 
    dataBase.User.findOne({
       where: {

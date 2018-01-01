@@ -25,11 +25,10 @@ module.exports = function(app) {
       next();
    });
 
-
    app.get("/user/logout", function(req, res) {
       console.log("heeeer");
-      !req.cookies["connect.sid"] ? res.status(200).send("../login") :
-         res.status(200).clearCookie("connect.sid").send("../login");
+      !req.cookies["connect.sid"] ? res.status(200).send("/login") :
+         res.status(200).clearCookie("connect.sid").send("/login");
    });
 
    // test route
@@ -126,9 +125,9 @@ module.exports = function(app) {
       });
    });
 
-   app.get('/user/subProof/:instanceId', function(req, res) { // go to user proof submission page
-      res.sendFile(path.join(__dirname, "../public/subProof.html")); //
-   });
+   // app.get('/user/subProof/:instanceId', function(req, res) { // go to user proof submission page
+   //    res.sendFile(path.join(__dirname, "../public/subProof.html")); //
+   // });
 
    app.get('/user/proveChallenge', function(req, res) { //load the prove challenge page on selected challenge instance, need to find the challenge instance
       /* db.challengeInstance.findAll({

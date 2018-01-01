@@ -2,7 +2,6 @@
 const DEBUG = true;
 
 const dataBase = require("../models");
-const setTime = 60000; // set to 1 hour for demo, 12 hours in production
 
 // this is the prototype obj design to be inheritted by userdata obj
 const Timeout = {
@@ -11,7 +10,7 @@ const Timeout = {
       this.interval = 0;
    },
 
-   triggerTimeout: function() { /* pass moment parse database timestamp here */
+   triggerTimeout: function(setTime) { /* pass moment parse database timestamp here */
       DEBUG && console.log("1------------1-------------1");
       this.interval = setTimeout(() => {
          dataBase.User.findOne({
@@ -61,12 +60,14 @@ const Timeout = {
 // state < 0 --> metaobj.splice(this.index, 1)
 
 const TimeoutMeta = {
-   activateTimeout: function() {
+   activateTimeout: function(delay) {
       DEBUG && console.log("We are starting");
+      const setTime = 60000 * delay;
+
       this.forEach((elem, index) => {
          elem.updateState();
          if (!elem.state) {
-            !elem.interval && elem.triggerTimeout();
+            !elem.interval && elem.triggerTimeout(setTime);
          } else {
             this.splice(index, 1);
             DEBUG && console.log(this);
