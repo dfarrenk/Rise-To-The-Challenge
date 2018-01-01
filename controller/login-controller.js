@@ -23,6 +23,7 @@ module.exports = function() {
       failureRedirect: "error",
    }), function(req, res) {
       DEBUG && console.log(req.user);
+
       dataBase.User.update({
          email_verified: true
       }, {
@@ -79,7 +80,7 @@ module.exports = function() {
             email: req.body.email
          }).then((data) => {
             // mailer(options, flag);
-            mailer({
+            mailer(req.headers.origin, {
                email: req.body.email,
                username: req.body.username,
                password: hash
