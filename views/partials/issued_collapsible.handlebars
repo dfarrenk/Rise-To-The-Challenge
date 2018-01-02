@@ -5,17 +5,17 @@
          <div>Challenged: {{dataValues.accepted.dataValues.name}}</div>
          <div>Rules: {{dataValues.Template.dataValues.rule}}</div>
          {{#if_eq dataValues.state "challenge-rejected"}}
-         <button class="delete red btn right">Delete Record</button>
+         <button class="delete red btn right" data-identity="issuer_id">Delete Record</button>
          <br>
          <br>
          {{/if_eq}}
          {{#if_eq dataValues.state "proof-rejected"}}
-         <button class="delete red btn right">Delete Record</button>
+         <button class="delete red btn right" data-identity="issuer_id">Delete Record</button>
          <br>
          <br>
          {{/if_eq}}
          {{#if_eq dataValues.state "proof-accepted"}}
-         <button class="delete red btn right">Delete Record</button>
+         <button class="delete red btn right" data-identity="issuer_id">Delete Record</button>
          <br>
          <br>
          {{/if_eq}}

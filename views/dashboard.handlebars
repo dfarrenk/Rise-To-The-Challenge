@@ -86,22 +86,22 @@
    $(".delete").on("click", function() {
       const container = this.parentNode.parentNode.parentNode,
          parent = container.parentNode,
-         instanceId = parseInt(container.dataset["instance"]);
+         instanceId = parseInt(container.dataset["instance"]),
+         identity = this.dataset["identity"];
 
       console.log(container);
       console.log(parent);
 
       $.ajax({
-         url: "/challenge/instance?instance=" + instanceId,
+         url: "/challenge/instance?instance=" + instanceId + "&identity=" + identity,
          method: "DELETE"
       }).then((response) => {
          console.log(response);
-          parent.removeChild(container);
+         parent.removeChild(container);
       }).catch((err) => {
          console.log(err);
       });
    });
-
    </script>
    {{!
    <script type="text/javascript" src="js/materialize.min.js"></script>}}

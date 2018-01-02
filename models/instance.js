@@ -33,12 +33,14 @@ module.exports = function(sequelize, DataTypes) {
     Instance.associate = function(models) {
         Instance.belongsTo(models.User, {
             foreignKey: 'issuer_id',
-            allowNull: true
+            allowNull: true,
+            as: "issued"
         });
 
         Instance.belongsTo(models.User, {
             foreignKey: 'accepter_id',
-            allowNull: true //default value
+            allowNull: true, //default value
+            as: "accepted"
         });
 
         Instance.belongsTo(models.Template, {
