@@ -87,19 +87,18 @@
    </div>
    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
    <script>
+
       $(document).ready(function() {
          $(".modal").modal();
          $("#rules").on("click", function() {
             console.log("rules modal button clicked");
             $("#rulesPage").modal("open");
          });
-         $('.parallax').parallax();
          $('.collapsible').collapsible();
          $("#warning").modal();
          const cookies = ";" + document.cookie,
             verified = cookies.match(/(\;verified\=\w+){1}/g),
             isVerified = !!verified ? verified[0].replace(/(\;verified\=)/, "") : true;
-
          if (isVerified == "false") {
             $("#warning").modal("open");
          }

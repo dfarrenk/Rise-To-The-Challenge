@@ -1,5 +1,6 @@
 {{> challenge_nav }}
 <main>
+
    <div class="z-depth-2 cont">
       <h5>Issue your Challenge</h5>
       <div class="collection Form">
@@ -15,11 +16,11 @@
                <div class="row">
                   <div class="input-field col s6">
                      <input id="recepient_autocomplete" placeholder="Placeholder" name="challenged_name" type="text" class="autocomplete validate" multiple>
-                     <label class="active" for="name_autocomplete">Name of the Person you wish to challenge:</label>
+                     <label class="active" for="name_autocomplete">Name of the Person You Wish to Challenge:</label>
                   </div>
                   <div class="input-field col s6">
                      <input id="email" placeholder="example@gmail.com" name="challenged" type="text" class="autocomplete validate" multiple>
-                     <label class="active" for="email_autocomplete">Their Email:</label>
+                     <label class="active" for="email_autocomplete">His/Her Email:</label>
                   </div>
                </div>
                <div class="row">
@@ -44,11 +45,14 @@
       </div>
 </main>
 <script type="text/javascript">
-   let __templateId = null;
-   let __userId = null;
-   (function($) {
-      const template = JSON.parse(`{{json template}}`);
-      const user = JSON.parse(`{{json user}}`);
+
+let __templateId = null;
+let __userId = null;
+(function($) {
+   const template = JSON.parse(`{{json template}}`);
+   const user = JSON.parse(`{{json user}}`);
+   const username = (`{{username}}`);
+
 
       // template
       const template_name = new Array(),
@@ -82,10 +86,15 @@
       const user_name = new Array(),
          user_email = {};
 
-      user.forEach((elem) => {
-         user_name.push({ label: elem.name, value: elem.id });
-         user_email[elem.id] = elem.email;
-      });
+
+   user.forEach((elem) => {
+      if (elem.name === username) {
+         return;
+      } 
+      user_name.push({ label: elem.name, value: elem.id });
+      user_email[elem.id] = elem.email;
+   });
+
 
       $("#recepient_autocomplete").autocomplete({
          source: user_name,
@@ -110,6 +119,8 @@
          minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
       });
 
-      console.log(template);
-   }(jQuery));
+
+   console.log(user_name);
+}(jQuery));
 </script>
+
