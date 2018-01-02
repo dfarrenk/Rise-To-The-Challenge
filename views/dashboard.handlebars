@@ -16,7 +16,6 @@
       </div>
    </nav>
    <main>
-
       <div class="row">
          <div class="col s12 l6">
             <div id="issuedContainer" class="cont">
@@ -58,22 +57,18 @@
          <a id="exitModal" class="modal-action modal-close waves-effect waves-green btn-flat">close</a>
       </div>
    </div>
-
    <!-- How to Play Modal -->
-
    <div id="rulesPage" class="modal bottom-sheet">
       <div class="modal-content">
          <div class="cont">
             How to Play
             <div class="Form">
                <h5>Issue a challenge (any challenge) to your friends</h5>
-               <p>In order to issue a challenge you have to first prove that you completed the challenge yourself. Once you send your friends the challenge they will have the option to accept the challenge or reject it. If accepted, they will have an opportunity
-                  to view your proof video and submit one of their own. You will be the judge of their success or failure.</p>
+               <p>In order to issue a challenge you have to first prove that you completed the challenge yourself. Once you send your friends the challenge they will have the option to accept the challenge or reject it. If accepted, they will have an opportunity to view your proof video and submit one of their own. You will be the judge of their success or failure.</p>
                <h5>Issue a challenge!</h5>
                <p>from the dashboard, click on “CREATE NEW CHALLENGE” Complete all fields and be sure to include a link to your video proof that you have completed the challenge yourself.</p>
                <h5>Review your issued challenges</h5>
-               <p>From the dashboard, locate in the left panel the challenge you would like to review and click on it. You can see the status of the challenge, to whom it was issued and the rules of the challenge. Once your friend has submitted proof, you
-                  will be able to review the proof and decide if they passed or failed.</p>
+               <p>From the dashboard, locate in the left panel the challenge you would like to review and click on it. You can see the status of the challenge, to whom it was issued and the rules of the challenge. Once your friend has submitted proof, you will be able to review the proof and decide if they passed or failed.</p>
                <h5>Review received challenges</h5>
                <p>From the dashboard, locate in the right panel the challenge you would like to review and click on it. You can see pertinent details of the challenge and when it is first issued, you can decide whether to accept or reject the challenge.</p>
             </div>
@@ -85,53 +80,51 @@
    </div>
    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
    <script>
+   $(document).ready(function() {
+      $(".modal").modal();
+      $("#rules").on("click", function() {
+         console.log("rules modal button clicked");
+         $("#rulesPage").modal("open");
+      });
+      $('.collapsible').collapsible();
+      $("#warning").modal();
+      const cookies = ";" + document.cookie,
+         verified = cookies.match(/(\;verified\=\w+){1}/g),
+         isVerified = !!verified ? verified[0].replace(/(\;verified\=)/, "") : true;
+      if (isVerified == "false") {
+         $("#warning").modal("open");
+      }
 
-      $(document).ready(function() {
-         $(".modal").modal();
-         $("#rules").on("click", function() {
-            console.log("rules modal button clicked");
-            $("#rulesPage").modal("open");
-         });
-         $('.collapsible').collapsible();
-         $("#warning").modal();
-         const cookies = ";" + document.cookie,
-            verified = cookies.match(/(\;verified\=\w+){1}/g),
-            isVerified = !!verified ? verified[0].replace(/(\;verified\=)/, "") : true;
-         if (isVerified == "false") {
-            $("#warning").modal("open");
-         }
+      $("#email_verification").on("click", function(event) {
+         event.preventDefault();
 
-         $("#email_verification").on("click", function(event) {
-            event.preventDefault();
-
-            $.post("/login/verification").then((response) => {
-               console.log(response);
-               $("#content").text("Verification sent!!");
-               setTimeout(function() {
-                  $("#warning").modal("close");
-               }, 800);
-            });
+         $.post("/login/verification").then((response) => {
+            console.log(response);
+            $("#content").text("Verification sent!!");
+            setTimeout(function() {
+               $("#warning").modal("close");
+            }, 800);
          });
       });
-   });
+  
+      $(".delete").on("click", function() {
+         const container = this.parentNode.parentNode.parentNode,
+            parent = container.parentNode,
+            instanceId = parseInt(container.dataset["instance"]),
+            identity = this.dataset["identity"];
 
-   $(".delete").on("click", function() {
-      const container = this.parentNode.parentNode.parentNode,
-         parent = container.parentNode,
-         instanceId = parseInt(container.dataset["instance"]),
-         identity = this.dataset["identity"];
+         console.log(container);
+         console.log(parent);
 
-      console.log(container);
-      console.log(parent);
-
-      $.ajax({
-         url: "/challenge/instance?instance=" + instanceId + "&identity=" + identity,
-         method: "DELETE"
-      }).then((response) => {
-         console.log(response);
-         parent.removeChild(container);
-      }).catch((err) => {
-         console.log(err);
+         $.ajax({
+            url: "/challenge/instance?instance=" + instanceId + "&identity=" + identity,
+            method: "DELETE"
+         }).then((response) => {
+            console.log(response);
+            parent.removeChild(container);
+         }).catch((err) => {
+            console.log(err);
+         });
       });
    });
    </script>
