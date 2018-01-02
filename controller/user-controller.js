@@ -34,7 +34,7 @@ module.exports = function(app) {
    // test route
    app.get("/user/dashboard", function(req, res) {
       req.user.email_verified && res.clearCookie("verified");
-      
+
       var handlebarsObject;
       db.User.findAll({
          where: { id: req.user.id }, //grab user id
@@ -93,7 +93,7 @@ module.exports = function(app) {
                });
             });
 
-            res.render("sendChallenge", { template: template, user: user });
+            res.render("sendChallenge", { template: template, user: user, username: req.user.name });
          });
       });
    }); // challenge form now a modal

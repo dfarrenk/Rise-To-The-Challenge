@@ -1,6 +1,6 @@
 var db = require("../models"),
    path = require("path"),
-   mailer = require("../config/sendgrid_mailer.js");
+   mailer = require("../lib/sendgrid_mailer.js");
 
 module.exports = function(app) {
 
@@ -218,6 +218,44 @@ module.exports = function(app) {
             }, 4);
             res.status(200).send("/user/dashboard");
          });
+      });
+   });
+
+   app.delete("/challenge/instance", function(req, res) {
+      console.log(req.query["instance"]);
+      console.log(req.query["identity"]);
+
+      const optionObj = {};
+      optionObj[req.query["identity"]] = null;
+      console.log(optionObj);
+
+      db.Instance.findOne({
+         where: {
+            challenge_id: req.query["instance"]
+         }
+      }).then((data) => {
+         let isNull = req.query["identity"] === "issuer_id" ? data.accepter_id : data.issuer_id;
+         console.log(isNull);
+         console.log(optionObj);
+         if (!isNull) {
+            db.Instance.destroy({
+               where: {
+                  challenge_id: req.query["instance"]
+               }
+            }).then((result) => {
+               res.status(200).send("delete record!!");
+            });
+         } else {
+            db.Instance.update(optionObj, {
+               where: {
+                  challenge_id: req.query["instance"]
+               }
+            }).then((result) => {
+               res.status(200).send("delete association!!");
+            });
+         }
+      }).catch((err) => {
+         console.log(err);
       });
    });
 

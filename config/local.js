@@ -4,7 +4,7 @@ const DEBUG = true;
 const Passport = require("passport"),
    LocalStrategy = require('passport-local').Strategy,
    bcrypt = require("bcrypt"),
-   token = require("./token.js"),
+   token = require("../lib/token.js"),
    dataBase = require("../models");
 
 Passport.use(new LocalStrategy({
