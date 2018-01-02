@@ -1,8 +1,7 @@
 {{> challenge_nav }}
 <main>
    <div>
-      {{!--
-      <h1>Rise-to-the-Challenge</h1>--}}
+      <h1>Rise-to-the-Challenge</h1>
    </div>
    <div class="z-depth-2 cont">
       <h5>Issue your Challenge</h5>
@@ -22,13 +21,13 @@
                      <label class="active" for="name_autocomplete">Name of the Person you wish to challenge:</label>
                   </div>
                   <div class="input-field col s6">
-                     <input id="email_autocomplete" placeholder="example@gmail.com" name="challenged" type="text" class="autocomplete validate" multiple>
+                     <input id="email" placeholder="example@gmail.com" name="challenged" type="text" class="autocomplete validate" multiple>
                      <label class="active" for="email_autocomplete">Their Email:</label>
                   </div>
                </div>
                <div class="row">
                   <div class="input-field col s12">
-                     <textarea id="rules" name="rules" class="materialize-textarea"></textarea>
+                     <textarea id="rules" name="rules" class="materialize-textarea validate"></textarea>
                      <label class="active" for="rules">Rules:</label>
                   </div>
                </div>
@@ -48,6 +47,8 @@
       </div>
 </main>
 <script type="text/javascript">
+let __templateId = null;
+let __userId = null;
 (function($) {
    const template = JSON.parse(`{{json template}}`);
    const user = JSON.parse(`{{json user}}`);
@@ -57,23 +58,27 @@
       template_rule = {};
 
    template.forEach((elem) => {
-      template_name.push(elem.name);
-      template_rule[elem.name] = elem.rule; // this is autofilled
+      template_name.push({ label: elem.name, value: elem.id });
+      template_rule[elem.id] = elem.rule; // this is autofilled
    });
+
+   console.log(template_name);
 
    $("#challenge_autocomplete").autocomplete({
       source: template_name,
       limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-      onAutocomplete: function(val) {
-         // Callback function when value is autcompleted.
+      select: function(event, ui) {
+         // event.preventDefault();
+         $("#challenge_autocomplete").val(ui.item.label);
+         $("#rules").val(template_rule[ui.item.value]).prop("placeholder", "").next("label").text("");
+         __templateId = ui.item.value;
+         return false; // Prevent the widget from inserting the value.
+      },
+      focus: function(event, ui) {
+         $("#challenge_autocomplete").val(ui.item.label);
+         return false; // Prevent the widget from inserting the value.
       },
       minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
-   });
-
-   $("#challenge_autocomplete").blur(function() {
-      const paired_rule = template_rule[$(this).val()];
-      console.log(paired_rule);
-      !!paired_rule ? $("#rules").val(paired_rule).prop("placeholder", "").next("label").text("") : console.log("...");
    });
 
    // user
@@ -81,8 +86,8 @@
       user_email = {};
 
    user.forEach((elem) => {
-      user_name.push(elem.name);
-      user_email[elem.name] = elem.email;
+      user_name.push({ label: elem.name, value: elem.id });
+      user_email[elem.id] = elem.email;
    });
 
    $("#recepient_autocomplete").autocomplete({
@@ -92,10 +97,20 @@
       minLength: 1
    });
 
-   $("#recepient_autocomplete").blur(function() {
-      const paired_email = user_email[$(this).val()];
-      console.log(paired_email);
-      !!paired_email ? $("#email_autocomplete").val(paired_email).prop("placeholder", "") : console.log("...");
+   $("#recepient_autocomplete").autocomplete({
+      source: user_name,
+      limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+      select: function(event, ui) {
+         $("#recepient_autocomplete").val(ui.item.label);
+         $("#email").val(user_email[ui.item.value]);
+         __userId = ui.item.value;
+         return false; // Prevent the widget from inserting the value.
+      },
+      focus: function(event, ui) {
+         $("#recepient_autocomplete").val(ui.item.label);
+         return false; // Prevent the widget from inserting the value.
+      },
+      minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
    });
 
    console.log(template);

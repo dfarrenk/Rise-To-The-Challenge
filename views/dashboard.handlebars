@@ -25,7 +25,6 @@
                   <div class="collection z-depth-2 Form">
                      {{#each issued}} {{#if_eq dataValues.state 'provided-proof'}}
                      <a href="/user/revProof?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{else}} {{> issued_collapsible}} {{/if_eq}}{{/each}}
-
                   </div>
                   <a href="/user/createChallenge">
                      <button class="btn waves-effect waves-light z-depth-1" type="submit" name="action">Create New Challenge
@@ -40,20 +39,49 @@
                <div class="collection z-depth-2 Form" id="receivedBox">
                   {{#each accepted}} {{#if_eq dataValues.state 'challenge-issued'}}
                   <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-accepted'}}
-                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-rejected'}}
-                  {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'provided-proof'}} {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'proof-accepted'}} {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'proof-rejected'}}
-                  {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'archive-success'}} {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'archive-fail'}} {{> received_collapsible}} {{/if_eq}} {{/each}}
+                  <a href="/user/arChallenge?instance={{dataValues.challenge_id}}" class="collection-item"> {{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></a> {{/if_eq}} {{#if_eq dataValues.state 'challenge-rejected'}} {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'provided-proof'}} {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'proof-accepted'}} {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'proof-rejected'}} {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'archive-success'}} {{> received_collapsible}} {{/if_eq}} {{#if_eq dataValues.state 'archive-fail'}} {{> received_collapsible}} {{/if_eq}} {{/each}}
                </div>
-
             </div>
          </div>
       </div>
    </main>
-   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+   <!-- Modal Structure -->
+   <div id="warning" class="modal modal-fixed-footer">
+      <div class="modal-content">
+         <h3 id="content" class="left-align">You must verified your email before using this feature</h3>
+         <a id="email_verification" href="" class="left-align">
+            <h5>Click me to verified</h5>
+         </a>
+      </div>
+      <div class="modal-footer">
+         <a id="exitModal" class="modal-action modal-close waves-effect waves-green btn-flat">close</a>
+      </div>
+   </div>
+   <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
    <script>
-      $(document).ready(function() {
-         $('.collapsible').collapsible();
+   $(document).ready(function() {
+      $('.collapsible').collapsible();
+      $("#warning").modal();
+      const cookies = ";" + document.cookie,
+         verified = cookies.match(/(\;verified\=\w+){1}/g),
+         isVerified = verified[0].replace(/(\;verified\=)/, "");
+
+      if (isVerified == "false") {
+         $("#warning").modal("open");
+      }
+
+      $("#email_verification").on("click", function(event) {
+         event.preventDefault();
+
+         $.post("/login/verification").then((response) => {
+            console.log(response);
+            $("#content").text("Verification sent!!");
+            setTimeout(function() {
+               $("#warning").modal("close");
+            }, 800);
+         });
       });
+   });
    </script>
    {{!--
    <script type="text/javascript" src="js/materialize.min.js"></script>--}}

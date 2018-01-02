@@ -4,7 +4,7 @@ var db = require("../models"),
 
 const isVerified = function(req, res, next) {
    if (!req.user.email_verified) {
-      return res.status(401).send("please verified your email before using this function");
+      return res.status(401).cookie("verified", false).redirect("/user/dashboard");
    }
    next();
 }
@@ -33,6 +33,8 @@ module.exports = function(app) {
 
    // test route
    app.get("/user/dashboard", function(req, res) {
+      req.user.email_verified && res.clearCookie("verified");
+      
       var handlebarsObject;
       db.User.findAll({
          where: { id: req.user.id }, //grab user id
@@ -78,14 +80,16 @@ module.exports = function(app) {
             template_data.forEach((elem) => {
                template.push({
                   name: elem.name,
-                  rule: elem.rule
+                  rule: elem.rule,
+                  id: elem.id
                })
             });
 
             user_data.forEach((elem) => {
                user.push({
                   name: elem.name,
-                  email: elem.email
+                  email: elem.email,
+                  id: elem.id
                });
             });
 

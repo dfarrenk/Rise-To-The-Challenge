@@ -19,6 +19,21 @@ module.exports = function(app) {
          template_rule = req.body.rules,
          proof = req.body.postLink;
 
+      // not great but will do for now
+      const createInstance = function(newInstance) {
+         db.Instance.create(newInstance).then(function(data) { // post a new row in instance table.
+            console.log(data);
+            mailer(req.headers.origin, {
+               email: recipient,
+               username: recipient_name,
+               challenger_name: req.user.name,
+               challenger_id: req.user.id,
+               instance_id: data.challenge_id
+            }, 1);
+            res.status(200).send("/user/dashboard");
+         });
+      };
+
       var newChallenge = { //grab request body info to create new challenge object
          name: template_name,
          rule: template_rule,
@@ -28,24 +43,19 @@ module.exports = function(app) {
          challenger_proof: proof,
       };
 
-      db.Template.create(newChallenge).then(function(results) { //post a new row in the challenge table.
-         // console.log(results);
-         //grab the newly created template_id and add it to the newInstance here
-         newInstance["template_id"] = results.dataValues.id;
-         newInstance["issuer_id"] = req.user.id;
-
-         db.Instance.create(newInstance).then(function(results2) { // post a new row in instance table.
-            console.log(results2);
-            mailer(req.headers.origin, {
-               email: recipient,
-               username: recipient_name,
-               challenger_name: req.user.name,
-               challenger_id: req.user.id,
-               instance_id: results2.challenge_id
-            }, 1);
-            res.status(200).send("/user/dashboard");
+      if (!req.body.templateId) {
+         db.Template.create(newChallenge).then(function(results) { //post a new row in the challenge table.
+            // console.log(results);
+            //grab the newly created template_id and add it to the newInstance here
+            newInstance["template_id"] = results.dataValues.id;
+            newInstance["issuer_id"] = req.user.id;
+            return createInstance(newInstance);
          });
-      });
+      }
+
+      newInstance["template_id"] = req.body.templateId;
+      newInstance["issuer_id"] = req.user.id;
+      createInstance(newInstance);
    });
 
    app.put('/challenge/instance/accept', function(req, res) { //update the instance state  (user accepted challenge)
@@ -151,7 +161,7 @@ module.exports = function(app) {
 
    app.put('/challenge/instance/proofreject', function(req, res) { //update the instance state  (user proof rejected!)
 
-      db.Instance.update({ 
+      db.Instance.update({
          state: 'proof-rejected'
       }, {
          where: {
@@ -186,7 +196,7 @@ module.exports = function(app) {
       }, {
          where: {
             challenge_id: req.query["instance"]
-         } 
+         }
       }).then(function(results) {
          db.Instance.findOne({
             where: {

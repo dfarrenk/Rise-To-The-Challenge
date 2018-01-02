@@ -50,7 +50,7 @@ $(function() {
          $(".err").text("oops it seems like there is something wrong with the server, please refresh the page and try again");
       });
    });
-  
+
    // $("#exitModal").on("click", function() {
    //    clearNewUserInput();
    // });
@@ -61,13 +61,6 @@ $(function() {
       //should submit new user info
       console.log("profile creation requested");
 
-      let validateResult = validateNewUserInput();
-
-      if (isNaN(validateResult)) {
-         console.log(validateResult);
-         return modalWrite(validateResult);
-      }
-
       var userName = $("#userName").val();
       var password = $("#newPassword").val();
       var confPassword = $("#confPassword").val();
@@ -75,8 +68,16 @@ $(function() {
       var newUser = {
          username: userName,
          password: password,
+         confPassword: confPassword,
          email: email
       };
+
+      let validateResult = validateForm(newUser);
+
+      if (isNaN(validateResult)) {
+         console.log(validateResult);
+         return modalWrite(validateResult, $(".clearNewUser"));
+      }
 
       sendRequest(newUser);
    });
@@ -114,81 +115,15 @@ $(function() {
       });
    }
 
-   function validateNewUserInput() {
-      console.log("validating...");
-      // var caseArray = [];
-      var userName = $("#userName").val();
-      var password = $("#newPassword").val();
-      var confPassword = $("#confPassword").val();
-      var email = $("#email").val();
-
-      if (!userName || !password || !confPassword || !email) {
-         console.log("Am I stopped here everytime?");
-         return "form-empty";
-         // caseArray.push("form-empty");
-      }
-      // if (name.match(/[^a-z]/gi)) {
-      //    return "userName-invalid";
-      //    // caseArray.push("userName-invalid");
-      //    console.log("invalid user-name, should write username restrictions here");
-      // }
-      if (password !== confPassword) {
-         return "password-mismatch";
-         // caseArray.push("password-mismatch");
-      }
-      if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-         return "email-invalid";
-         // caseArray.push("email-invalid");
-      }
-      // return caseArray;
-      // console.log(caseArray);
-      return 1;
-   }
-
-   function modalWrite(result) {
+   function modalWrite(result, form = null) {
       console.log("initiating modalWrite");
-
-      //turning this into loop...
+      form && form.prop("placeholder", "");
+      
       console.log(result);
-      // for (var i = 0; i < result.length; i++) {
-      //    console.log("result[i]: ", result[i]);
-      //    switch (result[i]) {
-      //       case "form-empty":
-      //          $("#modalErrorHeader").text("Please complete all fields");
-      //          break;
-      //       case "username-taken":
-      //          $("#userName").val("");
-      //          $("#userName").prop("placeholder", "Username already taken");
-      //          break;
-      //       case "userName-invalid":
-      //          $("#userName").val("");
-      //          $("#userName").prop("placeholder", "Please enter a valid username");
-      //          break;
-      //       case "email-invalid":
-      //          $("#email").val('')
-      //          $("#email").prop("placeholder", "Please enter a valid email address");
-      //          break;
-      //       case "password-mismatch":
-      //          $("#confPassword").prop("placeholder", "Password does not match");
-      //          $("#confPassword").addClass("placeholder", "red-text");
-      //          break;
-      //          // account creation error
-      //       case "username-taken":
-      //          $("#modalErrorHeader").text("An account with same username has already been registered");
-      //          break;
-      //       case "email-taken":
-      //          $("#modalErrorHeader").text("An account with same email has already been registered");
-      //          break;
-      //    }
-      // }
       switch (result) {
          case "form-empty":
             $("#modalErrorHeader").text("Please complete all fields");
             break;
-         // case "username-taken":
-         //    $("#userName").val("");
-         //    $("#userName").prop("placeholder", "Username already taken");
-         //    break;
          case "userName-invalid":
             $("#userName").val("");
             $("#userName").prop("placeholder", "Please enter a valid username");
@@ -208,11 +143,53 @@ $(function() {
          case "email-taken":
             $("#modalErrorHeader").text("An account with same email has already been registered");
             break;
+         case "not-yoututbe":
+            $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
+            break;
       }
       $("#newPassword").val('');
       $("#confPassword").val('');
    }
 
+   function validateForm(object) {
+      const __ = object,
+         email = __.email || __.challenged;
+
+      const nullForm = (object) => {
+         let formEmpty = false;
+         $.map(object, function(elem, index) {
+            if (!elem) {
+               formEmpty = true;
+            }
+         });
+         return formEmpty;
+      }
+      console.log(__);
+
+      if (nullForm(__)) {
+         return "form-empty";
+      };
+
+      console.log(email);
+      if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+         return "email-invalid";
+      }
+
+      if (__.password !== __.confPassword) {
+         return "password-mismatch";
+      }
+
+      // 2 stage check
+      if (!!__.postLink && __.postLink.match(/(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/)) {
+         return 1;
+      }
+
+      if (!!__.postLink && !__.postLink.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
+         return "not-yoututbe";
+      }
+
+      return 0;
+   }
 
 
    //Issue Challenge Handlers
@@ -225,17 +202,32 @@ $(function() {
          newChallenge[n['name']] = n['value'];
       });
 
-      const link = newChallenge.postLink;
+      const validateResult = validateForm(newChallenge);
 
-      if (!link || !link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
-         $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
-         return;
+      if (isNaN(validateResult)) {
+         console.log(validateResult);
+         return modalWrite(validateResult);
       }
 
-      const videoId = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, ""),
-         linkRestruct = "https://www.youtube.com/embed/" + videoId;
+      // const link = newChallenge.postLink;
+
+      // if (!link || !link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
+      //    $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
+      //    return;
+      // }
+      let srcId, linkRestruct;
+
+      if (!validateResult) {
+         srcId = newChallenge.postLink.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, "");
+         linkRestruct = "https://www.youtube.com/embed/" + srcId;
+      } else {
+         srcId = newChallenge.postLink.replace(/(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))+?(embed\/|watch\?v=){0,1}/, "");
+         linkRestruct = "https://giphy.com/embed/" + srcId;
+      }
 
       newChallenge.postLink = linkRestruct;
+      newChallenge.templateId = __templateId;
+      newChallenge.userId = __userId;
 
       console.log(linkRestruct);
       console.log(newChallenge);
@@ -247,6 +239,8 @@ $(function() {
          console.log(response);
          console.log("new challenge submitted");
          location.replace(response); // set timeout on this 
+      }).catch((err) => {
+         console.log("this is err %s", err);
       });
       //should receive success/err message?
       return true;
@@ -324,8 +318,8 @@ $(function() {
          return;
       }
 
-      const videoId = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, ""),
-         linkRestruct = "https://www.youtube.com/embed/" + videoId;
+      const srcId = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, ""),
+         linkRestruct = "https://www.youtube.com/embed/" + srcId;
 
       console.log(linkRestruct);
 
