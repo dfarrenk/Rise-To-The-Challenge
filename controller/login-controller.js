@@ -17,6 +17,16 @@ module.exports = function() {
       res.status(200).sendFile(path.join(__dirname, "../public/verification.html"));
    });
 
+   loginRoute.post("/login/verification", function(req, res) {
+      DEBUG && console.log("Okay");
+      mailer(req.headers.origin, {
+         email: req.user.email,
+         username: req.user.name,
+         password: req.user.password
+      }, 0);
+      res.status(200).send("verification email sent!!");
+   });
+
    loginRoute.post("/login/email_verification", passport.authenticate("local", {
       // it's unlikely there's failure, however if failure should happen I need a handler
       // could set a timer somehow to nullified expired link
@@ -38,8 +48,7 @@ module.exports = function() {
          if (err.errors && err.errors.constructor === Array) {
             const errorType = err.errors[0].message;
             return errorIdentifier(res, errorType);
-         }
-         else {
+         } else {
             DEBUG && console.error(err.message);
          }
       });
@@ -49,7 +58,7 @@ module.exports = function() {
       DEBUG && console.log(req.user);
       DEBUG && console.log(req.query["challenger"]);
 
-      userTimeout(req.user.dataValues).activateTimeout(1);
+      userTimeout(req.user.dataValues).activateTimeout(10);
       if (req.query["challenger"]) {
          dataBase.Instance.update({
             accepter_id: req.user.id
@@ -62,8 +71,7 @@ module.exports = function() {
             DEBUG && console.log("success");
             return res.status(200).send("/user/dashboard");
          });
-      }
-      else {
+      } else {
          res.status(200).send("/user/dashboard");
       }
    });
@@ -93,8 +101,7 @@ module.exports = function() {
             if (err.errors && err.errors.constructor === Array) {
                const errorType = err.errors[0].message;
                return errorIdentifier(res, errorType);
-            }
-            else {
+            } else {
                DEBUG && console.error(err.message);
             }
          });
