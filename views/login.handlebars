@@ -76,6 +76,9 @@
       <a href="#!" id="exitModal" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
    </div>
    <script type="text/javascript">
+      $(document).ready(function() {
+         $(".modal").modal();
+      });
       $("#signUp").modal({
          complete: clearNewUserInput
       });

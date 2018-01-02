@@ -1,9 +1,9 @@
 <body>
    <nav>
       <div class="nav-wrapper z-depth-4">
-         <a id="menu" class="waves-effect waves-light btn btn-floating">
-            <i style="line-height: 45px" class="material-icons">help_outline</i>
-         </a>
+         <button id="rules" data-target="rulesPage" class="waves-effect waves-light btn modal-trigger btn-floating">
+            <i style="line-height: 42px" class="material-icons">help_outline</i>
+         </button>
          <a href="/user/dashboard" class="brand-logo center" id="logo">Duello</a>
          <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="">Welcome, {{dataValues.name}}</a>
@@ -46,9 +46,6 @@
             </div>
          </div>
       </div>
-      <div class="parallax-container" style="height: 600px">
-         <div class="parallax"><img src="/assets/images/duel.jpg"></div>
-      </div>
       <!-- container for ABOUT -->
    </main>
    <!-- Modal Structure -->
@@ -64,20 +61,38 @@
       </div>
    </div>
 
-   <div class="menu" data-activates="menu">
-      <div class="tap-target-content">
-         <h5>Title</h5>
-         <p>A bunch of text</p>
+   <!-- How to Play Modal -->
+
+   <div id="rulesPage" class="modal bottom-sheet">
+      <div class="modal-content">
+         <div class="cont">
+            How to Play
+            <div class="Form">
+               <h5>Issue a challenge (any challenge) to your friends</h5>
+               <p>In order to issue a challenge you have to first prove that you completed the challenge yourself. Once you send your friends the challenge they will have the option to accept the challenge or reject it. If accepted, they will have an opportunity
+                  to view your proof video and submit one of their own. You will be the judge of their success or failure.</p>
+               <h5>Issue a challenge!</h5>
+               <p>from the dashboard, click on “CREATE NEW CHALLENGE” Complete all fields and be sure to include a link to your video proof that you have completed the challenge yourself.</p>
+               <h5>Review your issued challenges</h5>
+               <p>From the dashboard, locate in the left panel the challenge you would like to review and click on it. You can see the status of the challenge, to whom it was issued and the rules of the challenge. Once your friend has submitted proof, you
+                  will be able to review the proof and decide if they passed or failed.</p>
+               <h5>Review received challenges</h5>
+               <p>From the dashboard, locate in the right panel the challenge you would like to review and click on it. You can see pertinent details of the challenge and when it is first issued, you can decide whether to accept or reject the challenge.</p>
+            </div>
+         </div>
+      </div>
+      <div class="modal-footer">
+         <a href="#!" id="exitModal" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
       </div>
    </div>
    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
    <script>
       $(document).ready(function() {
-         $("#menu").on("click", function() {
-            console.log("feature disc clicked");
-            $('.tap-target').tapTarget('open');
-         })
-         // $('.tap-target').tapTarget('close');
+         $(".modal").modal();
+         $("#rules").on("click", function() {
+            console.log("rules modal button clicked");
+            $("#rulesPage").modal("open");
+         });
          $('.parallax').parallax();
          $('.collapsible').collapsible();
          $("#warning").modal();
@@ -102,6 +117,7 @@
          });
       });
    </script>
+
    {{!--
    <script type="text/javascript" src="js/materialize.min.js"></script>--}}
 </body>
