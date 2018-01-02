@@ -52,6 +52,7 @@ let __userId = null;
 (function($) {
    const template = JSON.parse(`{{json template}}`);
    const user = JSON.parse(`{{json user}}`);
+   const username = (`{{username}}`);
 
    // template
    const template_name = new Array(),
@@ -86,6 +87,9 @@ let __userId = null;
       user_email = {};
 
    user.forEach((elem) => {
+      if (elem.name === username) {
+         return;
+      } 
       user_name.push({ label: elem.name, value: elem.id });
       user_email[elem.id] = elem.email;
    });
@@ -113,6 +117,6 @@ let __userId = null;
       minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
    });
 
-   console.log(template);
+   console.log(user_name);
 }(jQuery));
 </script>
