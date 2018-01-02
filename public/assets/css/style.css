@@ -4,45 +4,45 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    background-image: url("/assets/images/duel.jpg");
+    /*background-image: url("/assets/images/duel.jpg");*/
 }
 
 main {
-   flex: 1 0 auto;
-   margin: 100px 10%;
+    flex: 1 0 auto;
+    margin: 100px 10%;
 }
 
 input.err::-webkit-input-placeholder {
-   color: red;
+    color: red;
 }
 
 input.err::-moz-placeholder {
-   color: red;
+    color: red;
 }
 
 input.err:-ms-input-placeholder {
-   color: red;
+    color: red;
 }
 
 input.err:-moz-placeholder {
-   color: red;
+    color: red;
 }
 
 
 input.err::placeholder {
-   color: red;
+    color: red;
 }
 
 #modalErrorHeader {
-   color: red;
+    color: red;
 }
 
 #Copyright {
-   text-align: center
+    text-align: center
 }
 
 .page-footer {
-   height: 60px;
+    height: 60px;
 }
 
 .cont {
@@ -72,7 +72,7 @@ input.err::placeholder {
 
 .nav-wrapper,
 .page-footer {
-   background-color: #CA8982;
+    background-color: #CA8982;
 }
 
 .btn {
@@ -86,6 +86,6 @@ input.err::placeholder {
     background-color: white;
 }
 
-.redirect {
-    background-color: blue;
+.arialoverride {
+    font-family: arial;
 }
