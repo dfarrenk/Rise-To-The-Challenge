@@ -33,29 +33,30 @@ module.exports = function(app) {
             res.status(200).send("/user/dashboard");
          });
       };
+      
+      console.log(req.body);
 
-      var newChallenge = { //grab request body info to create new challenge object
-         name: template_name,
-         rule: template_rule,
-         creator_id: req.user.id
-      };
-      var newInstance = { // grab instance items
-         challenger_proof: proof,
-      };
+      const newChallenge = { //grab request body info to create new challenge object
+            name: template_name,
+            rule: template_rule,
+            creator_id: req.user.id
+         },
+         newInstance = { // grab instance items
+            challenger_proof: proof,
+            issuer_id: req.user.id,
+            template_id: req.body.templateId || null,
+            accepter_id: req.body.userId || null
+         };
 
-      if (!req.body.templateId) {
+      if (!newInstance.template_id) {
          db.Template.create(newChallenge).then(function(results) { //post a new row in the challenge table.
-            // console.log(results);
             //grab the newly created template_id and add it to the newInstance here
             newInstance["template_id"] = results.dataValues.id;
-            newInstance["issuer_id"] = req.user.id;
-            return createInstance(newInstance);
+            createInstance(newInstance);
          });
+      } else {
+         createInstance(newInstance);   
       }
-
-      newInstance["template_id"] = req.body.templateId;
-      newInstance["issuer_id"] = req.user.id;
-      createInstance(newInstance);
    });
 
    app.put('/challenge/instance/accept', function(req, res) { //update the instance state  (user accepted challenge)
