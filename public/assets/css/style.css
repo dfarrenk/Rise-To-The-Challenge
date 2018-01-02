@@ -89,3 +89,7 @@ input.err::placeholder {
 .arialoverride {
     font-family: arial;
 }
+
+#loginCont {
+    max-width: 700px;
+}

@@ -1,8 +1,6 @@
 {{> challenge_nav }}
 <main>
-<!--    <div>
-      <h1>Rise-to-the-Challenge</h1>
-   </div> -->
+
    <div class="z-depth-2 cont">
       <h5>Issue your Challenge</h5>
       <div class="collection Form">
@@ -47,6 +45,7 @@
       </div>
 </main>
 <script type="text/javascript">
+
 let __templateId = null;
 let __userId = null;
 (function($) {
@@ -54,37 +53,39 @@ let __userId = null;
    const user = JSON.parse(`{{json user}}`);
    const username = (`{{username}}`);
 
-   // template
-   const template_name = new Array(),
-      template_rule = {};
 
-   template.forEach((elem) => {
-      template_name.push({ label: elem.name, value: elem.id });
-      template_rule[elem.id] = elem.rule; // this is autofilled
-   });
+      // template
+      const template_name = new Array(),
+         template_rule = {};
 
-   console.log(template_name);
+      template.forEach((elem) => {
+         template_name.push({ label: elem.name, value: elem.id });
+         template_rule[elem.id] = elem.rule; // this is autofilled
+      });
 
-   $("#challenge_autocomplete").autocomplete({
-      source: template_name,
-      limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-      select: function(event, ui) {
-         // event.preventDefault();
-         $("#challenge_autocomplete").val(ui.item.label);
-         $("#rules").val(template_rule[ui.item.value]).prop("placeholder", "").next("label").text("");
-         __templateId = ui.item.value;
-         return false; // Prevent the widget from inserting the value.
-      },
-      focus: function(event, ui) {
-         $("#challenge_autocomplete").val(ui.item.label);
-         return false; // Prevent the widget from inserting the value.
-      },
-      minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
-   });
+      console.log(template_name);
 
-   // user
-   const user_name = new Array(),
-      user_email = {};
+      $("#challenge_autocomplete").autocomplete({
+         source: template_name,
+         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+         select: function(event, ui) {
+            // event.preventDefault();
+            $("#challenge_autocomplete").val(ui.item.label);
+            $("#rules").val(template_rule[ui.item.value]).prop("placeholder", "").next("label").text("");
+            __templateId = ui.item.value;
+            return false; // Prevent the widget from inserting the value.
+         },
+         focus: function(event, ui) {
+            $("#challenge_autocomplete").val(ui.item.label);
+            return false; // Prevent the widget from inserting the value.
+         },
+         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+      });
+
+      // user
+      const user_name = new Array(),
+         user_email = {};
+
 
    user.forEach((elem) => {
       if (elem.name === username) {
@@ -94,29 +95,32 @@ let __userId = null;
       user_email[elem.id] = elem.email;
    });
 
-   $("#recepient_autocomplete").autocomplete({
-      source: user_name,
-      limit: 20,
-      onAutocomplete: function(val) {},
-      minLength: 1
-   });
 
-   $("#recepient_autocomplete").autocomplete({
-      source: user_name,
-      limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-      select: function(event, ui) {
-         $("#recepient_autocomplete").val(ui.item.label);
-         $("#email").val(user_email[ui.item.value]);
-         __userId = ui.item.value;
-         return false; // Prevent the widget from inserting the value.
-      },
-      focus: function(event, ui) {
-         $("#recepient_autocomplete").val(ui.item.label);
-         return false; // Prevent the widget from inserting the value.
-      },
-      minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
-   });
+      $("#recepient_autocomplete").autocomplete({
+         source: user_name,
+         limit: 20,
+         onAutocomplete: function(val) {},
+         minLength: 1
+      });
+
+      $("#recepient_autocomplete").autocomplete({
+         source: user_name,
+         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+         select: function(event, ui) {
+            $("#recepient_autocomplete").val(ui.item.label);
+            $("#email").val(user_email[ui.item.value]);
+            __userId = ui.item.value;
+            return false; // Prevent the widget from inserting the value.
+         },
+         focus: function(event, ui) {
+            $("#recepient_autocomplete").val(ui.item.label);
+            return false; // Prevent the widget from inserting the value.
+         },
+         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+      });
+
 
    console.log(user_name);
 }(jQuery));
 </script>
+
