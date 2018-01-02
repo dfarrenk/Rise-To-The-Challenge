@@ -6,8 +6,8 @@ const dataBase = require("../models"),
    bcrypt = require("bcrypt"),
    path = require("path"),
    passport = require("../config/local.js"),
-   mailer = require("../config/sendgrid_mailer.js"),
-   userTimeout = require("../config/verification_timeout.js"),
+   mailer = require("../lib/sendgrid_mailer.js"),
+   userTimeout = require("../lib/verification_timeout.js"),
    loginRoute = new require("express").Router();
 
 module.exports = function() {

@@ -312,13 +312,24 @@ $(function() {
       const url = location.href.replace(location.pathname, "/challenge/instance/prove");
       const link = $("#proofLink").val();
 
-      if (!link || !link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
+      if (!link) {
          $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
          return;
       }
 
-      const srcId = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, ""),
-         linkRestruct = "https://www.youtube.com/embed/" + srcId;
+      let src, linkRestruct;
+
+      if (link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
+         linkRestruct = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, "https://www.youtube.com/embed/");
+      } else if (link.match(/(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/)) {
+         src = link.replace(/\/?\w+?\.(?:png|jpg|jpeg|gif|png|svg)/, "");
+         linkRestruct = src.replace(/(https?\:\/\/)?(\w+)(?:\.\w+){1,2}?\/?(media|embed)\//, "https://giphy.com/embed/");
+      } else {
+         return;
+      }
+
+      // const srcId = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, ""),
+      //    linkRestruct = "https://www.youtube.com/embed/" + srcId;
 
       console.log(linkRestruct);
 

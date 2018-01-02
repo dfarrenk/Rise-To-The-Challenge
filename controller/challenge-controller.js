@@ -1,6 +1,6 @@
 var db = require("../models"),
    path = require("path"),
-   mailer = require("../config/sendgrid_mailer.js");
+   mailer = require("../lib/sendgrid_mailer.js");
 
 module.exports = function(app) {
 
