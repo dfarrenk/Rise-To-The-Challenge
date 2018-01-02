@@ -1,11 +1,15 @@
-<ul class="collapsible collection-item" data-collapsible="accordion">
+<ul class="collapsible collection-item" data-collapsible="accordion" data-instance="{{dataValues.challenge_id}}">
    <li>
-      <div class="collapsible-header" style="display: block">{{dataValues.Template.dataValues.name}} <span class="right">{{dataValues.state}}</span></div>
+      <div class="collapsible-header" style="display: block">
+         {{dataValues.Template.dataValues.name}}
+         <span class="right" style="font-size: 16px">{{dataValues.state}}</span>
+      </div>
       <div class="collapsible-body">
          <div>Challenger: {{dataValues.issued.dataValues.name}}</div>
          <div>Rules: {{dataValues.Template.dataValues.rule}}</div>
+         <button class="delete red btn right" data-identity="accepter_id">Delete Record</button>
          <br>
-         <button class="btn right-align">This is it</button>
+         <br>
       </div>
    </li>
 </ul>
