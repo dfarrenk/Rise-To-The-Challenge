@@ -62,9 +62,9 @@
    $(document).ready(function() {
       $('.collapsible').collapsible();
       $("#warning").modal();
-      const cookies = ";" + document.cookie,
-         verified = cookies.match(/(\;verified\=\w+){1}/g),
-         isVerified = verified[0].replace(/(\;verified\=)/, "");
+      const cookies = "; " + document.cookie,
+         verified = cookies.match(/(\;?\sverified\=\w+){1}/g),
+         isVerified = !!verified ? verified[0].replace(/(\;\sverified\=)/, "") : null;
 
       if (isVerified == "false") {
          $("#warning").modal("open");
