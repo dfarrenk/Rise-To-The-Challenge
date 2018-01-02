@@ -28,11 +28,13 @@ module.exports = function(app) {
                username: recipient_name,
                challenger_name: req.user.name,
                challenger_id: req.user.id,
-               instance_id: data.challenge_id,
+               instance_id: data.challenge_id
             }, 1);
             res.status(200).send("/user/dashboard");
          });
       };
+      
+      console.log(req.body);
 
       const newChallenge = { //grab request body info to create new challenge object
             name: template_name,
@@ -48,14 +50,13 @@ module.exports = function(app) {
 
       if (!newInstance.template_id) {
          db.Template.create(newChallenge).then(function(results) { //post a new row in the challenge table.
-            // console.log(results);
             //grab the newly created template_id and add it to the newInstance here
             newInstance["template_id"] = results.dataValues.id;
-            return createInstance(newInstance);
+            createInstance(newInstance);
          });
+      } else {
+         createInstance(newInstance);   
       }
-
-      createInstance(newInstance);
    });
 
    app.put('/challenge/instance/accept', function(req, res) { //update the instance state  (user accepted challenge)
