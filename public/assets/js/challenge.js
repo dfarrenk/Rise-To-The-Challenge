@@ -215,14 +215,13 @@ $(function() {
       //    $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
       //    return;
       // }
-      let srcId, linkRestruct;
+      let src, linkRestruct;
 
       if (!validateResult) {
-         srcId = newChallenge.postLink.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, "");
-         linkRestruct = "https://www.youtube.com/embed/" + srcId;
+         linkRestruct = newChallenge.postLink.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, "https://www.youtube.com/embed/");
       } else {
-         srcId = newChallenge.postLink.replace(/(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))+?(embed\/|watch\?v=){0,1}/, "");
-         linkRestruct = "https://giphy.com/embed/" + srcId;
+         src = newChallenge.postLink.replace(/\/?\w+?\.(?:png|jpg|jpeg|gif|png|svg)/, "");
+         linkRestruct = src.replace(/(https?\:\/\/)?(\w+)(?:\.\w+){1,2}?\/?(media|embed)\//, "https://giphy.com/embed/");
       }
 
       newChallenge.postLink = linkRestruct;
