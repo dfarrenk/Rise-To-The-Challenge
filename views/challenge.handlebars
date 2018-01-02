@@ -9,7 +9,8 @@
             <div class="">
                <p>{{ dataValues.Template.dataValues.rule }}</p>
             </div>
-            {{#if dataValues.state_code }} {{> state_challenge_accepted }} {{/if}} {{#unless dataValues.state_code }} {{> state_challenge_issued }} {{/unless}}
+            {{#if dataValues.state_code }} {{> state_challenge_accepted }} {{/if}}
+            {{#unless dataValues.state_code }} {{> state_challenge_issued }} {{/unless}}
          </div>
          <form class="input-field scale-transition scale-out" id="proofForm">
             <input id="proofLink" type="text" class="validate" style="width:80%">
@@ -33,21 +34,21 @@
    </div>
 </div>
 <script type="text/javascript">
-const link = `{{dataValues.challenger_proof}}?rel=0&amp;showinfo=0`;
+   const link = `{{dataValues.challenger_proof}}?rel=0&amp;showinfo=0`;
 
-$("#proof").modal({
-   complete: function() {
-      $("iframe").attr("src", "");
-   }
-});
+   $("#proof").modal({
+      complete: function() {
+         $("iframe").attr("src", "");
+      }
+   });
 
-$("#challenger_proof").on("click", function() {
-   console.log("opening");
-   $("iframe").attr("src", link);
-   $("#proof").modal("open");
-});
+   $("#challenger_proof").on("click", function() {
+      console.log("opening");
+      $("iframe").attr("src", link);
+      $("#proof").modal("open");
+   });
 
-$("#proofSub").click(function() {
-   $("#proofForm").toggleClass("scale-out").toggleClass("scale-in");
-});
+   $("#proofSub").click(function() {
+      $("#proofForm").toggleClass("scale-out").toggleClass("scale-in");
+   });
 </script>
