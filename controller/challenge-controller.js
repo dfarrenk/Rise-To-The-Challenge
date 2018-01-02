@@ -221,6 +221,20 @@ module.exports = function(app) {
       });
    });
 
+   app.delete("/challenge/instance", function(req, res) {
+      console.log(req.query["instance"]);
+
+      db.Instance.findOne({
+         where: {
+            challenge_id: req.query["instance"]
+         }
+      }).then((data) => {
+         res.status(200).send("delete");
+      }).catch((err) => {
+         console.log(err);
+      });
+   });
+
    app.put('/challenge/instance/archive-success', function(req, res) { //update the instance state  (user proof accepted! acknowledged)
       db.Instance.update({
          state: 'archive-success'
