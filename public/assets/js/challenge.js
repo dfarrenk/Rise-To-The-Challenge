@@ -26,8 +26,16 @@ $(function() {
       const url = !!location.href.match(/\/?login(?!\w)/) ? location.href : "/login",
          login = {
             username: username,
-            password: password
+            password: password,
+            confPassword: password
          };
+
+      let validateResult = validateForm(login);
+
+      if (isNaN(validateResult)) {
+         console.log(validateResult);
+         return modalWrite(validateResult, $(".clearNewUser"));
+      }
 
       $.ajax(url, {
          type: "POST",
@@ -47,7 +55,8 @@ $(function() {
                .text("Username or password incorrect");
             return console.log("username or password incorrect");
          }
-         $(".err").text("oops it seems like there is something wrong with the server, please refresh the page and try again");
+
+         $(".err").text("Oops it seems like there is something wrong with the server, please refresh the page and try again");
       });
    });
 
@@ -118,25 +127,29 @@ $(function() {
    function modalWrite(result, form = null) {
       console.log("initiating modalWrite");
       form && form.prop("placeholder", "");
-      
+
       console.log(result);
       switch (result) {
          case "form-empty":
+            // login error msg
+            $("#username").next("label").addClass("red-text").text("Please put both your username and password");
+            // account creation err msg
             $("#modalErrorHeader").text("Please complete all fields");
+            // challenge creation err msg
+            $(".challenge_err").text("Please fill out all the information before submit.");
             break;
          case "userName-invalid":
             $("#userName").val("");
             $("#userName").prop("placeholder", "Please enter a valid username");
             break;
          case "email-invalid":
-            $("#email").val('')
-            $("#email").prop("placeholder", "Please enter a valid email address");
+            $("#email").val('');
+            $("#email").prop("placeholder", "Please enter a valid email address").addClass("err");
             break;
          case "password-mismatch":
             $("#confPassword").prop("placeholder", "Password does not match");
             $("#confPassword").addClass("placeholder", "red-text");
             break;
-            // account creation error
          case "username-taken":
             $("#modalErrorHeader").text("An account with same username has already been registered");
             break;
@@ -144,7 +157,7 @@ $(function() {
             $("#modalErrorHeader").text("An account with same email has already been registered");
             break;
          case "not-yoututbe":
-            $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
+            $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit").addClass("err");
             break;
       }
       $("#newPassword").val('');
@@ -171,7 +184,7 @@ $(function() {
       };
 
       console.log(email);
-      if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+      if (!!email && !email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
          return "email-invalid";
       }
 
@@ -196,13 +209,14 @@ $(function() {
    //===========================
    $("#challengeIssue").submit(function(event) {
       event.preventDefault();
+      $(".challenge_err").text("");
       var newChallenge = {};
 
       $.map($(this).serializeArray(), function(n, i) {
          newChallenge[n['name']] = n['value'];
       });
 
-      const validateResult = validateForm(newChallenge);
+      const validateResult = validateForm(newChallenge, $("#challengeIssue"));
 
       if (isNaN(validateResult)) {
          console.log(validateResult);
