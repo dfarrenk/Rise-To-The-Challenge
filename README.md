@@ -1,5 +1,8 @@
 # Rise-To-The-Challenge
-Project Two
+
+#### Description: 
+
+The core functionality of the app is to provide a platform where users are able to create and issue challenges to their friends or strangers. 
 
 
 #### Github Repo:
@@ -29,9 +32,7 @@ http://materializecss.com/
 * Patrick Hayes
 * Timothy Jeng
 
-#### Description: 
 
-The core functionality of the app is to provide a platform where users are able to create and issue challenges to their friends or strangers. 
 
 
 
