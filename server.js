@@ -72,7 +72,7 @@ app.get("*", function(req, res) {
    res.status(404).sendFile(path.join(__dirname, "public/404.html"));
 });
 
-db.sequelize.sync({ force: true }).then(function() {
+db.sequelize.sync({ force: false }).then(function() {
 
    app.listen(PORT, function() {
       console.log(passport);
