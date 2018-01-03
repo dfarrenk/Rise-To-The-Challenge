@@ -6,6 +6,10 @@ Project Two
 
 https://github.com/dfarrenk/Rise-to-the-Challenge 
 
+#### Project Doc:
+
+https://docs.google.com/document/d/1FjRBmBWHrQYBZqJk0PMZFQVDwoApTuZaWYPN7hFRYfQ/edit#
+
 #### Presentation Slides:
 
 https://docs.google.com/presentation/d/1UsZ2ZUPzoCgRUv2cFKvjYFBwHgj7L-ggpCqJVxChIt4/edit#slide=id.gc6f73a04f_0_9
