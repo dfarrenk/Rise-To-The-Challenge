@@ -94,4 +94,6 @@ input.err::placeholder {
    font-family: arial;
 }
 
-#loginCont {}
+.collapsible {
+   margin: 10px 10px;
+}
