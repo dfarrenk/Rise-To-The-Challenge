@@ -10,6 +10,10 @@ https://github.com/dfarrenk/Rise-to-the-Challenge
 
 http://materializecss.com/
 
+#### Presentation Slides:
+
+https://docs.google.com/presentation/d/1UsZ2ZUPzoCgRUv2cFKvjYFBwHgj7L-ggpCqJVxChIt4/edit#slide=id.gc6f73a04f_0_9
+
 #### Group Members:
 
 * David Farrenkopf
