@@ -121,11 +121,15 @@ module.exports = function(app) {
          where: {
             challenge_id: req.query["instance"]
          },
-         include: [db.Template]
+         include: [{
+            model: db.Template
+         }, {
+            model: db.User,
+            as: "accepted"
+         }]
       }).then((data) => {
 
          res.status(200).render("revProof", data);
-         // res.sendFile(path.join(__dirname, "../views/layouts/revProof.html"));
       });
    });
 

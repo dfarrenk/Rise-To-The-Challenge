@@ -223,12 +223,6 @@ $(function() {
          return modalWrite(validateResult);
       }
 
-      // const link = newChallenge.postLink;
-
-      // if (!link || !link.match(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
-      //    $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
-      //    return;
-      // }
       let src, linkRestruct;
 
       if (!validateResult) {
@@ -327,7 +321,7 @@ $(function() {
       const link = $("#proofLink").val();
 
       if (!link) {
-         $("#proofLink").val("").prop("placeholder", "please paste in a youtube link before submit");
+         $("#proofLink").val("").prop("placeholder", "oops! looks like you forgot to paste in a link").addClass("err");
          return;
       }
 
@@ -339,11 +333,8 @@ $(function() {
          src = link.replace(/\/?\w+?\.(?:png|jpg|jpeg|gif|png|svg)/, "");
          linkRestruct = src.replace(/(https?\:\/\/)?(\w+)(?:\.\w+){1,2}?\/?(media|embed)\//, "https://giphy.com/embed/");
       } else {
-         return;
+         $("#proofLink").val("").prop("placeholder", "please paste in a youtube or a giphy link before submit").addClass("err");
       }
-
-      // const srcId = link.replace(/(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/+?(embed\/|watch\?v=){0,1}/, ""),
-      //    linkRestruct = "https://www.youtube.com/embed/" + srcId;
 
       console.log(linkRestruct);
 
