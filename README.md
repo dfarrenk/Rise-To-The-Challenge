@@ -26,4 +26,4 @@ https://docs.google.com/presentation/d/1UsZ2ZUPzoCgRUv2cFKvjYFBwHgj7L-ggpCqJVxCh
 The core functionality of the app is to provide a platform where users are able to create and issue challenges to their friends or strangers. 
 
 
--jim testing branching
+
