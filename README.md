@@ -6,10 +6,6 @@ Project Two
 
 https://github.com/dfarrenk/Rise-to-the-Challenge 
 
-#### CSS Framework:
-
-http://materializecss.com/
-
 #### Presentation Slides:
 
 https://docs.google.com/presentation/d/1UsZ2ZUPzoCgRUv2cFKvjYFBwHgj7L-ggpCqJVxChIt4/edit#slide=id.gc6f73a04f_0_9
@@ -17,6 +13,10 @@ https://docs.google.com/presentation/d/1UsZ2ZUPzoCgRUv2cFKvjYFBwHgj7L-ggpCqJVxCh
 #### Heroku Link:
 
 https://desolate-crag-26628.herokuapp.com/
+
+#### CSS Framework:
+
+http://materializecss.com/
 
 #### Group Members:
 
